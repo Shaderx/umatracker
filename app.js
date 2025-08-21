@@ -492,7 +492,7 @@ class UmaMusumeTracker {
                             onclick="event.stopPropagation(); tracker.toggleWin('${race.name}')">
                         ${this.wonRaces.has(race.name) ? '🏆 Won / 勝利' : 
                           this.lostRaces.has(race.name) ? '❌ Lost / 敗北' : 
-                          '🏁 Mark Result / 結果を記録'}
+                          '🏆 Mark as Win / 勝利にする'}
                     </button>
                 </div>
                 ` : ''}
@@ -530,16 +530,17 @@ class UmaMusumeTracker {
     toggleWin(raceName) {
         if (!this.selectedRaces.has(raceName)) return; // Can't win/lose if not participating
         
-        // Cycle through: Won → Lost → Not Won/Lost → Won
+        // Toggle between Won and Lost (default to Won on first click)
         if (this.wonRaces.has(raceName)) {
             // Currently won, change to lost
             this.wonRaces.delete(raceName);
             this.lostRaces.add(raceName);
         } else if (this.lostRaces.has(raceName)) {
-            // Currently lost, change to neither won nor lost
+            // Currently lost, change to won
             this.lostRaces.delete(raceName);
+            this.wonRaces.add(raceName);
         } else {
-            // Currently neither won nor lost, change to won
+            // First click - default to won
             this.wonRaces.add(raceName);
         }
         this.renderRaces();
