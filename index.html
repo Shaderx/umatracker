@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uma Musume Hidden Factors Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            height: calc(100vh - 200px);
+        }
+
+        .races-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .progress-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #4a5568;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .races-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .race-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .race-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .race-card.selected {
+            border-color: #48bb78;
+            background: #f0fff4;
+        }
+
+        .race-card.won {
+            border-color: #38a169;
+            background: #c6f6d5;
+        }
+
+        .race-card.selected::before {
+            content: "✓ 出走";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #48bb78;
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .race-name {
+            margin-bottom: 8px;
+        }
+
+        .race-name-en {
+            font-weight: bold;
+            color: #2d3748;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .race-name-jp {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .race-details {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .race-grade {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .grade-GI { background: #ffd700; color: #8b4513; }
+        .grade-GII { background: #c0c0c0; color: #000; }
+        .grade-GIII { background: #cd7f32; color: #fff; }
+        .grade-Open { background: #87ceeb; color: #000; }
+
+        .win-button-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .win-btn {
+            padding: 8px 16px;
+            border: 2px solid #4299e1;
+            background: white;
+            color: #4299e1;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: 160px;
+            text-align: center;
+        }
+
+        .win-btn:hover {
+            background: #4299e1;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .win-btn.won {
+            background: #38a169;
+            border-color: #38a169;
+            color: white;
+        }
+
+        .win-btn.won:hover {
+            background: #2f855a;
+            border-color: #2f855a;
+            transform: scale(1.05);
+        }
+
+        .hidden-factors {
+            margin-top: 20px;
+        }
+
+        .factor-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #e2e8f0;
+        }
+
+        .factor-item.completed {
+            background: #f0fff4;
+            border-left-color: #48bb78;
+        }
+
+        .factor-item.partial {
+            background: #fffaf0;
+            border-left-color: #ed8936;
+        }
+
+        .factor-name {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .factor-name-en {
+            font-weight: bold;
+            color: #2d3748;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .factor-name-jp {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .completion-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 1.2rem;
+        }
+
+        .factor-condition {
+            margin-bottom: 8px;
+        }
+
+        .condition-en {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 3px;
+        }
+
+        .condition-jp {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-style: italic;
+        }
+
+        .factor-progress {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #48bb78;
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏇 Uma Musume Hidden Factors Tracker</h1>
+            <h2 style="margin-top: -10px; margin-bottom: 10px; color: rgba(255,255,255,0.9); font-size: 1.4rem;">ウマ娘 隠し因子トラッカー</h2>
+            <div class="subtitle">Track your race progress and unlock hidden factors</div>
+            <div class="subtitle" style="margin-top: 5px; font-size: 1rem;">レース進捗を追跡して隠し因子を解放しよう</div>
+        </header>
+
+        <div class="main-content">
+            <div class="races-section">
+                <h2 class="section-title">Race Calendar<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースカレンダー</span></h2>
+                
+                <div class="controls">
+                    <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
+                    <button class="filter-btn" data-filter="GI">G1 Only<br><span style="font-size: 0.7em;">G1のみ</span></button>
+                    <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
+                    <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
+                    <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
+                    <button class="filter-btn" onclick="tracker.clearAll()" style="background: #e53e3e; color: white; border-color: #e53e3e;">Clear All<br><span style="font-size: 0.7em;">全解除</span></button>
+                </div>
+
+                <div class="races-grid" id="races-grid">
+                    <!-- Races will be populated here -->
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h2 class="section-title">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
+                
+                <div class="stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-races">0</div>
+                            <div class="stat-label">Races Run<br><span style="font-size: 0.7em;">出走回数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-wins">0</div>
+                            <div class="stat-label">Wins<br><span style="font-size: 0.7em;">勝利数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="completed-factors">0</div>
+                            <div class="stat-label">Factors<br><span style="font-size: 0.7em;">因子数</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-factors" id="hidden-factors">
+                    <!-- Hidden factors will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
