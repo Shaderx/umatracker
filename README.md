@@ -117,3 +117,4 @@ Based on the provided data files:
 **Note**: This is a fan-made tool for Uma Musume: Pretty Derby and is not affiliated with Cygames.
 
 
+

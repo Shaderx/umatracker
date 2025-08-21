@@ -5,6 +5,7 @@ class UmaMusumeTracker {
         this.hiddenFactors = [];
         this.selectedRaces = new Set();
         this.wonRaces = new Set();
+        this.lostRaces = new Set();
         this.currentFilter = 'all';
         
         this.initializeData();
@@ -487,9 +488,11 @@ class UmaMusumeTracker {
                 </div>
                 ${this.selectedRaces.has(race.name) ? `
                 <div class="win-button-container">
-                    <button class="win-btn ${this.wonRaces.has(race.name) ? 'won' : ''}" 
+                    <button class="win-btn ${this.wonRaces.has(race.name) ? 'won' : this.lostRaces.has(race.name) ? 'lost' : ''}" 
                             onclick="event.stopPropagation(); tracker.toggleWin('${race.name}')">
-                        ${this.wonRaces.has(race.name) ? '🏆 Won / 勝利' : '🏁 Mark as Win / 勝利にする'}
+                        ${this.wonRaces.has(race.name) ? '🏆 Won / 勝利' : 
+                          this.lostRaces.has(race.name) ? '❌ Lost / 敗北' : 
+                          '🏁 Mark Result / 結果を記録'}
                     </button>
                 </div>
                 ` : ''}
@@ -516,6 +519,7 @@ class UmaMusumeTracker {
         if (this.selectedRaces.has(raceName)) {
             this.selectedRaces.delete(raceName);
             this.wonRaces.delete(raceName); // If not participating, can't win
+            this.lostRaces.delete(raceName); // If not participating, can't lose
         } else {
             this.selectedRaces.add(raceName);
         }
@@ -524,11 +528,18 @@ class UmaMusumeTracker {
     }
 
     toggleWin(raceName) {
-        if (!this.selectedRaces.has(raceName)) return; // Can't win if not participating
+        if (!this.selectedRaces.has(raceName)) return; // Can't win/lose if not participating
         
+        // Cycle through: Won → Lost → Not Won/Lost → Won
         if (this.wonRaces.has(raceName)) {
+            // Currently won, change to lost
             this.wonRaces.delete(raceName);
+            this.lostRaces.add(raceName);
+        } else if (this.lostRaces.has(raceName)) {
+            // Currently lost, change to neither won nor lost
+            this.lostRaces.delete(raceName);
         } else {
+            // Currently neither won nor lost, change to won
             this.wonRaces.add(raceName);
         }
         this.renderRaces();
@@ -538,6 +549,7 @@ class UmaMusumeTracker {
     clearAll() {
         this.selectedRaces.clear();
         this.wonRaces.clear();
+        this.lostRaces.clear();
         this.renderRaces();
         this.updateProgress();
     }
@@ -546,6 +558,7 @@ class UmaMusumeTracker {
         // Update stats
         document.getElementById('total-races').textContent = this.selectedRaces.size;
         document.getElementById('total-wins').textContent = this.wonRaces.size;
+        document.getElementById('total-losses').textContent = this.lostRaces.size;
         
         // Check all hidden factors
         const results = this.hiddenFactors.map(factor => ({

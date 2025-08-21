@@ -220,6 +220,18 @@
             transform: scale(1.05);
         }
 
+        .win-btn.lost {
+            background: #e53e3e;
+            border-color: #e53e3e;
+            color: white;
+        }
+
+        .win-btn.lost:hover {
+            background: #c53030;
+            border-color: #c53030;
+            transform: scale(1.05);
+        }
+
         .hidden-factors {
             margin-top: 20px;
         }
@@ -370,6 +382,10 @@
                         <div class="stat-item">
                             <div class="stat-number" id="total-wins">0</div>
                             <div class="stat-label">Wins<br><span style="font-size: 0.7em;">勝利数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-losses">0</div>
+                            <div class="stat-label">Losses<br><span style="font-size: 0.7em;">敗北数</span></div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number" id="completed-factors">0</div>
