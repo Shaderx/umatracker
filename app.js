@@ -38,7 +38,7 @@ class UmaMusumeTracker {
         };
 
         // Eastern Japan tracks
-        this.easternTracks = ['Tokyo', 'Nakayama (Chiba)', 'Niigata', 'Fukushima'];
+        this.easternTracks = ['Tokyo', 'Nakayama (Chiba)', 'Niigata', 'Fukushima', 'Kawasaki', 'Ooi', 'Funabashi', 'Morioka'];
         
         // Western Japan tracks  
         this.westernTracks = ['Kyoto', 'Hanshin (Takarazuka)', 'Chukyou (Nagoya)', 'Kokura (Kitakyushu)', 'Sapporo', 'Hakodate'];
@@ -206,6 +206,13 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         }
         
         return races;
+    }
+
+    // Normalize grade-one detection across possible encodings (GI, G1)
+    isGradeOne(race) {
+        if (!race || !race.type) return false;
+        const t = String(race.type).toUpperCase().replace(/\s+/g, '');
+        return t === 'GI' || t === 'G1';
     }
 
     parseCSVLine(line) {
@@ -888,6 +895,16 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         switch(this.currentFilter) {
             case 'GI':
                 return this.races.filter(race => race.type === 'GI');
+            case 'GII':
+                return this.races.filter(race => race.type === 'GII');
+            case 'GIII':
+                return this.races.filter(race => race.type === 'GIII');
+            case 'Open':
+                return this.races.filter(race => race.type === 'Open');
+            case 'Pre-OP':
+                return this.races.filter(race => race.type === 'Pre-OP');
+            case 'junior':
+                return this.races.filter(race => race.junior);
             case 'classic':
                 return this.races.filter(race => race.classics);
             case 'senior':
@@ -1042,7 +1059,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     checkEasternG1Wins() {
         const easternG1Wins = Array.from(this.wonRaces).filter(raceName => {
             const race = this.races.find(r => r.name === raceName);
-            return race && race.type === 'GI' && this.easternTracks.includes(race.racetrack);
+            return race && this.isGradeOne(race) && this.easternTracks.includes(race.racetrack);
         });
         
         return {
@@ -1057,7 +1074,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     checkWesternG1Wins() {
         const westernG1Wins = Array.from(this.wonRaces).filter(raceName => {
             const race = this.races.find(r => r.name === raceName);
-            return race && race.type === 'GI' && this.westernTracks.includes(race.racetrack);
+            return race && this.isGradeOne(race) && this.westernTracks.includes(race.racetrack);
         });
         
         return {
@@ -1143,7 +1160,10 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkStarRaces() {
-        const starRaces = ['Procyon Stakes', 'Capella Stakes', 'Centaur Stakes', 'Aldebaran Stakes', 'Rigel Stakes', 'Betelgeuse Stakes'];
+        const starRaces = [
+            'Procyon Stakes', 'Capella Stakes', 'Centaur Stakes', 'Aldebaran Stakes',
+            'Rigel Stakes', 'Betelgeuse Stakes', 'Cassiopeia Stakes', 'Sirius Stakes'
+        ];
         const wonStarRaces = starRaces.filter(race => this.wonRaces.has(race));
         
         return {
@@ -1157,7 +1177,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 
     checkJewelryRaces() {
         // Dataset-limited: only a subset available; CSV requires 3 distinct wins
-        const jewelryRaces = ['Diamond Stakes', 'Turquoise Stakes'];
+        const jewelryRaces = ['Diamond Stakes', 'Turquoise Stakes', 'Opal Stakes'];
         const wonJewelryRaces = jewelryRaces.filter(race => this.wonRaces.has(race));
         
         return {
@@ -1223,7 +1243,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 
     checkPerfectTiara() {
         const tripleTiaraRaces = ['Oka Sho', 'Oaks', 'Akika Sho'];
-        const groupA = ['Fillies\' Review', 'Tulip Sho', 'Anemone Stakes']; // Oka Sho trials
+        const groupA = ['Fillies Review', 'Tulip Sho', 'Anemone Stakes']; // Oka Sho trials (dataset spelling)
         const groupB = ['Flora Stakes', 'Sweet Pea Stakes']; // Oaks trials
         const groupC = ['Rose Stakes', 'Shion Stakes']; // Akika Sho trials
 

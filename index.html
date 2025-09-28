@@ -572,7 +572,7 @@
                     <button class="year-tab" id="tab-senior" onclick="tracker.setPlannerYear('senior')">シニア級<br><span style="font-size: 0.8em; font-weight:600;">Senior</span></button>
                     <div style="margin-left:auto; display:flex; gap:8px;">
                         <button class="filter-btn" onclick="tracker.clearPlannerYear()">リセット<br><span style="font-size: 0.8em; font-weight:600;">Reset</span></button>
-                    </div>
+                </div>
                 </div>
                 <div class="planner-grid" id="planner-grid"></div>
             </div>
@@ -613,7 +613,12 @@
                 <h2 class="section-title">Race Calendar<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースカレンダー</span></h2>
                 <div class="controls">
                     <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
-                    <button class="filter-btn" data-filter="GI">G1 Only<br><span style="font-size: 0.7em;">G1のみ</span></button>
+                    <button class="filter-btn" data-filter="GI">G1</button>
+                    <button class="filter-btn" data-filter="GII">G2</button>
+                    <button class="filter-btn" data-filter="GIII">G3</button>
+                    <button class="filter-btn" data-filter="Pre-OP">Pre-OP</button>
+                    <button class="filter-btn" data-filter="Open">OP</button>
+                    <button class="filter-btn" data-filter="junior">Junior Year<br><span style="font-size: 0.7em;">ジュニア級</span></button>
                     <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
                     <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
                     <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
