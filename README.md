@@ -1,14 +1,15 @@
 # Uma Musume Hidden Factors Tracker 🏇
 
-An interactive web application to track your progress towards unlocking hidden factors in Uma Musume: Pretty Derby.
+An interactive web app to plan and track Hidden Factors for Uma Musume: Pretty Derby.
 
-Use @ https://uma.pwnation.net
+Live: https://uma.pwnation.net — no install needed, just open and use.
+Local: clone this repo and open `index.html` in your browser.
 
 ## Features
 
 ### 🏁 Race Selection
 - **Interactive Race Calendar**: Click on races to mark participation and wins
-- **Smart Filtering**: Filter by race grade (G1), year availability (Classic/Senior), or view only selected races
+- **Smart Filtering**: GI/GII/GIII, Pre‑OP/OP, year (Junior/Classic/Senior), Summer Series (SSS/SMS/S2000), and Selected
 - **Visual Feedback**: Color-coded race cards show participation status and wins
 - **Dual Action Buttons**: Separate buttons for "Participate" and "Win" status
 
@@ -21,11 +22,11 @@ Use @ https://uma.pwnation.net
 ### 🎯 Hidden Factors Implemented
 
 #### Race-Based Factors
-- **連戦連勝 (Consecutive Wins)**: Win 2 or more consecutive races
+- **連戦連勝 (Consecutive Runs)**: Race 2 races in a row
 - **東の雄 (Champion of the East)**: Win 7+ G1 races in eastern Japan tracks
 - **西の雄 (Champion of the West)**: Win 7+ G1 races in western Japan tracks
 - **旅人 (Traveler)**: Compete at 7+ different racecourses
-- **全階級制覇 (All Ranks Conquered)**: Win G1 races in all distance categories
+- **全階級制覇 (All Ranks Conquered)**: Win at least one race in each distance category
 
 #### Special Series
 - **新聞屋さん (Newspaper Boy/Girl)**: Win all four "Shimbun Hai" newspaper cup races
@@ -33,10 +34,15 @@ Use @ https://uma.pwnation.net
 - **星に願いを (Wish Upon a Star)**: Win 3+ star/constellation-themed races
 - **ジュエリー (Jewelry)**: Win 3+ jewelry-themed races
 - **二刀流 (Dual Wielder)**: Win races on both turf and dirt surfaces
+ - **SSS (Summer Sprint Series)**: Win 3 races from the Summer Sprint Series
+ - **SMS (Summer Mile Series)**: Win 3 races from the Summer Mile Series
+ - **S2000 (Summer 2000 Series)**: Win 3 races from the Summer 2000 Series
 
 ## How to Use
 
-1. **Open the App**: Open `index.html` in your web browser
+1. **Open the App**:
+   - Hosted: visit `https://uma.pwnation.net`
+   - Local: open `index.html` in your web browser
 2. **Select Races**: 
    - Click "Participate" to mark a race as attempted
    - Click "Win" to mark a race as won (only available after participating)
@@ -59,6 +65,7 @@ The app categorizes race distances as follows:
 - Nakayama (Chiba)
 - Niigata
 - Fukushima
+  - Also counted for East: Kawasaki, Ooi, Funabashi, Morioka
 
 ### Western Japan Tracks
 - Kyoto
@@ -87,13 +94,14 @@ The app categorizes race distances as follows:
 ### Jewelry Races
 - Diamond Stakes (ダイヤモンドステークス)
 - Turquoise Stakes (ターコイズステークス)
-- Coral Stakes (コーラルステークス)
+- Opal Stakes (オパールステークス)
 
 ## Technical Details
 
 ### Files
 - `index.html`: Main application interface
 - `app.js`: Application logic and data
+- `races.js`: Generated race dataset (loaded by the app)
 - `README.md`: This documentation
 
 ### Browser Support
@@ -112,7 +120,7 @@ The app categorizes race distances as follows:
 
 Based on the provided data files:
 - `CompleteDual.xml`: Hidden factor conditions
-- `UmaMusume_HiddenFactors - Incomplete race list.csv`: Race information
+- `RaceComplete.csv`: Race information
 
 ---
 
