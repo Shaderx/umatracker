@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, rgba(102,126,234,0.6) 0%, rgba(118,75,162,0.6) 100%), url('background.jpg') center/cover fixed no-repeat;
             min-height: 100vh;
             color: #333;
         }
@@ -45,7 +45,8 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 30px;
-            height: calc(100vh - 200px);
+            height: auto; /* allow planner to grow without inner scrollbars */
+            align-items: start; /* base behavior */
         }
 
         .races-section {
@@ -53,7 +54,7 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow-y: auto;
+            overflow: visible;
         }
 
         .progress-section {
@@ -61,7 +62,9 @@
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow-y: auto;
+            overflow-y: auto; /* scroll within progress panel */
+            overflow-x: hidden;
+            align-self: start; /* do not stretch the grid row */
         }
 
         .section-title {
@@ -103,18 +106,171 @@
 
         .races-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 8px;
         }
+
+        /* Planner UI (game-like tabs and month/half grid) */
+        .year-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .year-tab {
+            flex: 0 0 auto;
+            padding: 8px 14px;
+            border-radius: 18px;
+            border: 2px solid #38a169;
+            background: #f0fff4;
+            color: #2f855a;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .year-tab.active,
+        .year-tab:hover {
+            background: #38a169;
+            color: #fff;
+        }
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .planner-slot {
+            background: #f8f9fa;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .planner-slot-head {
+            background: #e6fffa;
+            color: #2c7a7b;
+            border-bottom: 1px solid #bee3f8;
+            padding: 6px 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .planner-slot-body {
+            padding: 10px;
+            min-height: 120px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            align-items: stretch;
+        }
+        .planner-plus {
+            border: 2px dashed #a0aec0;
+            color: #718096;
+            border-radius: 8px;
+            padding: 8px 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #fff;
+        }
+        /* Single-race slot button with background image and bottom overlay */
+        .slot-wrapper { position: relative; width: 100%; }
+        .slot-button {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 110px;
+            min-height: 110px;
+            width: 100%;
+            display: block;
+            background: #edf2f7 center/cover no-repeat;
+            border: 1px solid #cbd5e0;
+            cursor: pointer;
+        }
+        .slot-button.badge-won { outline: 2px solid #38a169; }
+        .slot-button.badge-lost { outline: 2px solid #e53e3e; }
+        .slot-gradient {
+            position: absolute;
+            left: 0; right: 0; bottom: 0; top: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.18) 45%, rgba(0,0,0,0));
+            pointer-events: none;
+        }
+        .slot-title {
+            position: absolute;
+            left: 8px; right: 8px; bottom: 6px;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);
+        }
+        .slot-title .en { font-weight: 800; font-size: 0.95rem; -webkit-text-stroke: 0.6px rgba(0,0,0,0.8); }
+        .slot-title .jp { font-size: 0.8rem; opacity: 0.95; -webkit-text-stroke: 0.4px rgba(0,0,0,0.8); }
+        .slot-remove { position: absolute; top: 6px; right: 6px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); color: #2d3748; border-radius: 6px; padding: 2px 6px; cursor: pointer; z-index: 4; }
+        /* Improve planner overlay legibility for the toggle button */
+        .slot-wrapper .loss-toggle-btn { background: rgba(0,0,0,0.55); color: #fff; border-color: rgba(255,255,255,0.7); box-shadow: 0 2px 6px rgba(0,0,0,0.35); -webkit-text-stroke: 0.6px rgba(0,0,0,0.6); }
+        .slot-wrapper .loss-toggle-btn.lost { background: rgba(229,62,62,0.92); border-color: rgba(255,255,255,0.8); }
+
+        /* Picker modal */
+        .hidden { display: none !important; }
+        .picker-modal {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .picker-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
+        .picker-panel {
+            position: relative;
+            background: #fff;
+            width: min(900px, 92vw);
+            max-height: 80vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .picker-head { padding: 12px 16px; background: #38a169; color: #fff; display:flex; align-items:center; justify-content: space-between; }
+        .picker-title { font-weight: 800; }
+        .picker-body { padding: 12px 16px; overflow: auto; }
+        .picker-actions { padding: 10px 16px; border-top: 1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:8px; }
+        .btn { padding: 8px 14px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-weight: 700; }
+        .btn-primary { background: #38a169; color: #fff; border-color: #38a169; }
+        .btn-secondary { background: #edf2f7; color: #2d3748; border-color: #cbd5e0; }
+        .picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+        .picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; gap: 10px; background: #fff; cursor: pointer; padding: 8px; }
+        .picker-item:hover { background: #f7fafc; }
+        .picker-item.selected { outline: 3px solid #38a169; }
+        .picker-item img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; }
+        .picker-item h4 { font-size: 0.95rem; color: #2d3748; margin-bottom: 2px; }
+        .picker-item .sub { font-size: 0.8rem; color: #4a5568; }
 
         .race-card {
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            padding: 15px;
+            padding: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             background: #f8f9fa;
             position: relative;
+        }
+
+        .race-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 6px;
+        }
+
+        .race-thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .race-card:hover {
@@ -152,28 +308,30 @@
         .race-name-en {
             font-weight: bold;
             color: #2d3748;
-            font-size: 1rem;
+            font-size: 0.9rem;
             margin-bottom: 2px;
         }
 
         .race-name-jp {
             font-weight: 600;
             color: #4a5568;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             font-style: italic;
         }
 
         .race-details {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             color: #718096;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
+        /* show 1st and 2nd detail rows; hide the 3rd and beyond to stay compact */
+        .race-card .race-details:nth-of-type(n+3) { display: none; }
 
         .race-grade {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 1px 6px;
             border-radius: 12px;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: bold;
             margin-right: 5px;
         }
@@ -184,7 +342,7 @@
         .grade-Open { background: #87ceeb; color: #000; }
 
         .win-button-container {
-            margin-top: 10px;
+            margin-top: 6px;
             text-align: center;
         }
 
@@ -238,7 +396,8 @@
             border-radius: 4px;
             padding: 4px 8px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            font-weight: 800;
             transition: all 0.2s ease;
             min-width: auto;
             width: auto;
@@ -258,6 +417,8 @@
             background: #e53e3e;
             border-color: #e53e3e;
             color: white;
+            -webkit-text-stroke: 1px rgba(0,0,0,0.6);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.8);
         }
 
         .loss-toggle-btn.lost:hover {
@@ -386,24 +547,20 @@
         </header>
 
         <div class="main-content">
-            <div class="races-section">
-                <h2 class="section-title">Race Calendar<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースカレンダー</span></h2>
-                
-                <div class="controls">
-                    <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
-                    <button class="filter-btn" data-filter="GI">G1 Only<br><span style="font-size: 0.7em;">G1のみ</span></button>
-                    <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
-                    <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
-                    <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
-                    <button class="filter-btn" onclick="tracker.clearAll()" style="background: #e53e3e; color: white; border-color: #e53e3e;">Clear All<br><span style="font-size: 0.7em;">全解除</span></button>
+            <div class="races-section" id="planner-section">
+                <h2 class="section-title">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span></h2>
+                <div class="year-tabs">
+                    <button class="year-tab active" id="tab-junior" onclick="tracker.setPlannerYear('junior')">ジュニア級</button>
+                    <button class="year-tab" id="tab-classics" onclick="tracker.setPlannerYear('classics')">クラシック級</button>
+                    <button class="year-tab" id="tab-senior" onclick="tracker.setPlannerYear('senior')">シニア級</button>
+                    <div style="margin-left:auto; display:flex; gap:8px;">
+                        <button class="filter-btn" onclick="tracker.clearPlannerYear()">リセット</button>
+                    </div>
                 </div>
-
-                <div class="races-grid" id="races-grid">
-                    <!-- Races will be populated here -->
-                </div>
+                <div class="planner-grid" id="planner-grid"></div>
             </div>
 
-            <div class="progress-section">
+            <div class="progress-section" id="progress-panel">
                 <h2 class="section-title">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
                 
                 <div class="stats">
@@ -432,8 +589,43 @@
                 </div>
             </div>
         </div>
+
+        <!-- Full-width calendar placed at bottom -->
+        <div style="max-width: 1400px; margin: 18px auto 0 auto;">
+            <div class="races-section" style="padding: 18px;">
+                <h2 class="section-title">Race Calendar<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースカレンダー</span></h2>
+                <div class="controls">
+                    <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
+                    <button class="filter-btn" data-filter="GI">G1 Only<br><span style="font-size: 0.7em;">G1のみ</span></button>
+                    <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
+                    <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
+                    <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
+                    <button class="filter-btn" onclick="tracker.clearAll()" style="background: #e53e3e; color: white; border-color: #e53e3e;">Clear All<br><span style="font-size: 0.7em;">全解除</span></button>
+                </div>
+                <div class="races-grid" id="races-grid"></div>
+                <div style="margin-top: 12px; font-size: 0.8rem; color: #718096;"><span id="data-source-indicator"></span></div>
+            </div>
+        </div>
     </div>
 
+    <script src="races.js"></script>
     <script src="app.js"></script>
+
+    <!-- Picker Modal -->
+    <div id="picker-modal" class="picker-modal hidden" onclick="tracker.onPickerBackdrop(event)">
+        <div class="picker-backdrop"></div>
+        <div class="picker-panel" onclick="event.stopPropagation()">
+            <div class="picker-head">
+                <div class="picker-title" id="picker-title">レース選択</div>
+                <button class="btn btn-secondary" onclick="tracker.closePicker()">閉じる</button>
+            </div>
+            <div class="picker-body">
+                <div id="picker-list" class="picker-list"></div>
+            </div>
+            <div class="picker-actions">
+                <button class="btn btn-primary" onclick="tracker.closePicker()">完了</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
