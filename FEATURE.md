@@ -12,6 +12,19 @@ Clicking a hidden factor in the progress panel toggles a highlight mode that vis
 - Do not modify selection (run/win/loss) state when highlighting
 - Do not add new factor logic beyond mapping races that "count" toward the factor
 
+### Recent Updates
+- Added new hidden factors per Updatedhiddenconditions.csv:
+  - SSS (Summer Sprint Series): Win 3 races from the Summer Sprint Series
+  - SMS (Summer Mile Series): Win 3 races from the Summer Mile Series
+  - S2000 (Summer 2000 Series): Win 3 races from the Summer 2000 Series
+- Expanded factor coverage and robustness:
+  - East/West G1 champions now include NAR tracks (`Kawasaki`, `Ooi`, `Funabashi`, `Morioka`)
+  - G1 detection normalized to accept both `GI` and `G1`
+  - Updated wording for 叩き良化型 (Improves with Racing) to reflect reporter event requirement (logic remains simplified)
+  - Star/Jewel lists expanded (e.g., Cassiopeia/Sirius, Opal) to match dataset
+- Calendar filter UI updated:
+  - New filter buttons for SSS, SMS, and S2000 series in addition to GI/GII/GIII, Pre‑OP, OP, Junior/Classic/Senior, and Selected
+
 ## UX Behavior
 
 ### Interactions
@@ -46,6 +59,9 @@ Examples (non-exhaustive):
 - Two-Sword Style: predicate — surface `turf` or `dirt`
 - All Ranks Conquered: predicate — distance category `short|mile|medium|long`
 - Traveler: predicate — all races (but highlighting every race is noisy; default to off unless explicitly enabled later)
+- SSS (Summer Sprint Series): explicit list — `Hakodate Sprint Stakes`, `CBC Sho`, `Ibis Summer Dash`, `Keeneland Cup`, `Kitakyushu Kinen`, `Centaur Stakes`
+- SMS (Summer Mile Series): explicit list — `Epsom Cup`, `Chukyo Kinen`, `Sekiya Kinen`
+- S2000 (Summer 2000 Series): explicit list — `Hakodate Kinen`, `Tanabata Sho`, `Kokura Kinen`, `Sapporo Kinen`, `Niigata Kinen`
 
 Note: Highlighting is about potential applicability, not current completion. We can optionally add a second style to indicate which applicable races would still move the needle given current progress (see "Future Enhancements").
 
@@ -53,7 +69,7 @@ Note: Highlighting is about potential applicability, not current completion. We 
 
 ### Markup hooks
 - Hidden factor items: add `data-factor-id` on each rendered factor row
-- Calendar race cards: ensure each `.race-card` has `data-race-name="<exact race name>"`
+- Calendar race cards: ensure each `.race-card` has `data-race-name="<exact race name>"` (current implementation also exposes `data-race`; either may be consumed by the highlighter as long as names match)
 - Planner cells (buttons): ensure each selected cell button has `data-race-name` for the placed race
 
 These unify selection across both views without coupling to internal IDs.

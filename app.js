@@ -43,6 +43,31 @@ class UmaMusumeTracker {
         // Western Japan tracks  
         this.westernTracks = ['Kyoto', 'Hanshin (Takarazuka)', 'Chukyou (Nagoya)', 'Kokura (Kitakyushu)', 'Sapporo', 'Hakodate'];
 
+        // JRA Summer Series groupings (dataset-aligned names)
+        this.summerSeries = {
+            sprint: [
+                'Hakodate Sprint Stakes',
+                'CBC Sho',
+                'Ibis Summer Dash',
+                'Keeneland Cup',
+                'Kitakyushu Kinen',
+                'Centaur Stakes'
+            ],
+            mile: [
+                // Official series includes Epsom Cup (1800m) alongside mile-targeted handicaps
+                'Epsom Cup',
+                'Chukyo Kinen',
+                'Sekiya Kinen'
+            ],
+            s2000: [
+                'Hakodate Kinen',
+                'Tanabata Sho',
+                'Kokura Kinen',
+                'Sapporo Kinen',
+                'Niigata Kinen'
+            ]
+        };
+
         // Translation maps
         this.translations = {
             tracks: {
@@ -429,8 +454,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 id: 'consecutive_wins',
                 nameJP: '連戦連勝',
                 nameEN: 'Consecutive Wins',
-                conditionJP: '2戦連続で出走する（勝利は不問・順序判定は簡略化）。',
-                conditionEN: 'Race 2 in a row (wins not required, order simplified).',
+                conditionJP: '2戦連続で出走する。',
+                conditionEN: 'Race 2 races in a row.',
                 check: () => this.checkConsecutiveRuns()
             },
             {
@@ -472,6 +497,30 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 conditionJP: '指定された4つの「新聞杯」レース（京都新聞杯、神戸新聞杯、中日新聞杯、東京新聞杯）に勝利する。',
                 conditionEN: 'Win the four "Shimbun Hai" races: Kyoto, Kobe, Chunichi, and Tokyo Shimbun Hai.',
                 check: () => this.checkNewspaperCups()
+            },
+            {
+                id: 'summer_sprint_series',
+                nameJP: 'SSS',
+                nameEN: 'Summer Sprint Series',
+                conditionJP: 'サマースプリントシリーズ対象レースから3勝する。',
+                conditionEN: 'Win 3 races from the Summer Sprint Series.',
+                check: () => this.checkSummerSeries('sprint')
+            },
+            {
+                id: 'summer_mile_series',
+                nameJP: 'SMS',
+                nameEN: 'Summer Mile Series',
+                conditionJP: 'サマーマイルシリーズ対象レースから3勝する。',
+                conditionEN: 'Win 3 races from the Summer Mile Series.',
+                check: () => this.checkSummerSeries('mile')
+            },
+            {
+                id: 'summer_2000_series',
+                nameJP: 'S2000',
+                nameEN: 'Summer 2000 Series',
+                conditionJP: 'サマー2000シリーズ対象レースから3勝する。',
+                conditionEN: 'Win 3 races from the Summer 2000 Series.',
+                check: () => this.checkSummerSeries('s2000')
             },
             {
                 id: 'years_plan',
@@ -525,8 +574,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 id: 'improves_with_racing',
                 nameJP: '叩き良化型',
                 nameEN: 'Improves with Racing',
-                conditionJP: '3戦以上の連続出走（記者イベント判定は未実装）。',
-                conditionEN: 'Compete in 3 or more consecutive races (reporter event not modeled).',
+                conditionJP: "3戦以上の連続出走。'悦楽取材'の記者イベント出現が必要（簡略化済み）",
+                conditionEN: "Run 3 consecutive races; requires reporter event 'Pleasure Interview' (simplified)",
                 check: () => this.checkImprovesWithRacing()
             },
             {
@@ -909,6 +958,18 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 return this.races.filter(race => race.classics);
             case 'senior':
                 return this.races.filter(race => race.senior);
+            case 'SSS': {
+                const set = new Set(this.summerSeries?.sprint || []);
+                return this.races.filter(r => set.has(r.name));
+            }
+            case 'SMS': {
+                const set = new Set(this.summerSeries?.mile || []);
+                return this.races.filter(r => set.has(r.name));
+            }
+            case 'S2000': {
+                const set = new Set(this.summerSeries?.s2000 || []);
+                return this.races.filter(r => set.has(r.name));
+            }
             case 'selected':
                 return this.races.filter(race => this.selectedRaces.has(race.name));
             default:
@@ -1138,6 +1199,18 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             required: 4,
             progress: (wonNewspaperRaces.length / 4) * 100,
             details: `Won: ${wonNewspaperRaces.join(', ')}`
+        };
+    }
+
+    checkSummerSeries(seriesKey) {
+        const targetList = (this.summerSeries && this.summerSeries[seriesKey]) ? this.summerSeries[seriesKey] : [];
+        const wins = targetList.filter(name => this.wonRaces.has(name));
+        return {
+            completed: wins.length >= 3,
+            current: wins.length,
+            required: 3,
+            progress: Math.min(100, (wins.length / 3) * 100),
+            details: `Won: ${wins.join(', ')}`
         };
     }
 
