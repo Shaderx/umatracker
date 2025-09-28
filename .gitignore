@@ -1,0 +1,12 @@
+# Ignore local screenshots/test assets
+TestSs/
+
+# In case of alternate naming used in requests
+tess/
+Tess/
+testss/
+
+# Editor/OS files
+.DS_Store
+Thumbs.db
+*.log
