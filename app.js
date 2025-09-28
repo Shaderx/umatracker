@@ -599,6 +599,13 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 this.renderRaces();
             });
         });
+
+        // ESC key closes the picker modal (in addition to clicking outside)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closePicker();
+            }
+        });
     }
 
 	// =============================
@@ -648,8 +655,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		if (!container) return; // older HTML may not have planner UI
 		const yearCells = this.plannerData[this.plannerYear];
 		const t = this.translations;
-		const monthLabel = (m) => `${t.months[m] || m}`;
-		const halfLabel = (h) => `${t.halves[h] || h}`;
+		const monthLabel = (m) => `${t.months[m] || m}`; // JP
+		const halfLabel = (h) => `${t.halves[h] || h}`;   // JP
+		const enShort = { January:'Jan', February:'Feb', March:'Mar', April:'Apr', May:'May', June:'Jun', July:'Jul', August:'Aug', September:'Sep', October:'Oct', November:'Nov', December:'Dec' };
 
 		const slots = [];
 		this.monthOrder.forEach(month => {
@@ -671,19 +679,19 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 										<div class=\"jp\">${r && r.nameJP ? r.nameJP : ''}</div>
 									</div>
 								</button>
-								<button class=\"slot-remove\" onclick=\"tracker.removeRaceFromPlanner('${month}','${half}')\">×</button>
-								<button class=\"loss-toggle-btn ${this.lostRaces.has(selectedName) ? 'lost' : 'won'}\" style=\"position:absolute; top:6px; left:6px;\" onclick=\"tracker.toggleWinFromPlanner('${month}','${half}')\">${this.lostRaces.has(selectedName) ? '👎' : '🏆'}</button>
+                                <button class=\"slot-remove\" title=\"Remove / 削除\" onclick=\"tracker.removeRaceFromPlanner('${month}','${half}')\">×</button>
+                                <button class=\"loss-toggle-btn ${this.lostRaces.has(selectedName) ? 'lost' : 'won'}\" title=\"Toggle Win/Loss / 勝敗切替\" style=\"position:absolute; top:6px; left:6px;\" onclick=\"tracker.toggleWinFromPlanner('${month}','${half}')\">${this.lostRaces.has(selectedName) ? '👎' : '🏆'}</button>
 							</div>
 						`;
 					} else {
-						slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ 追加</button>`;
+                        slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ Add / 追加</button>`;
 					}
-				slots.push(`
-					<div class=\"planner-slot\">
-						<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)}</span></div>
-							<div class=\"planner-slot-body\">${slotBody}</div>
-					</div>
-				`);
+					slots.push(`
+						<div class=\"planner-slot\">
+							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
+								<div class=\"planner-slot-body\">${slotBody}</div>
+						</div>
+					`);
 			});
 		});
         container.innerHTML = slots.join('');
@@ -707,11 +715,15 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		if (modal) modal.classList.add('hidden');
 	}
 
-	onPickerBackdrop(evt) {
-		if (evt && evt.target && evt.target.id === 'picker-modal') {
-			this.closePicker();
-		}
-	}
+    onPickerBackdrop(evt) {
+        // No longer needed, as backdrop has its own onclick to close.
+        // Keeping for backward compatibility if still bound.
+        if (!evt) return;
+        const target = evt.target;
+        if (target && (target.id === 'picker-modal' || target.classList.contains('picker-backdrop'))) {
+            this.closePicker();
+        }
+    }
 
 		renderPickerList() {
 		const listEl = document.getElementById('picker-list');
@@ -856,8 +868,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 </div>
                 <div class="race-details">
                     ${race.racetrack}/${this.translations.tracks[race.racetrack] || race.racetrack}
-                    • ${race.month}/${this.translations.months[race.month] || race.month} ${race.half}/${this.translations.halves[race.half] || race.half}
-                    ${race.direction ? `• ${race.direction}/${this.translations.directions[race.direction]}` : ''}
+                    • ${this.translations.months[race.month] || race.month} ${this.translations.halves[race.half] || race.half} / ${race.month} ${race.half}
+                    ${race.direction ? `• ${this.translations.directions[race.direction]} / ${race.direction}` : ''}
                 </div>
                 ${this.selectedRaces.has(race.name) ? `
                 <div class="win-button-container">
