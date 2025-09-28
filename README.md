@@ -2,6 +2,8 @@
 
 An interactive web application to track your progress towards unlocking hidden factors in Uma Musume: Pretty Derby.
 
+Use @ https://uma.pwnation.net
+
 ## Features
 
 ### 🏁 Race Selection
