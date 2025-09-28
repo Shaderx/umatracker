@@ -232,6 +232,39 @@
             transform: scale(1.05);
         }
 
+        .loss-toggle-btn {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            min-width: auto;
+            width: auto;
+        }
+
+        .loss-toggle-btn.won {
+            color: #38a169;
+            border-color: #38a169;
+        }
+
+        .loss-toggle-btn.won:hover {
+            background: #38a169;
+            color: white;
+        }
+
+        .loss-toggle-btn.lost {
+            background: #e53e3e;
+            border-color: #e53e3e;
+            color: white;
+        }
+
+        .loss-toggle-btn.lost:hover {
+            background: #c53030;
+            border-color: #c53030;
+        }
+
         .hidden-factors {
             margin-top: 20px;
         }

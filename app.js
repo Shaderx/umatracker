@@ -47,7 +47,11 @@ class UmaMusumeTracker {
                 'Sapporo': '札幌',
                 'Hakodate': '函館',
                 'Niigata': '新潟',
-                'Fukushima': '福島'
+                'Fukushima': '福島',
+                'Kawasaki': '川崎',
+                'Ooi': '大井',
+                'Funabashi': '船橋',
+                'Morioka': '盛岡'
             },
             surfaces: {
                 'turf': '芝',
@@ -96,166 +100,205 @@ class UmaMusumeTracker {
     }
 
     loadRaceData() {
-        // Sample of race data from CSV - in a real app you'd load this from the CSV file
-        this.races = [
-            // January races
-            { name: "Junior Cup", nameJP: "ジュニアカップ", type: "Open", length: "1,600 m", surface: "turf", 
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "January", half: "1st", direction: "right", season: "winter" },
-            { name: "Fairy Stakes", nameJP: "フェアリーステークス", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "January", half: "1st", direction: "right", season: "winter" },
-            { name: "Kyoto Kinpai", nameJP: "京都金杯", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: false, senior: true, month: "January", half: "1st", direction: "right", season: "winter" },
-            { name: "Nakayama Kinpai", nameJP: "中山金杯", type: "GIII", length: "2,000 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: false, senior: true, month: "January", half: "1st", direction: "right", season: "winter" },
-            
-            // February races  
-            { name: "Tokyo Shinbun Hai", nameJP: "東京新聞杯", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: false, senior: true, month: "February", half: "1st", direction: "left", season: "winter" },
-            { name: "February Stakes", nameJP: "フェブラリーステークス", type: "GI", length: "1,600 m", surface: "dirt",
-              racetrack: "Tokyo", junior: false, classics: false, senior: true, month: "February", half: "2nd", direction: "left", season: "winter" },
+        // Parse CSV data from RaceComplete.csv
+        this.races = this.parseCSVData();
+    }
 
-            // March races
-            { name: "Takamatsunomiya Kinen", nameJP: "高松宮記念", type: "GI", length: "1,200 m", surface: "turf",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: false, senior: true, month: "March", half: "2nd", direction: "left", season: "spring" },
-            { name: "Osaka Hai", nameJP: "大阪杯", type: "GI", length: "2,000 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: false, senior: true, month: "March", half: "2nd", direction: "right", season: "spring" },
+    parseCSVData() {
+        // CSV data from RaceComplete.csv - representative sample
+        const csvData = `函館ジュニアステークス,Hakodate Junior Stakes,6月後半,1年目,ジュニア,,,G3,函館,芝,1200m,短距離,右,,,
+中京ジュニアステークス,Chukyo Junior Stakes,7月後半,1年目,ジュニア,,,OP,中京,芝,1600m,マイル,左,,,
+朝日杯フューチュリティステークス,Asahi Hai Futurity Stakes,12月前半,1年目,ジュニア,,,G1,阪神,芝,1600m,マイル,右,外,,
+阪神ジュベナイルフィリーズ,Hanshin Juvenile Fillies,12月前半,1年目,ジュニア,,,G1,阪神,芝,1600m,マイル,右,外,,
+ホープフルステークス,Hopeful Stakes,12月後半,1年目,ジュニア,,,G1,中山,芝,2000m,中距離,右,内,,
+京成杯,Keisei Hai,1月前半,2年目,,クラシック,,G3,中山,芝,2000m,中距離,右,内,,
+フェアリーステークス,Fairy Stakes,1月前半,2年目,,クラシック,,G3,中山,芝,1600m,マイル,右,外,,
+シンザン記念,Shinzan Kinen,1月前半,2年目,,クラシック,,G3,京都,芝,1600m,マイル,右,外,,
+皐月賞,Satsuki Sho,4月前半,2年目,,クラシック,,G1,中山,芝,2000m,中距離,右,内,,
+桜花賞,Oka Sho,4月前半,2年目,,クラシック,,G1,阪神,芝,1600m,マイル,右,外,,
+NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東京,芝,1600m,マイル,左,,,
+日本ダービー,Japan Derby,5月後半,2年目,,クラシック,,G1,東京,芝,2400m,中距離,左,,,
+オークス,Oaks,5月後半,2年目,,クラシック,,G1,東京,芝,2400m,中距離,左,,,
+安田記念,Yasuda Kinen,6月前半,2年目,,クラシック,シニア,G1,東京,芝,1600m,マイル,左,,,
+宝塚記念,Takarazuka Kinen,6月後半,2年目,,クラシック,シニア,G1,阪神,芝,2200m,中距離,右,内,,
+スプリンターズステークス,Sprinters Stakes,9月後半,2年目,,クラシック,シニア,G1,中山,芝,1200m,短距離,右,外,,
+神戸新聞杯,Kobe Shimbun Hai,9月後半,2年目,,クラシック,,G2,阪神,芝,2400m,中距離,右,外,,
+菊花賞,Kikka Sho,10月後半,2年目,,クラシック,,G1,京都,芝,3000m,長距離,右,外,,
+秋華賞,Akika Sho,10月後半,2年目,,クラシック,,G1,京都,芝,2000m,中距離,右,内,,
+天皇賞（秋）,Tenno Sho (Autumn),10月後半,2年目,,クラシック,シニア,G1,東京,芝,2000m,中距離,左,,,
+エリザベス女王杯,Queen Elizabeth II Cup,11月前半,2年目,,クラシック,シニア,G1,京都,芝,2200m,中距離,右,外,,
+ジャパンカップ,Japan Cup,11月後半,2年目,,クラシック,シニア,G1,東京,芝,2400m,中距離,左,,,
+マイルチャンピオンシップ,Mile Championship,11月後半,2年目,,クラシック,シニア,G1,京都,芝,1600m,マイル,右,外,,
+チャンピオンズカップ,Champions Cup,12月前半,2年目,,クラシック,シニア,G1,中京,ダート,1800m,マイル,左,,,
+有馬記念,Arima Kinen,12月後半,2年目,,クラシック,シニア,G1,中山,芝,2500m,長距離,右,内,,
+京都金杯,Kyoto Kinen,1月前半,3年目,,,シニア,G3,京都,芝,1600m,マイル,右,外,,
+中山金杯,Nakayama Kinen,1月前半,3年目,,,シニア,G3,中山,芝,2000m,中距離,右,内,,
+東京新聞杯,Tokyo Shimbun Hai,2月前半,3年目,,,シニア,G3,東京,芝,1600m,マイル,左,,,
+フェブラリーステークス,February Stakes,2月後半,3年目,,,シニア,G1,東京,ダート,1600m,マイル,左,,,
+高松宮記念,Takamatsunomiya Kinen,3月後半,3年目,,,シニア,G1,中京,芝,1200m,短距離,左,,,
+大阪杯,Osaka Hai,3月後半,3年目,,,シニア,G1,阪神,芝,2000m,中距離,右,内,,
+天皇賞（春）,Tenno Sho (Spring),4月後半,3年目,,,シニア,G1,京都,芝,3200m,長距離,右,外,,
+ヴィクトリアマイル,Victoria Mile,5月前半,3年目,,,シニア,G1,東京,芝,1600m,マイル,左,,,
+帝王賞,Teioh Sho,6月後半,3年目,,,シニア,G1,大井,ダート,2000m,中距離,右,,,
+プロキオンステークス,Procyon Stakes,7月前半,3年目,,クラシック,シニア,G3,中京,ダート,1400m,短距離,左,,,
+カペラステークス,Capella Stakes,12月前半,3年目,,クラシック,シニア,G3,中山,ダート,1200m,短距離,右,,,
+セントウルステークス,Centaur Stakes,9月前半,3年目,,クラシック,シニア,G2,阪神,芝,1200m,短距離,右,内,,
+ダイヤモンドステークス,Diamond Stakes,2月後半,3年目,,,シニア,G3,東京,芝,3400m,長距離,左,,,
+ターコイズステークス,Turquoise Stakes,12月前半,3年目,,クラシック,シニア,G3,中山,芝,1600m,マイル,右,外,,
+シルクロードステークス,Silk Road Stakes,1月後半,3年目,,,シニア,G3,京都,芝,1200m,短距離,右,内,,
+オーシャンステークス,Ocean Stakes,3月前半,3年目,,,シニア,G3,中山,芝,1200m,短距離,右,外,,
+アルデバランステークス,Aldebaran Stakes,2月前半,3年目,,,シニア,OP,京都,ダート,1900m,中距離,右,,,
+リゲルステークス,Rigel Stakes,12月前半,3年目,,クラシック,シニア,OP,阪神,芝,1600m,マイル,右,外,,
+ベテルギウスステークス,Betelgeuse Stakes,12月後半,3年目,,クラシック,シニア,OP,阪神,ダート,1800m,マイル,右,,,
+京都新聞杯,Kyoto Shimbun Hai,5月前半,2年目,,クラシック,,G2,京都,芝,2200m,中距離,右,外,,
+中日新聞杯,Chunichi Shimbun Hai,12月前半,3年目,,クラシック,シニア,G3,中京,芝,2000m,中距離,左,,,
+弥生賞,Yayoi Sho,3月前半,2年目,,クラシック,,G2,中山,芝,2000m,中距離,右,内,,
+スプリングステークス,Spring Stakes,3月後半,2年目,,クラシック,,G2,中山,芝,1800m,マイル,右,内,,
+セントライト記念,Saint Lite Kinen,9月後半,2年目,,クラシック,,G2,中山,芝,2200m,中距離,右,外,,
+チューリップ賞,Tulip Sho,3月前半,2年目,,クラシック,,G2,阪神,芝,1600m,マイル,右,外,,
+フローラステークス,Flora Stakes,4月後半,2年目,,クラシック,,G2,東京,芝,2000m,中距離,左,,,
+ローズステークス,Rose Stakes,9月前半,2年目,,クラシック,,G2,阪神,芝,1800m,マイル,右,外,,`;
 
-            // April races
-            { name: "Oka Sho", nameJP: "桜花賞", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: false, month: "April", half: "1st", direction: "right", season: "spring" },
-            { name: "Satsuki Sho", nameJP: "皐月賞", type: "GI", length: "2,000 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "April", half: "1st", direction: "right", season: "spring" },
-            { name: "Spring Tennoushou", nameJP: "天皇賞（春）", type: "GI", length: "3,200 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: false, senior: true, month: "April", half: "2nd", direction: "right", season: "spring" },
+        const lines = csvData.trim().split('\n');
+        const races = [];
+        
+        // Parse each line of CSV data
+        for (let i = 0; i < lines.length; i++) {
+            const values = this.parseCSVLine(lines[i]);
+            if (values.length >= 13) {
+                const race = this.createRaceObject(values);
+                if (race) {
+                    races.push(race);
+                }
+            }
+        }
+        
+        return races;
+    }
 
-            // May races
-            { name: "NHK Mile Cup", nameJP: "NHKマイルC", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: false, month: "May", half: "1st", direction: "left", season: "spring" },
-            { name: "Tokyo Yushun", nameJP: "日本ダービー", type: "GI", length: "2,400 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: false, month: "May", half: "2nd", direction: "left", season: "spring" },
-            { name: "Yushun Himba", nameJP: "オークス", type: "GI", length: "2,400 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: false, month: "May", half: "2nd", direction: "left", season: "spring" },
-            { name: "Victoria Mile", nameJP: "ヴィクトリアマイル", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: false, senior: true, month: "May", half: "1st", direction: "left", season: "spring" },
+    parseCSVLine(line) {
+        return line.split(',');
+    }
 
-            // June races
-            { name: "Yasuda Kinen", nameJP: "安田記念", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: true, month: "June", half: "1st" },
-            { name: "Takarazuka Kinen", nameJP: "宝塚記念", type: "GI", length: "2,200 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: true, month: "June", half: "2nd" },
+    createRaceObject(values) {
+        const [nameJP, nameEN, date, year, junior, classics, senior, grade, location, ground, distance, distanceCategory, direction, innerOuter] = values;
+        
+        // Use English name if available, otherwise use Japanese name
+        const name = nameEN.trim() || nameJP.trim();
+        
+        // Parse month and half from date (e.g., "6月後半" -> month: "June", half: "2nd")
+        const monthHalf = this.parseDateString(date);
+        
+        // Convert grade format
+        const type = this.convertGrade(grade);
+        
+        // Convert surface
+        const surface = this.convertSurface(ground);
+        
+        // Convert track name
+        const racetrack = this.convertTrackName(location);
+        
+        // Convert direction
+        const convertedDirection = this.convertDirection(direction);
+        
+        // Determine season from month
+        const season = this.getSeason(monthHalf.month);
+        
+        return {
+            name: name,
+            nameJP: nameJP.trim(),
+            type: type,
+            length: distance,
+            surface: surface,
+            racetrack: racetrack,
+            junior: junior.trim() === 'ジュニア',
+            classics: classics.trim() === 'クラシック',
+            senior: senior.trim() === 'シニア',
+            month: monthHalf.month,
+            half: monthHalf.half,
+            direction: convertedDirection,
+            season: season
+        };
+    }
 
-            // October races
-            { name: "Kyoto Daishouten", nameJP: "京都大賞典", type: "GII", length: "2,400 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: true, month: "October", half: "1st", direction: "right", season: "autumn" },
-            { name: "Autumn Tennoushou", nameJP: "天皇賞（秋）", type: "GI", length: "2,000 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: true, month: "October", half: "2nd", direction: "left", season: "autumn" },
-            { name: "Kikuka Sho", nameJP: "菊花賞", type: "GI", length: "3,000 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: false, month: "October", half: "2nd", direction: "right", season: "autumn" },
-            { name: "Shuka Sho", nameJP: "秋華賞", type: "GI", length: "2,000 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: false, month: "October", half: "2nd", direction: "right", season: "autumn" },
+    parseDateString(dateStr) {
+        const monthMap = {
+            '1月': 'January', '2月': 'February', '3月': 'March', '4月': 'April',
+            '5月': 'May', '6月': 'June', '7月': 'July', '8月': 'August',
+            '9月': 'September', '10月': 'October', '11月': 'November', '12月': 'December'
+        };
+        
+        const halfMap = {
+            '前半': '1st',
+            '後半': '2nd'
+        };
+        
+        // Extract month and half from strings like "6月後半"
+        const monthMatch = dateStr.match(/(\d+月)/);
+        const halfMatch = dateStr.match(/(前半|後半)/);
+        
+        const month = monthMatch ? monthMap[monthMatch[1]] || 'January' : 'January';
+        const half = halfMatch ? halfMap[halfMatch[1]] || '1st' : '1st';
+        
+        return { month, half };
+    }
 
-            // November races
-            { name: "Mile Championship", nameJP: "マイルCS", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: true, month: "November", half: "2nd", direction: "right", season: "autumn" },
-            { name: "Japan Cup", nameJP: "ジャパンC", type: "GI", length: "2,400 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: true, month: "November", half: "2nd", direction: "left", season: "autumn" },
-            { name: "Queen Elizabeth Hai", nameJP: "エリザベス女王杯", type: "GI", length: "2,200 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: true, month: "November", half: "1st", direction: "right", season: "autumn" },
+    convertGrade(grade) {
+        const gradeMap = {
+            'G1': 'GI',
+            'G2': 'GII',
+            'G3': 'GIII',
+            'OP': 'Open',
+            'Pre-OP': 'Pre-OP'
+        };
+        return gradeMap[grade] || grade;
+    }
 
-            // December races
-            { name: "Arima Kinen", nameJP: "有馬記念", type: "GI", length: "2,500 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: true, month: "December", half: "2nd", direction: "right", season: "winter" },
-            { name: "Hanshin Juvenile Fillies", nameJP: "阪神JF", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: true, classics: false, senior: false, month: "December", half: "1st", direction: "right", season: "winter" },
+    convertSurface(ground) {
+        const surfaceMap = {
+            '芝': 'turf',
+            'ダート': 'dirt'
+        };
+        return surfaceMap[ground] || ground;
+    }
 
-            // Newspaper Cup races
-            { name: "Kyoto Shinbun Hai", nameJP: "京都新聞杯", type: "GII", length: "2,200 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: true, senior: false, month: "May", half: "1st", direction: "right", season: "spring" },
-            { name: "Kobe Shinbun Hai", nameJP: "神戸新聞杯", type: "GII", length: "2,400 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: false, month: "September", half: "2nd", direction: "right", season: "autumn" },
-            { name: "Chunichi Shinbun Hai", nameJP: "中日新聞杯", type: "GIII", length: "2,000 m", surface: "turf",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: true, senior: true, month: "December", half: "1st", direction: "left", season: "winter" },
+    convertTrackName(location) {
+        const trackMap = {
+            '東京': 'Tokyo',
+            '中山': 'Nakayama (Chiba)',
+            '京都': 'Kyoto',
+            '阪神': 'Hanshin (Takarazuka)',
+            '中京': 'Chukyou (Nagoya)',
+            '小倉': 'Kokura (Kitakyushu)',
+            '札幌': 'Sapporo',
+            '函館': 'Hakodate',
+            '新潟': 'Niigata',
+            '福島': 'Fukushima',
+            '川崎': 'Kawasaki',
+            '大井': 'Ooi',
+            '船橋': 'Funabashi',
+            '盛岡': 'Morioka'
+        };
+        return trackMap[location] || location;
+    }
 
-            // Star/constellation themed races
-            { name: "Procyon Stakes", nameJP: "プロキオンステークス", type: "GIII", length: "1,400 m", surface: "dirt",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: true, senior: true, month: "July", half: "1st", direction: "left", season: "summer" },
-            { name: "Capella Stakes", nameJP: "カペラステークス", type: "GIII", length: "1,200 m", surface: "dirt",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: true, month: "December", half: "1st", direction: "right", season: "winter" },
-            { name: "Centaur Stakes", nameJP: "セントウルステークス", type: "GII", length: "1,200 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: true, month: "September", half: "1st", direction: "right", season: "autumn" },
+    convertDirection(direction) {
+        const directionMap = {
+            '右': 'right',
+            '左': 'left',
+            '直線': 'straight'
+        };
+        return directionMap[direction] || direction;
+    }
 
-            // Jewelry themed races
-            { name: "Diamond Stakes", nameJP: "ダイヤモンドステークス", type: "GIII", length: "3,400 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: false, senior: true, month: "February", half: "2nd", direction: "left", season: "winter" },
-            { name: "Turquoise Stakes", nameJP: "ターコイズステークス", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: true, month: "December", half: "1st", direction: "right", season: "winter" },
-            { name: "Coral Stakes", nameJP: "コーラルステークス", type: "Open", length: "1,400 m", surface: "dirt",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: false, senior: true, month: "April", half: "1st", direction: "right", season: "spring" },
-
-            // Additional G1 races for comprehensive testing
-            { name: "Sprinters Stakes", nameJP: "スプリンターズS", type: "GI", length: "1,200 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: true, month: "September", half: "2nd", direction: "right", season: "autumn" },
-            { name: "Champions Cup", nameJP: "チャンピオンズC", type: "GI", length: "1,800 m", surface: "dirt",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: true, senior: true, month: "December", half: "1st", direction: "left", season: "winter" },
-            { name: "Asahi Hai Futurity Stakes", nameJP: "朝日杯FS", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: true, classics: false, senior: false, month: "December", half: "1st", direction: "right", season: "winter" },
-            { name: "Hopeful Stakes", nameJP: "ホープフルS", type: "GI", length: "2,000 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: true, classics: false, senior: false, month: "December", half: "2nd", direction: "right", season: "winter" },
-
-            // Triple Crown Trial Races
-            { name: "Yayoi Sho", nameJP: "弥生賞", type: "GII", length: "2,000 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "March", half: "1st", direction: "right", season: "spring", trial_for: "Satsuki Sho" },
-            { name: "Spring Stakes", nameJP: "スプリングステークス", type: "GII", length: "1,800 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "March", half: "2nd", direction: "right", season: "spring", trial_for: "Tokyo Yushun" },
-            { name: "Saint Lite Kinen", nameJP: "セントライト記念", type: "GII", length: "2,200 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: true, senior: false, month: "September", half: "2nd", direction: "right", season: "autumn", trial_for: "Kikuka Sho" },
-
-            // Triple Tiara Trial Races
-            { name: "Tulip Sho", nameJP: "チューリップ賞", type: "GII", length: "1,600 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: false, month: "March", half: "1st", direction: "right", season: "spring", trial_for: "Oka Sho" },
-            { name: "Flora Stakes", nameJP: "フローラステークス", type: "GII", length: "2,000 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: false, month: "April", half: "2nd", direction: "left", season: "spring", trial_for: "Yushun Himba" },
-            { name: "Rose Stakes", nameJP: "ローズステークス", type: "GII", length: "1,800 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: false, month: "September", half: "1st", direction: "right", season: "autumn", trial_for: "Shuka Sho" },
-
-            // Summer Sprint Series (SSS)
-            { name: "CBC Award", nameJP: "CBC賞", type: "GIII", length: "1,200 m", surface: "turf",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: true, senior: true, month: "July", half: "1st", direction: "left", season: "summer", series: "SSS" },
-            { name: "Keeneland Cup", nameJP: "キーンランドカップ", type: "GIII", length: "1,200 m", surface: "turf",
-              racetrack: "Sapporo", junior: false, classics: true, senior: true, month: "August", half: "2nd", direction: "right", season: "summer", series: "SSS" },
-            { name: "Kitakyushu Kinen", nameJP: "北九州記念", type: "GIII", length: "1,200 m", surface: "turf",
-              racetrack: "Kokura (Kitakyushu)", junior: false, classics: true, senior: true, month: "August", half: "2nd", direction: "right", season: "summer", series: "SSS" },
-
-            // Summer Mile Series (SMS)
-            { name: "Yasuda Kinen", nameJP: "安田記念", type: "GI", length: "1,600 m", surface: "turf",
-              racetrack: "Tokyo", junior: false, classics: true, senior: true, month: "June", half: "1st", direction: "left", season: "summer", series: "SMS" },
-            { name: "Chukyou Kinen", nameJP: "中京記念", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Chukyou (Nagoya)", junior: false, classics: true, senior: true, month: "July", half: "2nd", direction: "left", season: "summer", series: "SMS" },
-            { name: "Sekiya Kinen", nameJP: "関屋記念", type: "GIII", length: "1,600 m", surface: "turf",
-              racetrack: "Niigata", junior: false, classics: true, senior: true, month: "August", half: "1st", direction: "left", season: "summer", series: "SMS" },
-
-            // Summer 2000 Series (S2000)
-            { name: "Takarazuka Kinen", nameJP: "宝塚記念", type: "GI", length: "2,200 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: true, month: "June", half: "2nd", direction: "right", season: "summer", series: "S2000" },
-            { name: "Hakodate Kinen", nameJP: "函館記念", type: "GIII", length: "2,000 m", surface: "turf",
-              racetrack: "Hakodate", junior: false, classics: true, senior: true, month: "July", half: "1st", direction: "right", season: "summer", series: "S2000" },
-            { name: "Sapporo Kinen", nameJP: "札幌記念", type: "GII", length: "2,000 m", surface: "turf",
-              racetrack: "Sapporo", junior: false, classics: true, senior: true, month: "August", half: "2nd", direction: "right", season: "summer", series: "S2000" },
-
-            // More newspaper races
-            { name: "Silk Road Stakes", nameJP: "シルクロードステークス", type: "GIII", length: "1,200 m", surface: "turf",
-              racetrack: "Kyoto", junior: false, classics: false, senior: true, month: "January", half: "2nd", direction: "right", season: "winter" },
-            { name: "Ocean Stakes", nameJP: "オーシャンステークス", type: "GIII", length: "1,200 m", surface: "turf",
-              racetrack: "Nakayama (Chiba)", junior: false, classics: false, senior: true, month: "March", half: "1st", direction: "right", season: "spring" },
-
-            // More star/constellation races  
-            { name: "Aldebaran Stakes", nameJP: "アルデバランステークス", type: "Open", length: "1,900 m", surface: "dirt",
-              racetrack: "Kyoto", junior: false, classics: false, senior: true, month: "February", half: "1st", direction: "right", season: "winter" },
-            { name: "Rigel Stakes", nameJP: "リゲルステークス", type: "Open", length: "1,600 m", surface: "turf",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: true, month: "December", half: "1st", direction: "right", season: "winter" },
-            { name: "Betelgeuse Stakes", nameJP: "ベテルギウスステークス", type: "Open", length: "1,800 m", surface: "dirt",
-              racetrack: "Hanshin (Takarazuka)", junior: false, classics: true, senior: true, month: "December", half: "2nd", direction: "right", season: "winter" }
-        ];
+    getSeason(month) {
+        const seasonMap = {
+            'December': 'winter', 'January': 'winter', 'February': 'winter',
+            'March': 'spring', 'April': 'spring', 'May': 'spring',
+            'June': 'summer', 'July': 'summer', 'August': 'summer',
+            'September': 'autumn', 'October': 'autumn', 'November': 'autumn'
+        };
+        return seasonMap[month] || 'spring';
     }
 
     loadHiddenFactors() {
@@ -313,7 +356,7 @@ class UmaMusumeTracker {
                 nameJP: '一年の計は',
                 nameEN: "The Year's Plan",
                 conditionJP: 'シニア級1月前半の中山金杯か京都金杯で勝利する。',
-                conditionEN: 'During the Senior year, win either the Nakayama Kimpai or the Kyoto Kimpai in January.',
+                conditionEN: 'During the Senior year, win either the Nakayama Kinen or the Kyoto Kinen in January.',
                 check: () => this.checkNewYearGold()
             },
             {
@@ -345,7 +388,7 @@ class UmaMusumeTracker {
                 nameJP: 'パーフェクトクラウン',
                 nameEN: 'Perfect Crown',
                 conditionJP: '牡馬三冠レース（皐月賞、日本ダービー、菊花賞）と、各レースに対応するトライアルレース3つに勝利する。',
-                conditionEN: 'Win the three Triple Crown races (Satsuki Sho, Tokyo Yushun, Kikuka Sho) AND win one trial race for each.',
+                conditionEN: 'Win the three Triple Crown races (Satsuki Sho, Japan Derby, Kikka Sho) AND win one trial race for each.',
                 check: () => this.checkPerfectCrown()
             },
             {
@@ -353,32 +396,8 @@ class UmaMusumeTracker {
                 nameJP: 'パーフェクトティアラ',
                 nameEN: 'Perfect Tiara',
                 conditionJP: '牝馬三冠レース（桜花賞、オークス、秋華賞）と、各レースに対応するトライアルレース3つに勝利する。',
-                conditionEN: 'Win the three Triple Tiara races (Oka Sho, Yushun Himba, Shuka Sho) AND win one trial race for each.',
+                conditionEN: 'Win the three Triple Tiara races (Oka Sho, Oaks, Akika Sho) AND win one trial race for each.',
                 check: () => this.checkPerfectTiara()
-            },
-            {
-                id: 'summer_sprint_series',
-                nameJP: 'SSS (サマースプリントシリーズ)',
-                nameEN: 'SSS (Summer Sprint Series)',
-                conditionJP: 'サマースプリントシリーズ対象レースの中から3勝以上する。',
-                conditionEN: 'Win 3 or more races from the Summer Sprint Series.',
-                check: () => this.checkSummerSeries('SSS')
-            },
-            {
-                id: 'summer_mile_series',
-                nameJP: 'SMS (サマーマイルシリーズ)',
-                nameEN: 'SMS (Summer Mile Series)',
-                conditionJP: 'サマーマイルシリーズ対象レースの中から3勝以上する。',
-                conditionEN: 'Win 3 or more races from the Summer Mile Series.',
-                check: () => this.checkSummerSeries('SMS')
-            },
-            {
-                id: 'summer_2000_series',
-                nameJP: 'S2000 (サマー2000シリーズ)',
-                nameEN: 'S2000 (Summer 2000 Series)',
-                conditionJP: 'サマー2000シリーズ対象レースの中から3勝以上する。',
-                conditionEN: 'Win 3 or more races from the Summer 2000 Series.',
-                check: () => this.checkSummerSeries('S2000')
             },
             {
                 id: 'improves_with_racing',
@@ -488,11 +507,9 @@ class UmaMusumeTracker {
                 </div>
                 ${this.selectedRaces.has(race.name) ? `
                 <div class="win-button-container">
-                    <button class="win-btn ${this.wonRaces.has(race.name) ? 'won' : this.lostRaces.has(race.name) ? 'lost' : ''}" 
+                    <button class="loss-toggle-btn ${this.lostRaces.has(race.name) ? 'lost' : 'won'}" 
                             onclick="event.stopPropagation(); tracker.toggleWin('${race.name}')">
-                        ${this.wonRaces.has(race.name) ? '🏆 Won / 勝利' : 
-                          this.lostRaces.has(race.name) ? '❌ Lost / 敗北' : 
-                          '🏆 Mark as Win / 勝利にする'}
+                        ${this.lostRaces.has(race.name) ? '❌' : '🏆→❌'}
                     </button>
                 </div>
                 ` : ''}
@@ -517,11 +534,14 @@ class UmaMusumeTracker {
 
     toggleParticipation(raceName) {
         if (this.selectedRaces.has(raceName)) {
+            // Remove participation and clear all results
             this.selectedRaces.delete(raceName);
-            this.wonRaces.delete(raceName); // If not participating, can't win
-            this.lostRaces.delete(raceName); // If not participating, can't lose
+            this.wonRaces.delete(raceName);
+            this.lostRaces.delete(raceName);
         } else {
+            // Add participation and automatically mark as won
             this.selectedRaces.add(raceName);
+            this.wonRaces.add(raceName);
         }
         this.renderRaces();
         this.updateProgress();
@@ -530,7 +550,7 @@ class UmaMusumeTracker {
     toggleWin(raceName) {
         if (!this.selectedRaces.has(raceName)) return; // Can't win/lose if not participating
         
-        // Toggle between Won and Lost (default to Won on first click)
+        // Toggle between Won and Lost
         if (this.wonRaces.has(raceName)) {
             // Currently won, change to lost
             this.wonRaces.delete(raceName);
@@ -538,9 +558,6 @@ class UmaMusumeTracker {
         } else if (this.lostRaces.has(raceName)) {
             // Currently lost, change to won
             this.lostRaces.delete(raceName);
-            this.wonRaces.add(raceName);
-        } else {
-            // First click - default to won
             this.wonRaces.add(raceName);
         }
         this.renderRaces();
@@ -691,7 +708,7 @@ class UmaMusumeTracker {
     }
 
     checkNewspaperCups() {
-        const newspaperRaces = ['Kyoto Shinbun Hai', 'Kobe Shinbun Hai', 'Chunichi Shinbun Hai', 'Tokyo Shinbun Hai'];
+        const newspaperRaces = ['Kyoto Shimbun Hai', 'Kobe Shimbun Hai', 'Chunichi Shimbun Hai', 'Tokyo Shimbun Hai'];
         const wonNewspaperRaces = newspaperRaces.filter(race => this.wonRaces.has(race));
         
         return {
@@ -704,7 +721,7 @@ class UmaMusumeTracker {
     }
 
     checkNewYearGold() {
-        const goldCups = ['Nakayama Kinpai', 'Kyoto Kinpai'];
+        const goldCups = ['Nakayama Kinen', 'Kyoto Kinen'];
         const wonGoldCups = goldCups.filter(race => this.wonRaces.has(race));
         
         return {
@@ -730,14 +747,14 @@ class UmaMusumeTracker {
     }
 
     checkJewelryRaces() {
-        const jewelryRaces = ['Diamond Stakes', 'Turquoise Stakes', 'Coral Stakes'];
+        const jewelryRaces = ['Diamond Stakes', 'Turquoise Stakes'];
         const wonJewelryRaces = jewelryRaces.filter(race => this.wonRaces.has(race));
         
         return {
-            completed: wonJewelryRaces.length >= 3,
+            completed: wonJewelryRaces.length >= 2,
             current: wonJewelryRaces.length,
-            required: 3,
-            progress: (wonJewelryRaces.length / 3) * 100,
+            required: 2,
+            progress: (wonJewelryRaces.length / 2) * 100,
             details: `Won: ${wonJewelryRaces.join(', ')}`
         };
     }
@@ -765,7 +782,7 @@ class UmaMusumeTracker {
     }
 
     checkPerfectCrown() {
-        const tripleCrownRaces = ['Satsuki Sho', 'Tokyo Yushun', 'Kikuka Sho'];
+        const tripleCrownRaces = ['Satsuki Sho', 'Japan Derby', 'Kikka Sho'];
         const trialRaces = ['Yayoi Sho', 'Spring Stakes', 'Saint Lite Kinen'];
         
         const wonCrown = tripleCrownRaces.filter(race => this.wonRaces.has(race));
@@ -785,7 +802,7 @@ class UmaMusumeTracker {
     }
 
     checkPerfectTiara() {
-        const tripleTiaraRaces = ['Oka Sho', 'Yushun Himba', 'Shuka Sho'];
+        const tripleTiaraRaces = ['Oka Sho', 'Oaks', 'Akika Sho'];
         const trialRaces = ['Tulip Sho', 'Flora Stakes', 'Rose Stakes'];
         
         const wonTiara = tripleTiaraRaces.filter(race => this.wonRaces.has(race));
@@ -801,21 +818,6 @@ class UmaMusumeTracker {
             required: 6,
             progress: completed ? 100 : ((wonTiara.length + wonTrials.length) / 6) * 100,
             details: `Tiara: ${wonTiara.join(', ')} | Trials: ${wonTrials.join(', ')}`
-        };
-    }
-
-    checkSummerSeries(seriesName) {
-        const seriesRaces = Array.from(this.wonRaces).filter(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.series === seriesName;
-        });
-        
-        return {
-            completed: seriesRaces.length >= 3,
-            current: seriesRaces.length,
-            required: 3,
-            progress: (seriesRaces.length / 3) * 100,
-            details: `${seriesName} wins: ${seriesRaces.join(', ')}`
         };
     }
 
