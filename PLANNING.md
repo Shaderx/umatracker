@@ -82,7 +82,6 @@ Note: The race object currently does not store a chronological index or year-sta
       - C: ローズステークス / 紫苑ステークス
   - Improves with Racing (CSV-aligned threshold): participate in ≥ 3 races (consecutive simplified).
   - Never-Give-Up Spirit (CSV-aligned, simplified ordering): have at least one loss and at least one win.
-  - Rebellious Spirit (CSV text says C or lower; currently simplified to any win until aptitude data exists).
   - Right/Left Awakening (≥ 6 wins on right-/left-handed tracks).
   - Seasonal Awakening (≥ 6 wins in each of spring/summer/autumn/winter).
 
@@ -181,6 +180,11 @@ Note: The race object currently does not store a chronological index or year-sta
 - Planner slots now resolve IDs to show English/Japanese titles, add `data-race-id`, and render layered background images with remote fallback for reliability.
 - Picker highlights and selection operate by ID; new `addRaceToCurrentCellById(id)` added; selection Auto-close toggle preserved.
 
+### Session Changelog (2025-09-29 — Rebellious Spirit removal)
+- Removed Rebellious Spirit (反骨精神) hidden factor from the application as it cannot be properly implemented without aptitude modeling.
+- Updated `app.js` to exclude the factor from `loadHiddenFactors()` array.
+- Updated documentation to reflect the removal across all relevant sections.
+
 ### Notes on Implementation
 - New IDs: `planner-section` (planner container) and `progress-panel` (right panel) used by `syncProgressHeightToPlanner()`.
 - New methods in `app.js`:
@@ -198,7 +202,6 @@ Note: The race object currently does not store a chronological index or year-sta
   - 連戦連勝, 東の雄, 西の雄, 旅人, 全階級制覇, 新聞屋さん, 一年の計は, 星に願いを, パーフェクトクラウン, パーフェクトティアラ, 叩き良化型, 諦めない心, 右/左/季節の目覚め
 - Partially blocked by missing data or mechanics:
   - ジュエリー (needs 3+ qualifying races; dataset includes 2)
-  - 反骨精神 (needs aptitude modeling)
 - Not implementable without skills/aptitudes/training/persistence:
   - 甲斐性なし, 健闘, 太陽系, ノーブレーキ, 山娘, ピカピカ, ビュービュー, 全天候型, 出たとこ勝負, 企画上手, 策略家, 大志, 大肺活量, 東奔西走, 想いの継ぎ手, 信頼の証, リフレッシュ, 二刀流 (aptitudes), SMILE, 自由自在, ジャックポット, スピード/スタミナ/パワー/根性/賢さの目覚め
 
@@ -223,7 +226,6 @@ This section tracks which hidden factors are implemented in `app.js` today, whic
 | Perfect Tiara / パーフェクトティアラ | Implemented | Ensure all triple tiara trials are present and correctly mapped |
 | Improves with Racing / 叩き良化型 | Implemented (simplified: count ≥ 3) | Chronological modeling to enforce consecutiveness and reporter-event nuances |
 | Never-Give-Up Spirit / 諦めない心 | Implemented (order-agnostic) | Chronological modeling to enforce lose-then-win ordering |
-| Rebellious Spirit / 反骨精神 | Implemented (placeholder: any win) | Aptitude modeling to detect wins with C-or-lower aptitude |
 | Right Awakening / 右の目覚め | Implemented | None |
 | Left Awakening / 左の目覚め | Implemented | None |
 | Spring Awakening / 春の目覚め | Implemented | None |

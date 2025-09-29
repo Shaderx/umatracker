@@ -116,6 +116,9 @@ h1 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 8px;
+    max-height: 850px;
+    overflow-y: auto;
+    padding-right: 8px; /* Space for scrollbar */
 }
 
 /* Planner UI (game-like tabs and month/half grid) */
@@ -152,6 +155,18 @@ h1 {
     overflow: hidden;
 }
 .planner-slot.disabled { opacity: 0.55; filter: grayscale(1); }
+.planner-slot.summer {
+    background: #fef5e7;
+    border-color: #f6ad55;
+}
+.planner-slot.summer .planner-slot-head {
+    background: #fed7aa;
+    color: #9c4221;
+    border-bottom-color: #fbbf24;
+}
+.planner-slot.summer .planner-slot-head .en {
+    color: #92400e;
+}
 .planner-slot-head {
     background: #e6fffa;
     color: #2c7a7b;

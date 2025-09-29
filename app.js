@@ -483,9 +483,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     loadHiddenFactors() {
         this.hiddenFactors = [
             {
-                id: 'consecutive_wins',
+                id: 'consecutive_run',
                 nameJP: '連戦連勝',
-                nameEN: 'Consecutive Wins',
+                nameEN: 'Consecutive Runs',
                 conditionJP: '2戦連続で出走する。',
                 conditionEN: 'Race 2 races in a row.',
                 check: () => this.checkConsecutiveRuns()
@@ -617,14 +617,6 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 conditionJP: '一度負けてから勝利する（順序判定は簡略化）。',
                 conditionEN: 'Lose a race, then win a race (order simplified).',
                 check: () => this.checkNeverGiveUp()
-            },
-            {
-                id: 'rebellious_spirit',
-                nameJP: '反骨精神',
-                nameEN: 'Rebellious Spirit',
-                conditionJP: '適性C以下のレース（距離またはバ場）で勝利する（適性判定は未実装）。',
-                conditionEN: "Win a race with a 'C' rank or lower aptitude for distance or surface (aptitudes not modeled).",
-                check: () => this.checkRebelliousSpirit()
             },
             {
                 id: 'right_awakening',
