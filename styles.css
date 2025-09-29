@@ -272,6 +272,8 @@ h1 {
 .picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; gap: 10px; background: #fff; cursor: pointer; padding: 8px; }
 .picker-item:hover { background: #f7fafc; }
 .picker-item.selected { outline: 3px solid #38a169; }
+.picker-item.picker-item-tracked { background: #e6f7ff; border-color: #1890ff; }
+.picker-item.picker-item-tracked h4::before { content: "📍 "; }
 .picker-item img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; }
 .picker-item h4 { font-size: 0.95rem; color: #2d3748; margin-bottom: 2px; }
 .picker-item .sub { font-size: 0.8rem; color: #4a5568; }
@@ -513,6 +515,7 @@ h1 {
     padding: 15px;
     border-radius: 8px;
     border-left: 4px solid #e2e8f0;
+    transition: all 0.3s ease;
 }
 
 .factor-item.completed {
@@ -525,9 +528,24 @@ h1 {
     border-left-color: #ed8936;
 }
 
-.factor-name {
+.factor-item.factor-tracked {
+    background: #e6f7ff;
+    border-left-color: #1890ff;
+    box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
+}
+
+.factor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
     margin-bottom: 8px;
+}
+
+.factor-name {
+    margin-bottom: 0;
     position: relative;
+    flex: 1;
 }
 
 .factor-name-en {
@@ -612,4 +630,88 @@ h1 {
 .stat-label {
     font-size: 0.8rem;
     color: #718096;
+}
+
+/* Hidden Factor Tracking Styles */
+.btn-track {
+    font-size: 1.2rem;
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: #f0f0f0;
+    border: 1px solid #d9d9d9;
+    color: #595959;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-track:hover {
+    background: #1890ff;
+    border-color: #1890ff;
+    color: white;
+    transform: scale(1.05);
+}
+
+.btn-track.active {
+    background: #1890ff;
+    border-color: #1890ff;
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(24, 144, 255, 0.3);
+}
+
+.btn-clear-tracking {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    background: #ff4d4f;
+    color: white;
+    border: 1px solid #ff4d4f;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-tracking:hover {
+    background: #cf1322;
+    border-color: #cf1322;
+    transform: scale(1.02);
+}
+
+/* Race Card Tracking Highlight */
+.race-card.race-tracked {
+    outline: 3px solid #1890ff;
+    outline-offset: -3px;
+    box-shadow: 0 0 12px rgba(24, 144, 255, 0.4);
+}
+
+.race-card.race-tracked::after {
+    content: "📍";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 1.1rem;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    z-index: 2;
+}
+
+/* Planner Slot Tracking Highlight */
+.planner-slot.slot-tracked {
+    background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+    border-color: #1890ff;
+    border-width: 3px;
+    box-shadow: 0 0 12px rgba(24, 144, 255, 0.3);
+}
+
+.planner-slot.slot-tracked .planner-slot-head {
+    background: #91d5ff;
+    color: #002766;
+    border-bottom-color: #1890ff;
+    font-weight: 800;
+}
+
+.planner-slot.slot-tracked .planner-slot-head::after {
+    content: " 📍";
+    font-size: 0.9rem;
 }

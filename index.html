@@ -30,7 +30,12 @@
             </div>
 
             <div class="progress-section" id="progress-panel">
-                <h2 class="section-title">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px;">
+                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
+                    <button class="btn btn-clear-tracking" id="clear-tracking-btn" onclick="tracker.clearTrackedFactor()" style="display: none;" title="Clear tracking / 追跡解除">
+                        ✖ Clear<br><span style="font-size: 0.7em;">追跡解除</span>
+                    </button>
+                </div>
                 
                 <div class="stats">
                     <div class="stats-grid">
@@ -77,6 +82,7 @@
                     <button class="filter-btn" data-filter="SMS">Summer Mile<br><span style="font-size: 0.7em;">サマーマイル</span></button>
                     <button class="filter-btn" data-filter="S2000">Summer 2000<br><span style="font-size: 0.7em;">サマー2000</span></button>
                     <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
+                    <button class="filter-btn" id="tracked-filter-btn" data-filter="tracked" style="display: none;">🔍 Tracked<br><span style="font-size: 0.7em;">追跡中</span></button>
                     <button class="filter-btn" onclick="tracker.clearAll()" style="background: #e53e3e; color: white; border-color: #e53e3e;">Clear All<br><span style="font-size: 0.7em;">全解除</span></button>
                 </div>
                 <div class="races-grid" id="races-grid"></div>

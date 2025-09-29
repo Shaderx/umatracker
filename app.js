@@ -14,6 +14,8 @@ class UmaMusumeTracker {
 		this.plannerData = this.createEmptyPlannerData();
         // Modal toggle state
         this.closeOnSelection = true;
+        // Hidden factor tracking state
+        this.trackedFactorId = null;
         
         this.initializeData();
         this.setupEventListeners();
@@ -488,6 +490,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Consecutive Runs',
                 conditionJP: '2戦連続で出走する。',
                 conditionEN: 'Race 2 races in a row.',
+                trackable: false,
                 check: () => this.checkConsecutiveRuns()
             },
             {
@@ -496,7 +499,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Champion of the East',
                 conditionJP: '東日本（東京、中山など）のG1レースで7勝以上する。',
                 conditionEN: 'Win 7 or more G1 races held at tracks in eastern Japan (e.g., Tokyo, Nakayama).',
-                check: () => this.checkEasternG1Wins()
+                trackable: true,
+                check: () => this.checkEasternG1Wins(),
+                getRaces: () => this.getRacesForEasternG1()
             },
             {
                 id: 'champion_west',
@@ -504,7 +509,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Champion of the West',
                 conditionJP: '西日本（京都、阪神など）のG1レースで7勝以上する。',
                 conditionEN: 'Win 7 or more G1 races held at tracks in western Japan (e.g., Kyoto, Hanshin).',
-                check: () => this.checkWesternG1Wins()
+                trackable: true,
+                check: () => this.checkWesternG1Wins(),
+                getRaces: () => this.getRacesForWesternG1()
             },
             {
                 id: 'traveler',
@@ -512,6 +519,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Traveler',
                 conditionJP: '7種類以上のレース場に出走する（勝利は不問）。',
                 conditionEN: 'Compete at 7 or more different racecourses. Winning is not a requirement.',
+                trackable: false,
                 check: () => this.checkDifferentRacecourses()
             },
             {
@@ -520,6 +528,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'All Ranks Conquered',
                 conditionJP: '短距離、マイル、中距離、長距離の各距離で1回以上勝利する。',
                 conditionEN: 'Win at least one race in each distance category: Short, Mile, Medium, and Long.',
+                trackable: false,
                 check: () => this.checkAllDistanceG1()
             },
             {
@@ -528,7 +537,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Newspaper Boy/Girl',
                 conditionJP: '指定された4つの「新聞杯」レース（京都新聞杯、神戸新聞杯、中日新聞杯、東京新聞杯）に勝利する。',
                 conditionEN: 'Win the four "Shimbun Hai" races: Kyoto, Kobe, Chunichi, and Tokyo Shimbun Hai.',
-                check: () => this.checkNewspaperCups()
+                trackable: true,
+                check: () => this.checkNewspaperCups(),
+                getRaces: () => this.getRacesForNewspaperCups()
             },
             {
                 id: 'summer_sprint_series',
@@ -536,7 +547,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Summer Sprint Series',
                 conditionJP: 'サマースプリントシリーズ対象レースから3勝する。',
                 conditionEN: 'Win 3 races from the Summer Sprint Series.',
-                check: () => this.checkSummerSeries('sprint')
+                trackable: true,
+                check: () => this.checkSummerSeries('sprint'),
+                getRaces: () => this.getRacesForSummerSeries('sprint')
             },
             {
                 id: 'summer_mile_series',
@@ -544,7 +557,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Summer Mile Series',
                 conditionJP: 'サマーマイルシリーズ対象レースから3勝する。',
                 conditionEN: 'Win 3 races from the Summer Mile Series.',
-                check: () => this.checkSummerSeries('mile')
+                trackable: true,
+                check: () => this.checkSummerSeries('mile'),
+                getRaces: () => this.getRacesForSummerSeries('mile')
             },
             {
                 id: 'summer_2000_series',
@@ -552,7 +567,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Summer 2000 Series',
                 conditionJP: 'サマー2000シリーズ対象レースから3勝する。',
                 conditionEN: 'Win 3 races from the Summer 2000 Series.',
-                check: () => this.checkSummerSeries('s2000')
+                trackable: true,
+                check: () => this.checkSummerSeries('s2000'),
+                getRaces: () => this.getRacesForSummerSeries('s2000')
             },
             {
                 id: 'years_plan',
@@ -560,7 +577,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: "The Year's Plan",
                 conditionJP: 'シニア級1月前半の中山金杯か京都金杯で勝利する。',
                 conditionEN: 'During the Senior year, win either the Nakayama Kinen or the Kyoto Kinen in January.',
-                check: () => this.checkNewYearGold()
+                trackable: true,
+                check: () => this.checkNewYearGold(),
+                getRaces: () => this.getRacesForNewYearGold()
             },
             {
                 id: 'wish_upon_star',
@@ -568,7 +587,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Wish Upon a Star',
                 conditionJP: '指定された星・星座関連の名前を持つレースの中から3勝以上する。',
                 conditionEN: 'Win 3 or more races from the designated list of star or constellation-themed races.',
-                check: () => this.checkStarRaces()
+                trackable: true,
+                check: () => this.checkStarRaces(),
+                getRaces: () => this.getRacesForStarRaces()
             },
             {
                 id: 'jewelry',
@@ -576,7 +597,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Jewelry',
                 conditionJP: '指定された宝石の名前を持つレースの中から3勝以上する（同名レースの重複は不可）。',
                 conditionEN: 'Win 3 or more races from the designated list of jewelry-themed races.',
-                check: () => this.checkJewelryRaces()
+                trackable: true,
+                check: () => this.checkJewelryRaces(),
+                getRaces: () => this.getRacesForJewelryRaces()
             },
             {
                 id: 'dual_wielder',
@@ -584,7 +607,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Two-Sword Style / Dual Wielder',
                 conditionJP: '芝とダートの両方のバ場適性をAにする。',
                 conditionEN: "Achieve an 'A' rank aptitude for both Turf and Dirt surfaces.",
-                check: () => this.checkDualSurface()
+                trackable: true,
+                check: () => this.checkDualSurface(),
+                getRaces: () => this.getRacesForDualSurface()
             },
             {
                 id: 'perfect_crown',
@@ -592,7 +617,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Perfect Crown',
                 conditionJP: '牡馬三冠レース（皐月賞、日本ダービー、菊花賞）と、各レースに対応するトライアルレース3つに勝利する。',
                 conditionEN: 'Win the three Triple Crown races (Satsuki Sho, Japan Derby, Kikka Sho) AND win one trial race for each.',
-                check: () => this.checkPerfectCrown()
+                trackable: true,
+                check: () => this.checkPerfectCrown(),
+                getRaces: () => this.getRacesForPerfectCrown()
             },
             {
                 id: 'perfect_tiara',
@@ -600,7 +627,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Perfect Tiara',
                 conditionJP: '牝馬三冠レース（桜花賞、オークス、秋華賞）と、各レースに対応するトライアルレース3つに勝利する。',
                 conditionEN: 'Win the three Triple Tiara races (Oka Sho, Oaks, Akika Sho) AND win one trial race for each.',
-                check: () => this.checkPerfectTiara()
+                trackable: true,
+                check: () => this.checkPerfectTiara(),
+                getRaces: () => this.getRacesForPerfectTiara()
             },
             {
                 id: 'improves_with_racing',
@@ -608,6 +637,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Improves with Racing',
                 conditionJP: "3戦以上の連続出走。'悦楽取材'の記者イベント出現が必要（簡略化済み）",
                 conditionEN: "Run 3 consecutive races; requires reporter event 'Pleasure Interview' (simplified)",
+                trackable: false,
                 check: () => this.checkImprovesWithRacing()
             },
             {
@@ -616,6 +646,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Never-Give-Up Spirit',
                 conditionJP: '一度負けてから勝利する（順序判定は簡略化）。',
                 conditionEN: 'Lose a race, then win a race (order simplified).',
+                trackable: false,
                 check: () => this.checkNeverGiveUp()
             },
             {
@@ -624,7 +655,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Right Awakening',
                 conditionJP: '右回りのレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races on right-handed tracks.',
-                check: () => this.checkDirectionalAwakening('right')
+                trackable: true,
+                check: () => this.checkDirectionalAwakening('right'),
+                getRaces: () => this.getRacesForDirectionalAwakening('right')
             },
             {
                 id: 'left_awakening',
@@ -632,7 +665,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Left Awakening',
                 conditionJP: '左回りのレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races on left-handed tracks.',
-                check: () => this.checkDirectionalAwakening('left')
+                trackable: true,
+                check: () => this.checkDirectionalAwakening('left'),
+                getRaces: () => this.getRacesForDirectionalAwakening('left')
             },
             {
                 id: 'spring_awakening',
@@ -640,7 +675,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Spring Awakening',
                 conditionJP: '春の季節のレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races during spring.',
-                check: () => this.checkSeasonalAwakening('spring')
+                trackable: true,
+                check: () => this.checkSeasonalAwakening('spring'),
+                getRaces: () => this.getRacesForSeasonalAwakening('spring')
             },
             {
                 id: 'summer_awakening',
@@ -648,7 +685,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Summer Awakening',
                 conditionJP: '夏の季節のレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races during summer.',
-                check: () => this.checkSeasonalAwakening('summer')
+                trackable: true,
+                check: () => this.checkSeasonalAwakening('summer'),
+                getRaces: () => this.getRacesForSeasonalAwakening('summer')
             },
             {
                 id: 'autumn_awakening',
@@ -656,7 +695,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Autumn Awakening',
                 conditionJP: '秋の季節のレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races during autumn.',
-                check: () => this.checkSeasonalAwakening('autumn')
+                trackable: true,
+                check: () => this.checkSeasonalAwakening('autumn'),
+                getRaces: () => this.getRacesForSeasonalAwakening('autumn')
             },
             {
                 id: 'winter_awakening',
@@ -664,7 +705,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 nameEN: 'Winter Awakening',
                 conditionJP: '冬の季節のレースで6回以上勝利する。',
                 conditionEN: 'Win 6 or more races during winter.',
-                check: () => this.checkSeasonalAwakening('winter')
+                trackable: true,
+                check: () => this.checkSeasonalAwakening('winter'),
+                getRaces: () => this.getRacesForSeasonalAwakening('winter')
             }
         ];
     }
@@ -750,6 +793,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 					const rawValue = yearCells[key];
 					const hasAnyForSlot = this.races.some(r => r.month === month && r.half === half && !!r[this.plannerYear]);
 					const selectedId = (typeof rawValue === 'string' && rawValue) ? String(rawValue) : null;
+					const isSlotTracked = this.isSlotTracked(month, half, this.plannerYear);
 					let slotBody = '';
 					if (selectedId) {
 						let r = this.raceById ? this.raceById.get(selectedId) : null;
@@ -782,7 +826,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 					}
 					const isSummer = (month === 'July' || month === 'August');
 					slots.push(`
-						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''}\">
+						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTracked ? 'slot-tracked' : ''}\">
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
 								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
@@ -864,10 +908,11 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 			const cellValue = this.plannerData[year][this.cellKey(month, half)];
         listEl.innerHTML = sorted.map(r => {
 				const selected = String(cellValue) === String(r.id);
+				const isTracked = this.isRaceTracked(r.id);
 				const primary = r.image || r.imageRemote || '';
 				const onerr = (r.image && r.imageRemote) ? `onerror=\"this.onerror=null; this.src='${r.imageRemote}'\"` : '';
 				return `
-					<div class=\"picker-item ${selected ? 'selected' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\"> 
+					<div class=\"picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\"> 
 					<img src=\"${primary}\" alt=\"${(r.name || '').replace(/\\"/g, '&quot;')}\" ${onerr}>
 					<div>
 						<h4>${r.name}</h4>
@@ -1072,8 +1117,10 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         const grid = document.getElementById('races-grid');
         const filteredRaces = this.getFilteredRaces();
         
-        grid.innerHTML = filteredRaces.map(race => `
-            <div class="race-card ${this.selectedRaces.has(String(race.id)) ? 'selected' : ''} ${this.wonRaces.has(String(race.id)) ? 'won' : ''}" 
+        grid.innerHTML = filteredRaces.map(race => {
+            const isTracked = this.isRaceTracked(race.id);
+            return `
+            <div class="race-card ${this.selectedRaces.has(String(race.id)) ? 'selected' : ''} ${this.wonRaces.has(String(race.id)) ? 'won' : ''} ${isTracked ? 'race-tracked' : ''}" 
                  data-race-id="${race.id}" data-race="${race.name}" onclick="tracker.toggleParticipationById('${race.id}')">
                 ${(() => {
                     const primary = race.image || race.imageRemote || '';
@@ -1104,7 +1151,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 </div>
                 ` : ''}
             </div>
-        `).join('');
+            `;
+        }).join('');
         this.syncProgressHeightToPlanner();
     }
 
@@ -1135,6 +1183,11 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 break;
             }
             case 'selected': list = this.races.filter(r => this.selectedRaces.has(String(r.id))); break;
+            case 'tracked': {
+                const trackedIds = this.getTrackedFactorRaceIds();
+                list = this.races.filter(r => trackedIds.has(String(r.id)));
+                break;
+            }
             default: list = [...this.races];
         }
         const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
@@ -1268,6 +1321,185 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         }
     }
 
+    // =============================
+    // Hidden Factor Tracking
+    // =============================
+
+    /**
+     * Set the currently tracked hidden factor
+     * @param {string|null} factorId - The ID of the factor to track, or null to clear
+     */
+    setTrackedFactor(factorId) {
+        // If clicking the same factor, toggle it off
+        if (this.trackedFactorId === factorId) {
+            this.trackedFactorId = null;
+        } else {
+            this.trackedFactorId = factorId;
+        }
+        this.updateProgress();
+        this.renderRaces();
+        this.renderPlannerGrid();
+    }
+
+    /**
+     * Clear the currently tracked factor
+     */
+    clearTrackedFactor() {
+        this.trackedFactorId = null;
+        this.updateProgress();
+        this.renderRaces();
+        this.renderPlannerGrid();
+    }
+
+    /**
+     * Get the set of race IDs that satisfy the currently tracked factor
+     * @returns {Set<string>} Set of race IDs, or empty Set if no factor tracked
+     */
+    getTrackedFactorRaceIds() {
+        if (!this.trackedFactorId) return new Set();
+        const factor = this.hiddenFactors.find(f => f.id === this.trackedFactorId);
+        if (!factor || !factor.getRaces) return new Set();
+        return factor.getRaces();
+    }
+
+    /**
+     * Check if a race satisfies the currently tracked factor
+     * @param {string} raceId - The race ID to check
+     * @returns {boolean}
+     */
+    isRaceTracked(raceId) {
+        const trackedIds = this.getTrackedFactorRaceIds();
+        return trackedIds.has(String(raceId));
+    }
+
+    /**
+     * Check if a planner slot (month/half) has any races that satisfy the tracked factor
+     * @param {string} month - Month name
+     * @param {string} half - Half ('1st' or '2nd')
+     * @param {string} yearKey - 'junior', 'classics', or 'senior'
+     * @returns {boolean}
+     */
+    isSlotTracked(month, half, yearKey) {
+        if (!this.trackedFactorId) return false;
+        const trackedIds = this.getTrackedFactorRaceIds();
+        if (trackedIds.size === 0) return false;
+        
+        // Check if any tracked race matches this slot
+        for (const id of trackedIds) {
+            const race = this.raceById.get(String(id));
+            if (race && race.month === month && race.half === half && race[yearKey]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // =============================
+    // getRaces methods for trackable factors
+    // =============================
+
+    getRacesForEasternG1() {
+        const result = new Set();
+        this.races.forEach(race => {
+            if (this.isGradeOne(race) && this.easternTracks.includes(race.racetrack)) {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
+    getRacesForWesternG1() {
+        const result = new Set();
+        this.races.forEach(race => {
+            if (this.isGradeOne(race) && this.westernTracks.includes(race.racetrack)) {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
+    getRacesForNewspaperCups() {
+        const names = ['Kyoto Shimbun Hai', 'Kobe Shimbun Hai', 'Chunichi Shimbun Hai', 'Tokyo Shimbun Hai'];
+        return this.getIdsForNames(names);
+    }
+
+    getRacesForSummerSeries(seriesKey) {
+        const targetNames = (this.summerSeries && this.summerSeries[seriesKey]) ? this.summerSeries[seriesKey] : [];
+        return this.getIdsForNames(targetNames);
+    }
+
+    getRacesForNewYearGold() {
+        const result = new Set();
+        const targets = new Set(['Nakayama Kinen', 'Kyoto Kinen']);
+        this.races.forEach(race => {
+            if (targets.has(race.name) && race.senior && race.month === 'January' && race.half === '1st') {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
+    getRacesForStarRaces() {
+        const names = [
+            'Procyon Stakes', 'Capella Stakes', 'Centaur Stakes', 'Aldebaran Stakes',
+            'Rigel Stakes', 'Betelgeuse Stakes', 'Cassiopeia Stakes', 'Sirius Stakes'
+        ];
+        return this.getIdsForNames(names);
+    }
+
+    getRacesForJewelryRaces() {
+        const names = ['Diamond Stakes', 'Turquoise Stakes', 'Opal Stakes'];
+        return this.getIdsForNames(names);
+    }
+
+    getRacesForDualSurface() {
+        const result = new Set();
+        this.races.forEach(race => {
+            if (race.surface === 'turf' || race.surface === 'dirt') {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
+    getRacesForPerfectCrown() {
+        const triple = ['Satsuki Sho', 'Japan Derby', 'Kikka Sho'];
+        const groupA = ['Yayoi Sho', 'Spring Stakes', 'Wakaba Stakes'];
+        const groupB = ['Aoba Sho', 'Principal Stakes'];
+        const groupC = ['Kobe Shimbun Hai', 'Saint Lite Kinen'];
+        const allNames = [...triple, ...groupA, ...groupB, ...groupC];
+        return this.getIdsForNames(allNames);
+    }
+
+    getRacesForPerfectTiara() {
+        const triple = ['Oka Sho', 'Oaks', 'Akika Sho'];
+        const groupA = ['Fillies Review', 'Tulip Sho', 'Anemone Stakes'];
+        const groupB = ['Flora Stakes', 'Sweet Pea Stakes'];
+        const groupC = ['Rose Stakes', 'Shion Stakes'];
+        const allNames = [...triple, ...groupA, ...groupB, ...groupC];
+        return this.getIdsForNames(allNames);
+    }
+
+    getRacesForDirectionalAwakening(direction) {
+        const result = new Set();
+        this.races.forEach(race => {
+            if (race.direction === direction) {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
+    getRacesForSeasonalAwakening(season) {
+        const result = new Set();
+        this.races.forEach(race => {
+            if (race.season === season) {
+                result.add(String(race.id));
+            }
+        });
+        return result;
+    }
+
     renderHiddenFactors(results) {
         const container = document.getElementById('hidden-factors');
         
@@ -1275,13 +1507,24 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             const statusClass = factor.result.completed ? 'completed' : 
                                factor.result.progress > 0 ? 'partial' : '';
             const progressPercentage = Math.min(100, (factor.result.current / factor.result.required) * 100);
+            const isTracked = this.trackedFactorId === factor.id;
+            const showTrackButton = factor.trackable !== false;
             
             return `
-                <div class="factor-item ${statusClass}">
-                    <div class="factor-name">
-                        <div class="factor-name-en">${factor.nameEN}</div>
-                        <div class="factor-name-jp">${factor.nameJP}</div>
-                        ${factor.result.completed ? '<div class="completion-badge">✅</div>' : ''}
+                <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''}">
+                    <div class="factor-header">
+                        <div class="factor-name">
+                            <div class="factor-name-en">${factor.nameEN}</div>
+                            <div class="factor-name-jp">${factor.nameJP}</div>
+                            ${factor.result.completed ? '<div class="completion-badge">✅</div>' : ''}
+                        </div>
+                        ${showTrackButton ? `
+                            <button class="btn btn-track ${isTracked ? 'active' : ''}" 
+                                    onclick="tracker.setTrackedFactor('${factor.id}')" 
+                                    title="Track this factor / この因子を追跡">
+                                🔍
+                            </button>
+                        ` : ''}
                     </div>
                     <div class="factor-condition">
                         <div class="condition-en">${factor.conditionEN || factor.condition}</div>
@@ -1297,6 +1540,18 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 </div>
             `;
         }).join('');
+        
+        // Show/hide clear tracking button
+        const clearBtn = document.getElementById('clear-tracking-btn');
+        if (clearBtn) {
+            clearBtn.style.display = this.trackedFactorId ? 'block' : 'none';
+        }
+        
+        // Show/hide tracked filter button
+        const trackedFilterBtn = document.getElementById('tracked-filter-btn');
+        if (trackedFilterBtn) {
+            trackedFilterBtn.style.display = this.trackedFactorId ? 'inline-flex' : 'none';
+        }
     }
 
     // Planner-aware chronological helpers
