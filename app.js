@@ -41,6 +41,10 @@ class UmaMusumeTracker {
         // Hidden factor tracking state
         this.trackedFactorId = null;
         
+        // Storage system state
+        this.currentSaveSlot = null;
+        this.currentDeleteSlot = null;
+        
         this.initializeData();
         this.setupEventListeners();
         this.renderRaces();
@@ -1964,10 +1968,604 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             details: `${season} wins: ${names.join(', ')}`
         };
     }
+
+    // ============================================
+    // STORAGE SYSTEM METHODS
+    // ============================================
+
+    // Storage version for compatibility
+    get STORAGE_VERSION() {
+        return "1.0";
+    }
+
+    // Dialog Controls
+    openSaveDialog() {
+        const modal = document.getElementById('save-modal');
+        modal.classList.remove('hidden');
+        this.renderSaveSlots();
+    }
+
+    closeSaveDialog() {
+        const modal = document.getElementById('save-modal');
+        modal.classList.add('hidden');
+    }
+
+    openLoadDialog() {
+        const modal = document.getElementById('load-modal');
+        modal.classList.remove('hidden');
+        this.renderLoadSlots();
+    }
+
+    closeLoadDialog() {
+        const modal = document.getElementById('load-modal');
+        modal.classList.add('hidden');
+    }
+
+    openShareDialog() {
+        const modal = document.getElementById('share-modal');
+        modal.classList.remove('hidden');
+        this.generateShareURL();
+    }
+
+    closeShareDialog() {
+        const modal = document.getElementById('share-modal');
+        modal.classList.add('hidden');
+    }
+
+    openNameDialog(slotId) {
+        this.currentSaveSlot = slotId;
+        const modal = document.getElementById('name-modal');
+        const input = document.getElementById('name-input');
+        
+        // Set default name based on current progress
+        const defaultName = `Save ${new Date().toLocaleDateString()} - ${this.selectedRaces.size} races`;
+        input.value = defaultName;
+        input.select();
+        
+        modal.classList.remove('hidden');
+        
+        // Allow Enter key to confirm
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                this.confirmSaveName();
+            } else if (e.key === 'Escape') {
+                this.closeNameDialog();
+            }
+        };
+    }
+
+    closeNameDialog() {
+        const modal = document.getElementById('name-modal');
+        modal.classList.add('hidden');
+        this.currentSaveSlot = null;
+    }
+
+    openDeleteDialog(slotId, saveName) {
+        this.currentDeleteSlot = slotId;
+        const modal = document.getElementById('delete-modal');
+        const message = document.getElementById('delete-message');
+        message.textContent = `Are you sure you want to delete "${saveName}"? This cannot be undone.`;
+        modal.classList.remove('hidden');
+    }
+
+    closeDeleteDialog() {
+        const modal = document.getElementById('delete-modal');
+        modal.classList.add('hidden');
+        this.currentDeleteSlot = null;
+    }
+
+    // Save/Load Operations
+    promptSaveName(slotId) {
+        this.openNameDialog(slotId);
+    }
+
+    confirmSaveName() {
+        const input = document.getElementById('name-input');
+        const saveName = input.value.trim() || `Save ${Date.now()}`;
+        
+        if (this.currentSaveSlot) {
+            this.saveToSlot(this.currentSaveSlot, saveName);
+            this.closeNameDialog();
+        }
+    }
+
+    saveToSlot(slotId, saveName) {
+        console.log('🔍 [SAVE DEBUG] Starting save to slot', slotId, 'with name:', saveName);
+        try {
+            const state = this.captureCurrentState();
+            console.log('🔍 [SAVE DEBUG] State captured:', state);
+            console.log('🔍 [SAVE DEBUG] State size:', JSON.stringify(state).length, 'characters');
+            
+            state.saveName = saveName;
+            state.slotId = slotId;
+            
+            const key = `uma_save_slot_${slotId}`;
+            const jsonString = JSON.stringify(state);
+            console.log('🔍 [SAVE DEBUG] JSON string length:', jsonString.length);
+            console.log('🔍 [SAVE DEBUG] Attempting to save to localStorage with key:', key);
+            
+            localStorage.setItem(key, jsonString);
+            console.log('✅ [SAVE DEBUG] Save successful!');
+            
+            // Verify save
+            const verification = localStorage.getItem(key);
+            console.log('🔍 [SAVE DEBUG] Verification - data retrieved:', verification ? 'YES' : 'NO');
+            
+            this.showToast(`💾 Saved to Slot ${slotId}: ${saveName}`, 'success');
+            this.closeSaveDialog();
+        } catch (error) {
+            console.error('❌ [SAVE DEBUG] Save failed with error:', error);
+            console.error('❌ [SAVE DEBUG] Error name:', error.name);
+            console.error('❌ [SAVE DEBUG] Error message:', error.message);
+            console.error('❌ [SAVE DEBUG] localStorage available?', typeof localStorage !== 'undefined');
+            
+            // Check localStorage quota
+            try {
+                let total = 0;
+                for (let key in localStorage) {
+                    if (localStorage.hasOwnProperty(key)) {
+                        total += localStorage[key].length + key.length;
+                    }
+                }
+                console.error('❌ [SAVE DEBUG] Current localStorage usage:', total, 'characters');
+            } catch (e) {
+                console.error('❌ [SAVE DEBUG] Could not check localStorage usage');
+            }
+            
+            this.showToast('❌ Save failed. Storage might be full.', 'error');
+        }
+    }
+
+    confirmLoadSlot(slotId) {
+        const saveData = this.loadSaveData(slotId);
+        if (!saveData) {
+            this.showToast('❌ No save data found in this slot.', 'error');
+            return;
+        }
+
+        // Simple confirmation
+        const saveName = saveData.saveName || 'Unnamed Save';
+        if (confirm(`Load "${saveName}"?\n\nThis will replace your current progress.`)) {
+            this.loadFromSlot(slotId);
+        }
+    }
+
+    loadFromSlot(slotId) {
+        try {
+            const saveData = this.loadSaveData(slotId);
+            if (!saveData) {
+                this.showToast('❌ No save data found.', 'error');
+                return;
+            }
+
+            this.restoreState(saveData);
+            this.showToast(`📂 Loaded: ${saveData.saveName || 'Save ' + slotId}`, 'success');
+            this.closeLoadDialog();
+        } catch (error) {
+            console.error('Load failed:', error);
+            this.showToast('❌ Load failed. Save data may be corrupted.', 'error');
+        }
+    }
+
+    loadSaveData(slotId) {
+        const key = `uma_save_slot_${slotId}`;
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    }
+
+    renameSlot(slotId) {
+        const saveData = this.loadSaveData(slotId);
+        if (!saveData) return;
+
+        const currentName = saveData.saveName || 'Unnamed Save';
+        const modal = document.getElementById('name-modal');
+        const input = document.getElementById('name-input');
+        
+        input.value = currentName;
+        input.select();
+        this.currentSaveSlot = slotId;
+        
+        modal.classList.remove('hidden');
+        
+        input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                const newName = input.value.trim() || currentName;
+                saveData.saveName = newName;
+                const key = `uma_save_slot_${slotId}`;
+                localStorage.setItem(key, JSON.stringify(saveData));
+                this.closeNameDialog();
+                this.showToast(`✏️ Renamed to: ${newName}`, 'success');
+                this.renderSaveSlots();
+                this.renderLoadSlots();
+            } else if (e.key === 'Escape') {
+                this.closeNameDialog();
+            }
+        };
+    }
+
+    confirmDeleteSlot(slotId) {
+        const saveData = this.loadSaveData(slotId);
+        if (!saveData) return;
+
+        const saveName = saveData.saveName || `Slot ${slotId}`;
+        this.openDeleteDialog(slotId, saveName);
+    }
+
+    executeDelete() {
+        if (this.currentDeleteSlot) {
+            const key = `uma_save_slot_${this.currentDeleteSlot}`;
+            localStorage.removeItem(key);
+            
+            this.showToast(`🗑️ Deleted save slot ${this.currentDeleteSlot}`, 'success');
+            this.closeDeleteDialog();
+            this.renderSaveSlots();
+            this.renderLoadSlots();
+        }
+    }
+
+    getAllSaves() {
+        const saves = [];
+        for (let i = 1; i <= 3; i++) {
+            const save = this.loadSaveData(i);
+            if (save) {
+                saves.push({ slotId: i, ...save });
+            }
+        }
+        return saves;
+    }
+
+    // State Management
+    captureCurrentState() {
+        console.log('🔍 [STATE DEBUG] Capturing current state...');
+        console.log('🔍 [STATE DEBUG] selectedRaces:', this.selectedRaces);
+        console.log('🔍 [STATE DEBUG] wonRaces:', this.wonRaces);
+        console.log('🔍 [STATE DEBUG] lostRaces:', this.lostRaces);
+        console.log('🔍 [STATE DEBUG] plannerData:', this.plannerData);
+        console.log('🔍 [STATE DEBUG] trackedFactorId:', this.trackedFactorId);
+        
+        const state = {
+            version: this.STORAGE_VERSION,
+            timestamp: Date.now(),
+            metadata: {
+                racesRun: this.selectedRaces.size,
+                wins: this.wonRaces.size,
+                losses: this.lostRaces.size,
+                factorsCompleted: this.getCompletedFactorCount(),
+                lastModified: new Date().toISOString()
+            },
+            selections: {
+                selectedRaces: Array.from(this.selectedRaces),
+                wonRaces: Array.from(this.wonRaces),
+                lostRaces: Array.from(this.lostRaces)
+            },
+            planner: this.plannerData,
+            tracking: {
+                trackedFactorId: this.trackedFactorId
+            }
+        };
+        
+        console.log('✅ [STATE DEBUG] State captured successfully');
+        return state;
+    }
+
+    restoreState(state) {
+        // Validate version compatibility
+        if (!this.isCompatibleVersion(state.version)) {
+            throw new Error('Incompatible save version');
+        }
+
+        // Restore selections
+        this.selectedRaces = new Set(state.selections.selectedRaces);
+        this.wonRaces = new Set(state.selections.wonRaces);
+        this.lostRaces = new Set(state.selections.lostRaces);
+
+        // Restore planner
+        this.plannerData = state.planner;
+
+        // Restore tracking
+        this.trackedFactorId = state.tracking.trackedFactorId || null;
+
+        // Re-render everything
+        this.renderRaces();
+        this.renderPlannerGrid();
+        this.updateProgress();
+    }
+
+    getCompletedFactorCount() {
+        return this.hiddenFactors.filter(f => {
+            const check = f.check(); // Each factor has its own check() method
+            return check.completed;
+        }).length;
+    }
+
+    isCompatibleVersion(version) {
+        const [major] = version.split('.');
+        const [currentMajor] = this.STORAGE_VERSION.split('.');
+        return major === currentMajor;
+    }
+
+    // Share Functionality
+    generateShareURL() {
+        console.log('🔍 [SHARE DEBUG] Starting share URL generation');
+        try {
+            // Check if LZString is available
+            console.log('🔍 [SHARE DEBUG] LZString available?', typeof LZString !== 'undefined');
+            if (typeof LZString === 'undefined') {
+                console.error('❌ [SHARE DEBUG] LZString library not loaded!');
+                this.showToast('❌ Compression library not loaded', 'error');
+                return;
+            }
+            
+            const state = this.captureCurrentState();
+            console.log('🔍 [SHARE DEBUG] State captured:', state);
+            
+            const json = JSON.stringify(state);
+            console.log('🔍 [SHARE DEBUG] JSON length:', json.length);
+            console.log('🔍 [SHARE DEBUG] JSON preview:', json.substring(0, 200));
+            
+            const compressed = LZString.compressToEncodedURIComponent(json);
+            console.log('🔍 [SHARE DEBUG] Compressed length:', compressed.length);
+            console.log('🔍 [SHARE DEBUG] Compression ratio:', ((compressed.length / json.length) * 100).toFixed(2) + '%');
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            console.log('🔍 [SHARE DEBUG] Base URL:', baseUrl);
+            
+            const shareUrl = `${baseUrl}?state=${compressed}`;
+            console.log('🔍 [SHARE DEBUG] Final share URL length:', shareUrl.length);
+            console.log('🔍 [SHARE DEBUG] Share URL:', shareUrl.substring(0, 100) + '...');
+
+            // Update UI
+            const urlInput = document.getElementById('share-url-input');
+            if (!urlInput) {
+                console.error('❌ [SHARE DEBUG] share-url-input element not found!');
+                return;
+            }
+            
+            urlInput.value = shareUrl;
+            console.log('🔍 [SHARE DEBUG] URL input value set:', urlInput.value.substring(0, 100));
+            
+            document.getElementById('share-stat-races').textContent = state.metadata.racesRun;
+            document.getElementById('share-stat-wins').textContent = state.metadata.wins;
+            document.getElementById('share-stat-factors').textContent = state.metadata.factorsCompleted;
+            
+            console.log('✅ [SHARE DEBUG] Share URL generated successfully');
+        } catch (error) {
+            console.error('❌ [SHARE DEBUG] Share URL generation failed:', error);
+            console.error('❌ [SHARE DEBUG] Error name:', error.name);
+            console.error('❌ [SHARE DEBUG] Error message:', error.message);
+            console.error('❌ [SHARE DEBUG] Stack trace:', error.stack);
+            this.showToast('❌ Failed to generate share URL', 'error');
+        }
+    }
+
+    copyShareURL() {
+        console.log('🔍 [COPY DEBUG] Starting copy to clipboard');
+        const input = document.getElementById('share-url-input');
+        
+        if (!input) {
+            console.error('❌ [COPY DEBUG] share-url-input element not found!');
+            return;
+        }
+        
+        console.log('🔍 [COPY DEBUG] Input value:', input.value);
+        console.log('🔍 [COPY DEBUG] Input value length:', input.value.length);
+        
+        if (!input.value || input.value.length === 0) {
+            console.error('❌ [COPY DEBUG] Input value is empty!');
+            this.showToast('❌ No URL to copy', 'error');
+            return;
+        }
+        
+        input.select();
+        
+        console.log('🔍 [COPY DEBUG] Attempting to copy with navigator.clipboard');
+        navigator.clipboard.writeText(input.value).then(() => {
+            console.log('✅ [COPY DEBUG] Copy successful!');
+            console.log('💡 [COPY DEBUG] IMPORTANT: Make sure to paste the ENTIRE URL (all ' + input.value.length + ' characters)');
+            this.showToast('📋 URL copied! Make sure to paste the ENTIRE link', 'success');
+        }).catch(err => {
+            console.error('❌ [COPY DEBUG] Copy failed:', err);
+            console.error('❌ [COPY DEBUG] Error details:', err.message);
+            
+            // Fallback to older method
+            console.log('🔍 [COPY DEBUG] Trying fallback copy method...');
+            try {
+                input.select();
+                document.execCommand('copy');
+                console.log('✅ [COPY DEBUG] Fallback copy successful!');
+                this.showToast('📋 URL copied! Paste the ENTIRE link', 'success');
+            } catch (fallbackErr) {
+                console.error('❌ [COPY DEBUG] Fallback copy also failed:', fallbackErr);
+                this.showToast('❌ Failed to copy URL', 'error');
+            }
+        });
+    }
+
+    decodeURLState() {
+        const params = new URLSearchParams(window.location.search);
+        const compressed = params.get('state');
+        if (!compressed) return null;
+
+        console.log('🔍 [DECODE DEBUG] Compressed string length:', compressed.length);
+        console.log('🔍 [DECODE DEBUG] Compressed string:', compressed.substring(0, 100) + '...');
+
+        try {
+            const json = LZString.decompressFromEncodedURIComponent(compressed);
+            console.log('🔍 [DECODE DEBUG] Decompressed JSON length:', json ? json.length : 0);
+            console.log('🔍 [DECODE DEBUG] Decompressed JSON preview:', json ? json.substring(0, 200) : 'null');
+            
+            if (!json || json === 'null') {
+                console.error('❌ [DECODE DEBUG] Decompression returned null - URL may be truncated or corrupted');
+                this.showToast('❌ Invalid or incomplete share URL', 'error');
+                return null;
+            }
+            
+            const parsed = JSON.parse(json);
+            console.log('✅ [DECODE DEBUG] Successfully parsed shared state');
+            return parsed;
+        } catch (e) {
+            console.error('❌ [DECODE DEBUG] Failed to decode shared state:', e);
+            console.error('❌ [DECODE DEBUG] This usually means the URL was truncated. Make sure you copy the ENTIRE URL!');
+            this.showToast('❌ Invalid share URL - URL may be incomplete', 'error');
+            return null;
+        }
+    }
+
+    initializeFromURL() {
+        console.log('🔍 [INIT DEBUG] Checking for shared state in URL...');
+        console.log('🔍 [INIT DEBUG] Current URL:', window.location.href);
+        
+        const sharedState = this.decodeURLState();
+        
+        if (sharedState) {
+            console.log('🔍 [INIT DEBUG] Shared state found in URL:', sharedState);
+            this.restoreState(sharedState);
+            const saveName = sharedState.saveName || 'Shared Save';
+            this.showToast(`🔗 Loaded shared state: ${saveName}`, 'success');
+            // Clean URL after loading
+            window.history.replaceState({}, document.title, window.location.pathname);
+            console.log('✅ [INIT DEBUG] Shared state loaded and URL cleaned');
+        } else {
+            console.log('🔍 [INIT DEBUG] No shared state in URL');
+        }
+    }
+
+    // UI Rendering
+    renderSaveSlots() {
+        const container = document.getElementById('save-slots-grid');
+        container.innerHTML = '';
+
+        for (let slotId = 1; slotId <= 3; slotId++) {
+            const saveData = this.loadSaveData(slotId);
+            container.innerHTML += this.renderSaveSlot(slotId, saveData);
+        }
+    }
+
+    renderLoadSlots() {
+        const container = document.getElementById('load-slots-grid');
+        container.innerHTML = '';
+
+        for (let slotId = 1; slotId <= 3; slotId++) {
+            const saveData = this.loadSaveData(slotId);
+            container.innerHTML += this.renderLoadSlot(slotId, saveData);
+        }
+    }
+
+    renderSaveSlot(slotId, saveData) {
+        const isEmpty = !saveData;
+        const timestamp = saveData ? new Date(saveData.timestamp).toLocaleString() : '';
+        const meta = saveData ? saveData.metadata : null;
+        const saveName = saveData ? saveData.saveName || 'Unnamed Save' : '';
+
+        return `
+            <div class="save-slot-card ${isEmpty ? 'empty' : 'filled'}" data-slot="${slotId}">
+                <div class="slot-header">
+                    <span class="slot-number">Slot ${slotId}</span>
+                    ${!isEmpty ? `
+                        <div class="slot-actions">
+                            <button class="btn-rename-slot" onclick="tracker.renameSlot(${slotId}); event.stopPropagation();" title="Rename">✏️</button>
+                            <button class="btn-delete-slot" onclick="tracker.confirmDeleteSlot(${slotId}); event.stopPropagation();" title="Delete">🗑️</button>
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="slot-body" onclick="tracker.${isEmpty ? 'promptSaveName' : 'promptSaveName'}(${slotId})">
+                    ${isEmpty ? `
+                        <div class="empty-slot">
+                            <div class="plus-icon">＋</div>
+                            <div>Click to save here</div>
+                            <div class="jp-text">ここに保存</div>
+                        </div>
+                    ` : `
+                        <div class="slot-info">
+                            <div class="slot-name">${saveName}</div>
+                            <div class="slot-timestamp">${timestamp}</div>
+                            <div class="slot-stats">
+                                <span>🏇 ${meta.racesRun}</span>
+                                <span>🏆 ${meta.wins}</span>
+                                <span>✅ ${meta.factorsCompleted}</span>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+
+    renderLoadSlot(slotId, saveData) {
+        const isEmpty = !saveData;
+        const timestamp = saveData ? new Date(saveData.timestamp).toLocaleString() : '';
+        const meta = saveData ? saveData.metadata : null;
+        const saveName = saveData ? saveData.saveName || 'Unnamed Save' : '';
+
+        return `
+            <div class="save-slot-card ${isEmpty ? 'empty' : 'filled'}" data-slot="${slotId}">
+                <div class="slot-header">
+                    <span class="slot-number">Slot ${slotId}</span>
+                    ${!isEmpty ? `
+                        <div class="slot-actions">
+                            <button class="btn-delete-slot" onclick="tracker.confirmDeleteSlot(${slotId}); event.stopPropagation();" title="Delete">🗑️</button>
+                        </div>
+                    ` : ''}
+                </div>
+                <div class="slot-body" onclick="${isEmpty ? '' : `tracker.confirmLoadSlot(${slotId})`}">
+                    ${isEmpty ? `
+                        <div class="empty-slot">
+                            <div style="color: #cbd5e0;">Empty Slot</div>
+                            <div class="jp-text">空のスロット</div>
+                        </div>
+                    ` : `
+                        <div class="slot-info">
+                            <div class="slot-name">${saveName}</div>
+                            <div class="slot-timestamp">${timestamp}</div>
+                            <div class="slot-stats">
+                                <span>🏇 ${meta.racesRun}</span>
+                                <span>🏆 ${meta.wins}</span>
+                                <span>✅ ${meta.factorsCompleted}</span>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            </div>
+        `;
+    }
+
+    // Utilities
+    showToast(message, type = 'success') {
+        // Remove existing toasts
+        document.querySelectorAll('.toast-notification').forEach(t => t.remove());
+
+        const toast = document.createElement('div');
+        toast.className = `toast-notification ${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
 }
 
 // Initialize the tracker when the page loads
 let tracker;
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔍 [STARTUP DEBUG] ==================== PAGE LOAD ====================');
+    console.log('🔍 [STARTUP DEBUG] Checking system requirements...');
+    console.log('🔍 [STARTUP DEBUG] localStorage available?', typeof localStorage !== 'undefined');
+    console.log('🔍 [STARTUP DEBUG] LZString loaded?', typeof LZString !== 'undefined');
+    
+    if (typeof LZString !== 'undefined') {
+        console.log('✅ [STARTUP DEBUG] LZString library loaded successfully');
+        console.log('🔍 [STARTUP DEBUG] LZString methods:', Object.keys(LZString));
+    } else {
+        console.error('❌ [STARTUP DEBUG] LZString library NOT loaded! Share feature will not work.');
+    }
+    
+    console.log('🔍 [STARTUP DEBUG] Initializing UmaMusumeTracker...');
     tracker = new UmaMusumeTracker();
+    console.log('✅ [STARTUP DEBUG] UmaMusumeTracker initialized');
+    
+    // Check for shared state in URL
+    tracker.initializeFromURL();
+    
+    console.log('🔍 [STARTUP DEBUG] ==================== READY ====================');
 });

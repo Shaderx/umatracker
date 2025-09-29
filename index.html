@@ -59,6 +59,19 @@
                     </button>
                 </div>
                 
+                <!-- Storage Controls Toolbar -->
+                <div class="storage-toolbar">
+                    <button class="btn-storage" id="btn-save" onclick="tracker.openSaveDialog()" title="Save / 保存">
+                        💾 <span class="btn-label">Save</span>
+                    </button>
+                    <button class="btn-storage" id="btn-load" onclick="tracker.openLoadDialog()" title="Load / 読み込み">
+                        📂 <span class="btn-label">Load</span>
+                    </button>
+                    <button class="btn-storage" id="btn-share" onclick="tracker.openShareDialog()" title="Share / 共有">
+                        🔗 <span class="btn-label">Share</span>
+                    </button>
+                </div>
+                
                 <div class="stats">
                     <div class="stats-grid">
                         <div class="stat-item">
@@ -113,6 +126,8 @@
         </div>
     </div>
 
+    <!-- LZ-String for URL compression -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
     <script src="races.js"></script>
     <script src="app.js"></script>
 
@@ -142,6 +157,106 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Save Dialog Modal -->
+    <div id="save-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeSaveDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>💾 Save Progress / 進捗を保存</h3>
+                <button class="close-btn" onclick="tracker.closeSaveDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="save-slots-grid" id="save-slots-grid">
+                    <!-- Dynamically generated save slots -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Dialog Modal -->
+    <div id="load-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeLoadDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>📂 Load Progress / 進捗を読み込み</h3>
+                <button class="close-btn" onclick="tracker.closeLoadDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="load-slots-grid" id="load-slots-grid">
+                    <!-- Dynamically generated load slots -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Dialog Modal -->
+    <div id="share-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeShareDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>🔗 Share Progress / 進捗を共有</h3>
+                <button class="close-btn" onclick="tracker.closeShareDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="share-content">
+                    <p>Share this URL to let others see your race plan:</p>
+                    <p>このURLを共有して、他の人にレース計画を見せましょう：</p>
+                    <div class="share-url-container">
+                        <input type="text" id="share-url-input" readonly />
+                        <button class="btn-copy" onclick="tracker.copyShareURL()">📋 Copy</button>
+                    </div>
+                    <div class="share-stats">
+                        <div>Races Run / 出走: <strong id="share-stat-races">0</strong></div>
+                        <div>Wins / 勝利: <strong id="share-stat-wins">0</strong></div>
+                        <div>Factors / 因子: <strong id="share-stat-factors">0</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Naming Popup Modal -->
+    <div id="name-modal" class="storage-modal naming-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeNameDialog()"></div>
+        <div class="storage-panel naming-panel">
+            <div class="storage-header">
+                <h3>✏️ Name Your Save / 保存に名前をつける</h3>
+                <button class="close-btn" onclick="tracker.closeNameDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="naming-content">
+                    <label class="naming-label">Save Name / 保存名:</label>
+                    <input type="text" id="name-input" class="naming-input" maxlength="50" placeholder="My Epic Run..." />
+                    <div class="naming-actions">
+                        <button class="btn btn-secondary" onclick="tracker.closeNameDialog()">Cancel / キャンセル</button>
+                        <button class="btn btn-primary" onclick="tracker.confirmSaveName()">Save / 保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="storage-modal confirmation-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeDeleteDialog()"></div>
+        <div class="storage-panel confirmation-panel">
+            <div class="storage-header delete-header">
+                <h3>⚠️ Delete Save? / 保存を削除？</h3>
+                <button class="close-btn" onclick="tracker.closeDeleteDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="confirmation-content">
+                    <p id="delete-message">Are you sure you want to delete this save? This cannot be undone.</p>
+                    <p id="delete-message-jp">この保存を削除してもよろしいですか？ 元に戻せません。</p>
+                    <div class="confirmation-actions">
+                        <button class="btn btn-secondary" onclick="tracker.closeDeleteDialog()">Cancel / キャンセル</button>
+                        <button class="btn btn-danger" onclick="tracker.executeDelete()">Delete / 削除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer class="app-footer">
