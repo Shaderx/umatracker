@@ -158,6 +158,7 @@
             border-radius: 10px;
             overflow: hidden;
         }
+        .planner-slot.disabled { opacity: 0.55; filter: grayscale(1); }
         .planner-slot-head {
             background: #e6fffa;
             color: #2c7a7b;
@@ -190,6 +191,7 @@
             cursor: pointer;
             background: #fff;
         }
+        .planner-plus.disabled { border-color: #e2e8f0; color: #a0aec0; background: #f7fafc; cursor: not-allowed; pointer-events: none; }
         /* Single-race slot button with background image and bottom overlay */
         .slot-wrapper { position: relative; width: 100%; }
         .slot-button {
@@ -247,6 +249,10 @@
             flex-direction: column;
             overflow: hidden;
         }
+        .picker-nav { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color:#fff; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; width: 56px; height: 56px; font-size: 28px; display:flex; align-items:center; justify-content:center; cursor: pointer; z-index: 1002; }
+        .picker-nav:hover { background: rgba(0,0,0,0.6); }
+        .picker-nav-left { left: auto; }
+        .picker-nav-right { right: auto; }
         .picker-head { padding: 12px 16px; background: #38a169; color: #fff; display:flex; align-items:center; justify-content: space-between; }
         .picker-title { font-weight: 800; }
         .picker-body { padding: 12px 16px; overflow: auto; }
@@ -610,14 +616,14 @@
         <!-- Full-width calendar placed at bottom -->
         <div style="max-width: 1400px; margin: 18px auto 0 auto;">
             <div class="races-section" id="calendar-section" style="padding: 18px;">
-                <h2 class="section-title">Race Calendar<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースカレンダー</span></h2>
+                <h2 class="section-title">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
                 <div class="controls">
                     <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
                     <button class="filter-btn" data-filter="GI">G1</button>
                     <button class="filter-btn" data-filter="GII">G2</button>
                     <button class="filter-btn" data-filter="GIII">G3</button>
-                    <button class="filter-btn" data-filter="Pre-OP">Pre-OP</button>
                     <button class="filter-btn" data-filter="Open">OP</button>
+                    <button class="filter-btn" data-filter="Pre-OP">Pre-OP</button>                   
                     <button class="filter-btn" data-filter="junior">Junior Year<br><span style="font-size: 0.7em;">ジュニア級</span></button>
                     <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
                     <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
@@ -639,7 +645,9 @@
     <!-- Picker Modal -->
     <div id="picker-modal" class="picker-modal hidden">
         <div class="picker-backdrop" onclick="tracker.closePicker()"></div>
-        <div class="picker-panel">
+        <button class="picker-nav picker-nav-left" onclick="tracker.navigatePicker(-1)" aria-label="Previous">‹</button>
+        <button class="picker-nav picker-nav-right" onclick="tracker.navigatePicker(1)" aria-label="Next">›</button>
+        <div class="picker-panel" id="picker-panel">
             <div class="picker-head">
                 <div class="picker-title" id="picker-title">レース選択</div>
                 <button class="btn btn-secondary" onclick="tracker.closePicker()">閉じる</button>

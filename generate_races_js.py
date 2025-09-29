@@ -1,31 +1,32 @@
 import csv
 import json
 import os
+import re
 from datetime import datetime, timezone
 
 
 def parse_date(date_str: str):
-    month_map = {
-        '1月': 'January', '2月': 'February', '3月': 'March', '4月': 'April',
-        '5月': 'May', '6月': 'June', '7月': 'July', '8月': 'August',
-        '9月': 'September', '10月': 'October', '11月': 'November', '12月': 'December'
-    }
-    half_map = {'前半': '1st', '後半': '2nd'}
+    """Parse JP date like '11月前半' → ('November', '1st').
 
-    month_key = None
-    half_key = None
-    # find first occurrence for month/half markers
-    for key in month_map.keys():
-        if key in date_str:
-            month_key = key
-            break
-    for key in half_map.keys():
-        if key in date_str:
-            half_key = key
-            break
+    Uses regex to capture the numeric month to avoid substring traps
+    like matching '1月' inside '11月'.
+    """
+    month_names = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ]
 
-    month = month_map.get(month_key, 'January')
-    half = half_map.get(half_key, '1st')
+    m = re.search(r'(\d{1,2})月', date_str)
+    if m:
+        try:
+            month_num = max(1, min(12, int(m.group(1))))
+        except ValueError:
+            month_num = 1
+    else:
+        month_num = 1
+
+    month = month_names[month_num - 1]
+    half = '1st' if '前半' in date_str else ('2nd' if '後半' in date_str else '1st')
     return month, half
 
 
@@ -90,6 +91,7 @@ def generate_races_js(csv_path: str, out_path: str):
             name_jp = (row.get('Name') or '').strip()
             name_en = (row.get('En name') or '').strip()
             date_str = (row.get('Date') or '').strip()
+            year_str = (row.get('Year') or '').strip()
             junior_col = (row.get('Junior') or '').strip()
             classic_col = (row.get('Classic (クラシック)') or '').strip()
             senior_col = (row.get('Senior (シニア)') or '').strip()
@@ -103,6 +105,23 @@ def generate_races_js(csv_path: str, out_path: str):
             name = name_en or name_jp
             month, half = parse_date(date_str)
             season = get_season(month)
+            # Derive year flags exclusively from Year, falling back to explicit columns if Year is missing
+            # Examples: '1年目' → junior, '2年目' → classics, '3年目' → senior
+            j_flag = c_flag = s_flag = False
+            m_year = re.search(r'(\d)年目', year_str)
+            if m_year:
+                y = int(m_year.group(1))
+                if y == 1:
+                    j_flag = True
+                elif y == 2:
+                    c_flag = True
+                elif y == 3:
+                    s_flag = True
+            else:
+                j_flag = (junior_col == 'ジュニア')
+                c_flag = (classic_col == 'クラシック')
+                s_flag = (senior_col == 'シニア')
+
             race = {
                 'name': name,
                 'nameJP': name_jp,
@@ -110,9 +129,9 @@ def generate_races_js(csv_path: str, out_path: str):
                 'length': distance,
                 'surface': convert_surface(ground),
                 'racetrack': convert_track_name(location),
-                'junior': junior_col == 'ジュニア',
-                'classics': classic_col == 'クラシック',
-                'senior': senior_col == 'シニア',
+                'junior': j_flag,
+                'classics': c_flag,
+                'senior': s_flag,
                 'month': month,
                 'half': half,
                 'direction': convert_direction(direction_col),

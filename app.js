@@ -245,7 +245,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     createRaceObject(values) {
-        const [nameJP, nameEN, date, year, junior, classics, senior, grade, location, ground, distance, distanceCategory, direction, innerOuter, imageField, imageLink] = values;
+	        const [nameJP, nameEN, date, year, junior, classics, senior, grade, location, ground, distance, distanceCategory, direction, innerOuter, imageField, imageLink] = values;
         
         // Use English name if available, otherwise use Japanese name
         const name = nameEN.trim() || nameJP.trim();
@@ -281,7 +281,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             image = `race_images/${image}`;
         }
         
-        // Enrich missing remote images using a small built-in mapping for the fallback sample
+	        // Enrich missing remote images using a small built-in mapping for the fallback sample
         if (!imageRemote) {
             const imageRemoteByName = {
                 'Hakodate Junior Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race2.png',
@@ -348,17 +348,32 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 if (filename) image = `race_images/${filename}`;
             }
         }
-        
-        return {
+	        
+	        // Derive year flags exclusively from Year (fallback to explicit columns if Year missing)
+	        const yearStr = (year || '').trim();
+	        let juniorFlag = false, classicsFlag = false, seniorFlag = false;
+	        const yMatch = yearStr.match(/(\d)年目/);
+	        if (yMatch) {
+	            const y = parseInt(yMatch[1], 10);
+	            if (y === 1) juniorFlag = true;
+	            else if (y === 2) classicsFlag = true;
+	            else if (y === 3) seniorFlag = true;
+	        } else {
+	            juniorFlag = (junior || '').trim() === 'ジュニア';
+	            classicsFlag = (classics || '').trim() === 'クラシック';
+	            seniorFlag = (senior || '').trim() === 'シニア';
+	        }
+	        
+	        return {
             name: name,
             nameJP: nameJP.trim(),
             type: type,
             length: distance,
             surface: surface,
             racetrack: racetrack,
-            junior: junior.trim() === 'ジュニア',
-            classics: classics.trim() === 'クラシック',
-            senior: senior.trim() === 'シニア',
+	            junior: juniorFlag,
+	            classics: classicsFlag,
+	            senior: seniorFlag,
             month: monthHalf.month,
             half: monthHalf.half,
             direction: convertedDirection,
@@ -660,6 +675,10 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closePicker();
+            } else if (e.key === 'ArrowLeft') {
+                this.navigatePicker?.(-1);
+            } else if (e.key === 'ArrowRight') {
+                this.navigatePicker?.(1);
             }
         });
     }
@@ -720,6 +739,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 			this.halfOrder.forEach(half => {
 				const key = this.cellKey(month, half);
 					const rawValue = yearCells[key];
+					const hasAnyForSlot = this.races.some(r => r.month === month && r.half === half && !!r[this.plannerYear]);
 					const selectedName = (typeof rawValue === 'string' && rawValue) ? rawValue : null;
 					let slotBody = '';
 					if (selectedName) {
@@ -743,9 +763,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                         slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ Add / 追加</button>`;
 					}
 					slots.push(`
-						<div class=\"planner-slot\">
+						<div class=\"planner-slot ${!selectedName && !hasAnyForSlot ? 'disabled' : ''}\">
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
-								<div class=\"planner-slot-body\">${slotBody}</div>
+								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
 					`);
 			});
@@ -761,9 +781,25 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 			const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
 			title.textContent = `${yearMap[this.plannerYear]} — ${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
 		}
-		this.renderPickerList();
-		const modal = document.getElementById('picker-modal');
-		if (modal) modal.classList.remove('hidden');
+        this.renderPickerList();
+        const modal = document.getElementById('picker-modal');
+        if (modal) modal.classList.remove('hidden');
+        // Position side navs just outside the panel edges
+        setTimeout(() => {
+            const panel = document.getElementById('picker-panel');
+            const leftBtn = document.querySelector('.picker-nav-left');
+            const rightBtn = document.querySelector('.picker-nav-right');
+            if (panel && leftBtn && rightBtn) {
+                const rect = panel.getBoundingClientRect();
+                const gap = 12; // distance from panel edge
+                leftBtn.style.left = `${rect.left - leftBtn.offsetWidth - gap}px`;
+                leftBtn.style.top = `${rect.top + rect.height / 2 - leftBtn.offsetHeight / 2}px`;
+                rightBtn.style.left = `${rect.right + gap}px`;
+                rightBtn.style.top = `${rect.top + rect.height / 2 - rightBtn.offsetHeight / 2}px`;
+            }
+        }, 0);
+        // Setup swipe listeners
+        this.attachPickerSwipeHandlers();
 	}
 
 	closePicker() {
@@ -786,9 +822,16 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		if (!listEl || !this.currentPicker) return;
 		const { year, month, half } = this.currentPicker;
 		const yearFlag = { junior: 'junior', classics: 'classics', senior: 'senior' }[year];
-		const filtered = this.races.filter(r => r.month === month && r.half === half && (!!r[yearFlag]));
-			const cellValue = this.plannerData[year][this.cellKey(month, half)];
-		listEl.innerHTML = filtered.map(r => {
+        const filtered = this.races.filter(r => r.month === month && r.half === half && (!!r[yearFlag]));
+        const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
+        const sorted = filtered.slice().sort((a, b) => {
+            const ao = typeOrder[a.type] ?? 99;
+            const bo = typeOrder[b.type] ?? 99;
+            if (ao !== bo) return ao - bo;
+            return (a.name || '').localeCompare(b.name || '');
+        });
+            const cellValue = this.plannerData[year][this.cellKey(month, half)];
+        listEl.innerHTML = sorted.map(r => {
 				const selected = cellValue === r.name;
 			const primary = r.image || r.imageRemote || '';
 			const onerr = (r.image && r.imageRemote) ? `onerror=\"this.onerror=null; this.src='${r.imageRemote}'\"` : '';
@@ -803,6 +846,53 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 			`;
 		}).join('');
 	}
+
+    navigatePicker(direction) {
+        // direction: -1 (prev half) or 1 (next half). Wrap month/half within the same year.
+        if (!this.currentPicker) return;
+        const { year } = this.currentPicker;
+        const months = this.monthOrder;
+        const halves = this.halfOrder; // ['1st','2nd']
+        let mi = months.indexOf(this.currentPicker.month);
+        let hi = halves.indexOf(this.currentPicker.half);
+        const step = direction > 0 ? 1 : -1;
+        hi += step;
+        if (hi < 0) { hi = halves.length - 1; mi = (mi - 1 + months.length) % months.length; }
+        if (hi >= halves.length) { hi = 0; mi = (mi + 1) % months.length; }
+        this.currentPicker = { year, month: months[mi], half: halves[hi] };
+        // Update title and list
+        const title = document.getElementById('picker-title');
+        if (title) {
+            const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
+            title.textContent = `${yearMap[year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
+        }
+        this.renderPickerList();
+    }
+
+    attachPickerSwipeHandlers() {
+        const panel = document.getElementById('picker-panel');
+        if (!panel) return;
+        let startX = 0, startY = 0, isTouch = false;
+        const onTouchStart = (e) => {
+            isTouch = true;
+            const t = e.touches ? e.touches[0] : e;
+            startX = t.clientX; startY = t.clientY;
+        };
+        const onTouchEnd = (e) => {
+            if (!isTouch) return;
+            const t = (e.changedTouches && e.changedTouches[0]) || e;
+            const dx = t.clientX - startX;
+            const dy = t.clientY - startY;
+            if (Math.abs(dx) > 50 && Math.abs(dy) < 40) {
+                this.navigatePicker(dx < 0 ? 1 : -1);
+            }
+            isTouch = false;
+        };
+        panel.onmousedown = onTouchStart;
+        panel.onmouseup = onTouchEnd;
+        panel.ontouchstart = onTouchStart;
+        panel.ontouchend = onTouchEnd;
+    }
 
 		addRaceToCurrentCell(raceName) {
 		if (!this.currentPicker) return;
@@ -941,40 +1031,48 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     getFilteredRaces() {
+        let list;
         switch(this.currentFilter) {
-            case 'GI':
-                return this.races.filter(race => race.type === 'GI');
-            case 'GII':
-                return this.races.filter(race => race.type === 'GII');
-            case 'GIII':
-                return this.races.filter(race => race.type === 'GIII');
-            case 'Open':
-                return this.races.filter(race => race.type === 'Open');
-            case 'Pre-OP':
-                return this.races.filter(race => race.type === 'Pre-OP');
-            case 'junior':
-                return this.races.filter(race => race.junior);
-            case 'classic':
-                return this.races.filter(race => race.classics);
-            case 'senior':
-                return this.races.filter(race => race.senior);
+            case 'GI': list = this.races.filter(r => r.type === 'GI'); break;
+            case 'GII': list = this.races.filter(r => r.type === 'GII'); break;
+            case 'GIII': list = this.races.filter(r => r.type === 'GIII'); break;
+            case 'Open': list = this.races.filter(r => r.type === 'Open'); break;
+            case 'Pre-OP': list = this.races.filter(r => r.type === 'Pre-OP'); break;
+            case 'junior': list = this.races.filter(r => r.junior); break;
+            case 'classic': list = this.races.filter(r => r.classics); break;
+            case 'senior': list = this.races.filter(r => r.senior); break;
             case 'SSS': {
                 const set = new Set(this.summerSeries?.sprint || []);
-                return this.races.filter(r => set.has(r.name));
+                list = this.races.filter(r => set.has(r.name));
+                break;
             }
             case 'SMS': {
                 const set = new Set(this.summerSeries?.mile || []);
-                return this.races.filter(r => set.has(r.name));
+                list = this.races.filter(r => set.has(r.name));
+                break;
             }
             case 'S2000': {
                 const set = new Set(this.summerSeries?.s2000 || []);
-                return this.races.filter(r => set.has(r.name));
+                list = this.races.filter(r => set.has(r.name));
+                break;
             }
-            case 'selected':
-                return this.races.filter(race => this.selectedRaces.has(race.name));
-            default:
-                return this.races;
+            case 'selected': list = this.races.filter(r => this.selectedRaces.has(r.name)); break;
+            default: list = [...this.races];
         }
+        const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
+        return list.sort((a, b) => {
+            const ao = typeOrder[a.type] ?? 99;
+            const bo = typeOrder[b.type] ?? 99;
+            if (ao !== bo) return ao - bo;
+            const am = this.monthOrder.indexOf(a.month);
+            const bm = this.monthOrder.indexOf(b.month);
+            if (am !== bm) return am - bm;
+            const halfOrder = { '1st': 0, '2nd': 1 };
+            const ah = halfOrder[a.half] ?? 0;
+            const bh = halfOrder[b.half] ?? 0;
+            if (ah !== bh) return ah - bh;
+            return (a.name || '').localeCompare(b.name || '');
+        });
     }
 
     toggleParticipation(raceName) {
