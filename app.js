@@ -788,8 +788,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 					} else {
 									slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ Add / 追加</button>`;
 					}
+					const isSummer = (month === 'July' || month === 'August');
 					slots.push(`
-						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''}\"> 
+						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''}\">
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
 								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
@@ -1227,6 +1228,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     clearAll() {
+        const confirmed = confirm('This will clear all races in planner and database.\n\nこれにより、プランナーとデータベースのすべてのレースがクリアされます。\n\nAre you sure you want to continue?');
+        if (!confirmed) return;
+
         this.selectedRaces.clear();
         this.wonRaces.clear();
         this.lostRaces.clear();
@@ -1303,27 +1307,84 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         }).join('');
     }
 
+    // Planner-aware chronological helpers
+    buildPlannerTimeline() {
+        const cells = [];
+        const yearOrder = ['junior','classics','senior'];
+        try {
+            yearOrder.forEach(year => {
+                const yearCells = this.plannerData[year] || {};
+                this.monthOrder.forEach(month => {
+                    this.halfOrder.forEach(half => {
+                        const key = this.cellKey(month, half);
+                        const raw = yearCells[key];
+                        const id = raw ? String(raw) : null;
+                        const won = id ? this.wonRaces.has(id) : false;
+                        const lost = id ? this.lostRaces.has(id) : false;
+                        cells.push({ year, month, half, id, won, lost, filled: !!id });
+                    });
+                });
+            });
+        } catch (e) {
+            // Fallback to empty timeline
+        }
+        return cells;
+    }
+
+    getMaxConsecutiveRunsFromPlanner() {
+        const cells = this.buildPlannerTimeline();
+        let max = 0, cur = 0;
+        for (const c of cells) {
+            if (c.filled) { cur += 1; } else { cur = 0; }
+            if (cur > max) max = cur;
+        }
+        return max;
+    }
+
+    getMaxConsecutiveWinsFromPlanner() {
+        const cells = this.buildPlannerTimeline();
+        let max = 0, cur = 0;
+        for (const c of cells) {
+            if (c.won) { cur += 1; } else { cur = 0; }
+            if (cur > max) max = cur;
+        }
+        return max;
+    }
+
+    hasLossThenWinFromPlanner() {
+        const cells = this.buildPlannerTimeline();
+        let seenLoss = false;
+        for (const c of cells) {
+            if (!c.filled) continue;
+            if (c.lost) seenLoss = true;
+            if (c.won && seenLoss) return true;
+        }
+        return false;
+    }
+
     // Condition checking methods
     checkConsecutiveRuns() {
-        // CSV-aligned: 2 consecutive races; approximated by participation count ≥ 2
-        const participated = this.selectedRaces.size;
+        // Enforce true consecutiveness using planner timeline
+        const maxStreak = this.getMaxConsecutiveRunsFromPlanner();
+        const required = 2;
         return {
-            completed: participated >= 2,
-            current: Math.min(participated, 2),
-            required: 2,
-            progress: Math.min(100, (participated / 2) * 100),
-            details: `Participated in ${participated} races (consecutive check simplified)`
+            completed: maxStreak >= required,
+            current: Math.min(maxStreak, required),
+            required,
+            progress: Math.min(100, (maxStreak / required) * 100),
+            details: `Max planned consecutive runs: ${maxStreak}`
         };
     }
     checkConsecutiveWins() {
-        // This would need race order tracking - simplified for demo
-        const wins = Array.from(this.wonRaces);
+        // Enforce true consecutiveness using planner timeline
+        const maxWinStreak = this.getMaxConsecutiveWinsFromPlanner();
+        const required = 2;
         return {
-            completed: wins.length >= 2,
-            current: Math.min(wins.length, 2),
-            required: 2,
-            progress: wins.length >= 2 ? 100 : (wins.length / 2) * 100,
-            details: wins.length >= 2 ? 'Need consecutive wins (simplified)' : ''
+            completed: maxWinStreak >= required,
+            current: Math.min(maxWinStreak, required),
+            required,
+            progress: Math.min(100, (maxWinStreak / required) * 100),
+            details: `Max planned consecutive wins: ${maxWinStreak}`
         };
     }
 
@@ -1565,30 +1626,30 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkImprovesWithRacing() {
-        // CSV-aligned threshold: 3 consecutive races; we approximate by count ≥ 3
-        // Note: true consecutiveness would require calendar order, which is not modeled yet
-        const participated = this.selectedRaces.size;
-
+        // Require 3 consecutive planned races (reporter event still simplified/unmodeled)
+        const maxStreak = this.getMaxConsecutiveRunsFromPlanner();
+        const required = 3;
         return {
-            completed: participated >= 3,
-            current: Math.min(participated, 3),
-            required: 3,
-            progress: Math.min(100, (participated / 3) * 100),
-            details: `Participated in ${participated} races (consecutive check simplified)`
+            completed: maxStreak >= required,
+            current: Math.min(maxStreak, required),
+            required,
+            progress: Math.min(100, (maxStreak / required) * 100),
+            details: `Max planned consecutive runs: ${maxStreak} (reporter event not modeled)`
         };
     }
 
     checkNeverGiveUp() {
-        // Simplified: require at least one loss and at least one win (order not enforced)
-        const hasLoss = this.lostRaces.size > 0;
-        const hasWin = this.wonRaces.size > 0;
-        const completed = hasLoss && hasWin;
+        // Enforce order: a loss occurs before a later win in planner timeline
+        const cells = this.buildPlannerTimeline();
+        const anyLoss = cells.some(c => c.lost);
+        const anyWin = cells.some(c => c.won);
+        const completed = this.hasLossThenWinFromPlanner();
         return {
             completed,
-            current: completed ? 2 : (hasLoss || hasWin ? 1 : 0),
+            current: completed ? 2 : (anyLoss || anyWin ? 1 : 0),
             required: 2,
-            progress: completed ? 100 : (hasLoss || hasWin ? 50 : 0),
-            details: `Wins: ${this.wonRaces.size}, Losses: ${this.lostRaces.size} (order simplified)`
+            progress: completed ? 100 : (anyLoss || anyWin ? 50 : 0),
+            details: completed ? 'Loss occurs before a later win (planner order)' : 'Need a loss followed by a later win (planner order)'
         };
     }
 
