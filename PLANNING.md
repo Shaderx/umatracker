@@ -21,8 +21,8 @@ This document describes the current capabilities of the web app, how files link 
    - `renderRaces()` draws the race cards.
    - `updateProgress()` computes and renders hidden factor progress.
 3. UI interactions:
-   - Clicking a race card calls `toggleParticipation(raceName)` (bound inline in card HTML), toggling selection and defaulting to Won.
-   - A small `loss-toggle-btn` on selected cards calls `toggleWin(raceName)` to flip Won ↔ Lost.
+   - Clicking a race card calls `toggleParticipationById(id)` (bound inline in card HTML), toggling selection and defaulting to Won.
+   - A small `loss-toggle-btn` on selected cards calls `toggleWinById(id)` to flip Won ↔ Lost.
    - Filter buttons set `currentFilter` and re-render the grid.
 4. Hidden factor evaluation:
    - `updateProgress()` maps over `hiddenFactors`, invoking each `check()` method to produce a result {completed, current, required, progress, details}.
@@ -34,9 +34,12 @@ This document describes the current capabilities of the web app, how files link 
   - Derived helpers: distance category predicates (`short`/`mile`/`medium`/`long`), region sets (east/west).
   - Optional image metadata: `image` (local path under `race_images/`), `imageRemote` (original URL).
 - App state (sets):
-  - `selectedRaces`: names of races marked as run.
-  - `wonRaces`: names marked as Won.
-  - `lostRaces`: names marked as Lost.
+  - `selectedRaces`: string IDs of races marked as run.
+  - `wonRaces`: string IDs marked as Won.
+  - `lostRaces`: string IDs marked as Lost.
+- Lookup maps:
+  - `raceById: Map<string, Race>` for quick property checks from IDs.
+  - `raceIdsByName: Map<string, Set<string>>` to support name-based factor conditions across years.
 - Hidden factors (array): Each has `id`, bilingual names/conditions, and a `check()` that inspects the sets/races.
 
 Note: The race object currently does not store a chronological index or year-stage order; checks that require sequence are simplified.
@@ -88,7 +91,7 @@ Note: The race object currently does not store a chronological index or year-sta
 - Aptitudes and skills are not modeled: Factors that depend on A-rank aptitudes or named skills are not evaluable yet.
 - Embedded dataset: Races come from a representative subset inside `app.js`. `RaceComplete.csv` is present but not parsed at runtime.
 - Partial field usage: UI templates reference `trial_for`/`series`, but current race objects do not populate these fields.
-- Image assets unused: `race_images/` not surfaced in the UI yet.
+- Images are surfaced on race cards and planner slots. Planner uses layered backgrounds (local `image` first, then `imageRemote` as fallback) with a gradient overlay for legibility.
  - CSV alignment scope: Where the CSV specifies exact groupings (Crown/Tiara), groups are enforced; where data is missing (e.g., some trial races or jewelry items), progress reflects available entries and may not reach completion.
 
 ### Future Features (backlog placeholders)
@@ -126,8 +129,9 @@ Note: The race object currently does not store a chronological index or year-sta
 ### Implementation Notes (mapping to code)
 - Initialization: `initializeData()` → translations, categories, `loadRaceData()`, `loadHiddenFactors()`.
 - DOM wiring: `setupEventListeners()` attaches `.filter-btn` clicks and uses `data-filter` attributes; `Clear All` calls `clearAll()`.
-- Rendering: `renderRaces()` fills `#races-grid`; `renderHiddenFactors()` fills `#hidden-factors`.
-- State transitions: `toggleParticipation(name)` updates `selectedRaces`/`wonRaces`/`lostRaces`; `toggleWin(name)` flips Won ↔ Lost.
+- Rendering: `renderRaces()` fills `#races-grid`; `renderHiddenFactors()` fills `#hidden-factors`; `renderPlannerGrid()` draws the game-style planner.
+- State transitions: `toggleParticipationById(id)` updates `selectedRaces`/`wonRaces`/`lostRaces`; `toggleWinById(id)` flips Won ↔ Lost.
+- Planner: slots store IDs, render EN/JP titles by resolving `raceById`, carry `data-race-id`, and use layered background images (local then remote) with a gradient overlay. Picker compares and selects by ID via `addRaceToCurrentCellById(id)` and supports Auto-close toggle and year-wrapping navigation.
 - Stats and progress: `updateProgress()` sets `#total-*` and computes factor results.
  - CSV-aligned checks in `app.js`:
    - `checkAllDistanceG1()` now counts any race wins per distance category.
@@ -169,6 +173,13 @@ Note: The race object currently does not store a chronological index or year-sta
   - Progress panel scrolls internally and now caps with `max-height` synced dynamically to planner height.
 - Visual polish:
   - Page background uses `background.jpg` with a soft gradient overlay for readability.
+
+### Session Changelog (2025-09-29 — ID-based linkage and planner image fix)
+- Migrated selection/state to use race IDs across the app (planner, calendar, win/loss).
+- Added `raceById` and `raceIdsByName` maps to support ID-based state while preserving name-based factor conditions.
+- Updated hidden factor checks to iterate IDs and resolve races via `raceById`; name-based lists (e.g., Newspaper, Crown/Tiara, star/jewelry series) match by translating names → IDs via `raceIdsByName`.
+- Planner slots now resolve IDs to show English/Japanese titles, add `data-race-id`, and render layered background images with remote fallback for reliability.
+- Picker highlights and selection operate by ID; new `addRaceToCurrentCellById(id)` added; selection Auto-close toggle preserved.
 
 ### Notes on Implementation
 - New IDs: `planner-section` (planner container) and `progress-panel` (right panel) used by `syncProgressHeightToPlanner()`.

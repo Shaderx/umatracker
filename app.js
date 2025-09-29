@@ -12,6 +12,8 @@ class UmaMusumeTracker {
 		this.monthOrder = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 		this.halfOrder = ['1st','2nd'];
 		this.plannerData = this.createEmptyPlannerData();
+        // Modal toggle state
+        this.closeOnSelection = true;
         
         this.initializeData();
         this.setupEventListeners();
@@ -144,14 +146,29 @@ class UmaMusumeTracker {
                 const countText = meta && meta.count != null ? ` (${meta.count} races)` : '';
                 ind.textContent = `Data source: races.js — generated ${dateText}${countText}`;
             }
+            this.buildRaceMaps();
             return;
         }
         // Fallback: parse embedded sample CSV
         this.races = this.parseCSVData();
+        this.buildRaceMaps();
         const ind = document.getElementById('data-source-indicator');
         if (ind) {
             ind.textContent = 'Data source: embedded fallback dataset (sample)';
         }
+    }
+
+    buildRaceMaps() {
+        this.raceById = new Map(this.races.map(r => [String(r.id), r]));
+        // Build a mapping from English race name -> Set of IDs (handles duplicates across years)
+        this.raceIdsByName = new Map();
+        this.races.forEach(race => {
+            const id = String(race.id);
+            const name = race.name || '';
+            if (!name) return;
+            if (!this.raceIdsByName.has(name)) this.raceIdsByName.set(name, new Set());
+            this.raceIdsByName.get(name).add(id);
+        });
     }
 
     parseCSVData() {
@@ -740,30 +757,39 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 				const key = this.cellKey(month, half);
 					const rawValue = yearCells[key];
 					const hasAnyForSlot = this.races.some(r => r.month === month && r.half === half && !!r[this.plannerYear]);
-					const selectedName = (typeof rawValue === 'string' && rawValue) ? rawValue : null;
+					const selectedId = (typeof rawValue === 'string' && rawValue) ? String(rawValue) : null;
 					let slotBody = '';
-					if (selectedName) {
-						const r = this.races.find(rr => rr.name === selectedName);
-						const primary = r ? (r.image || r.imageRemote || '') : '';
-						const badgeClass = this.lostRaces.has(selectedName) ? 'badge-lost' : (this.wonRaces.has(selectedName) ? 'badge-won' : '');
+					if (selectedId) {
+						let r = this.raceById ? this.raceById.get(selectedId) : null;
+						if (!r) {
+							// Backward compatibility: previously stored race name
+							r = this.races.find(rr => rr.name === selectedId) || null;
+						}
+						const hasLocal = r && r.image;
+						const hasRemote = r && r.imageRemote;
+						const bgLayers = [];
+						if (hasLocal) bgLayers.push(`url('${r.image}')`);
+						if (hasRemote) bgLayers.push(`url('${r.imageRemote}')`);
+						const bgStyle = bgLayers.length ? `background-image: ${bgLayers.join(', ')}` : '';
+						const badgeClass = this.lostRaces.has(selectedId) ? 'badge-lost' : (this.wonRaces.has(selectedId) ? 'badge-won' : '');
 						slotBody = `
-							<div class=\"slot-wrapper\">
-								<button class=\"slot-button ${badgeClass}\" style=\"background-image: url('${primary}')\" onclick=\"tracker.openPicker('${month}','${half}')\">
+							<div class=\"slot-wrapper\"> 
+								<button class=\"slot-button ${badgeClass}\" data-race-id=\"${selectedId}\" style=\"${bgStyle}\" onclick=\"tracker.openPicker('${month}','${half}')\"> 
 									<div class=\"slot-gradient\"></div>
-									<div class=\"slot-title\">
-										<div class=\"en\">${r ? r.name : selectedName}</div>
+									<div class=\"slot-title\"> 
+										<div class=\"en\">${r ? r.name : ''}</div>
 										<div class=\"jp\">${r && r.nameJP ? r.nameJP : ''}</div>
 									</div>
 								</button>
-                                <button class=\"slot-remove\" title=\"Remove / 削除\" onclick=\"tracker.removeRaceFromPlanner('${month}','${half}')\">×</button>
-                                <button class=\"loss-toggle-btn ${this.lostRaces.has(selectedName) ? 'lost' : 'won'}\" title=\"Toggle Win/Loss / 勝敗切替\" style=\"position:absolute; top:6px; left:6px;\" onclick=\"tracker.toggleWinFromPlanner('${month}','${half}')\">${this.lostRaces.has(selectedName) ? '👎' : '🏆'}</button>
+								<button class=\"slot-remove\" title=\"Remove / 削除\" onclick=\"tracker.removeRaceFromPlanner('${month}','${half}')\">×</button>
+								<button class=\"loss-toggle-btn ${this.lostRaces.has(selectedId) ? 'lost' : 'won'}\" title=\"Toggle Win/Loss / 勝敗切替\" style=\"position:absolute; top:6px; left:6px;\" onclick=\"tracker.toggleWinFromPlanner('${month}','${half}')\">${this.lostRaces.has(selectedId) ? '👎' : '🏆'}</button>
 							</div>
 						`;
 					} else {
-                        slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ Add / 追加</button>`;
+									slotBody = `<button class=\"planner-plus\" onclick=\"tracker.openPicker('${month}','${half}')\">＋ Add / 追加</button>`;
 					}
 					slots.push(`
-						<div class=\"planner-slot ${!selectedName && !hasAnyForSlot ? 'disabled' : ''}\">
+						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''}\"> 
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
 								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
@@ -784,20 +810,10 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         this.renderPickerList();
         const modal = document.getElementById('picker-modal');
         if (modal) modal.classList.remove('hidden');
+        // Update toggle button state
+        this.updateToggleButton();
         // Position side navs just outside the panel edges
-        setTimeout(() => {
-            const panel = document.getElementById('picker-panel');
-            const leftBtn = document.querySelector('.picker-nav-left');
-            const rightBtn = document.querySelector('.picker-nav-right');
-            if (panel && leftBtn && rightBtn) {
-                const rect = panel.getBoundingClientRect();
-                const gap = 12; // distance from panel edge
-                leftBtn.style.left = `${rect.left - leftBtn.offsetWidth - gap}px`;
-                leftBtn.style.top = `${rect.top + rect.height / 2 - leftBtn.offsetHeight / 2}px`;
-                rightBtn.style.left = `${rect.right + gap}px`;
-                rightBtn.style.top = `${rect.top + rect.height / 2 - rightBtn.offsetHeight / 2}px`;
-            }
-        }, 0);
+        this.positionPickerNavs();
         // Setup swipe listeners
         this.attachPickerSwipeHandlers();
 	}
@@ -805,6 +821,28 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 	closePicker() {
 		const modal = document.getElementById('picker-modal');
 		if (modal) modal.classList.add('hidden');
+	}
+
+	toggleCloseOnSelection() {
+		this.closeOnSelection = !this.closeOnSelection;
+		this.updateToggleButton();
+	}
+
+	updateToggleButton() {
+		const btn = document.getElementById('toggle-close-btn');
+		if (btn) {
+			const enText = btn.querySelector('.toggle-text-en');
+			const jpText = btn.querySelector('.toggle-text-jp');
+			if (this.closeOnSelection) {
+				btn.classList.remove('active');
+				if (enText) enText.textContent = 'Auto-close';
+				if (jpText) jpText.textContent = '自動閉じる';
+			} else {
+				btn.classList.add('active');
+				if (enText) enText.textContent = 'Stay open';
+				if (jpText) jpText.textContent = '開いたまま';
+			}
+		}
 	}
 
     onPickerBackdrop(evt) {
@@ -830,14 +868,14 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             if (ao !== bo) return ao - bo;
             return (a.name || '').localeCompare(b.name || '');
         });
-            const cellValue = this.plannerData[year][this.cellKey(month, half)];
+			const cellValue = this.plannerData[year][this.cellKey(month, half)];
         listEl.innerHTML = sorted.map(r => {
-				const selected = cellValue === r.name;
-			const primary = r.image || r.imageRemote || '';
-			const onerr = (r.image && r.imageRemote) ? `onerror=\"this.onerror=null; this.src='${r.imageRemote}'\"` : '';
-			return `
-					<div class=\"picker-item ${selected ? 'selected' : ''}\" onclick=\"tracker.addRaceToCurrentCell('${r.name}')\">
-					<img src=\"${primary}\" alt=\"\" ${onerr}>
+				const selected = String(cellValue) === String(r.id);
+				const primary = r.image || r.imageRemote || '';
+				const onerr = (r.image && r.imageRemote) ? `onerror=\"this.onerror=null; this.src='${r.imageRemote}'\"` : '';
+				return `
+					<div class=\"picker-item ${selected ? 'selected' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\"> 
+					<img src=\"${primary}\" alt=\"${(r.name || '').replace(/\\"/g, '&quot;')}\" ${onerr}>
 					<div>
 						<h4>${r.name}</h4>
 						<div class=\"sub\">${r.nameJP || ''} ・ ${r.type} ・ ${r.length} ・ ${r.racetrack}/${this.translations.tracks[r.racetrack] || r.racetrack}</div>
@@ -850,15 +888,19 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     navigatePicker(direction) {
         // direction: -1 (prev half) or 1 (next half). Wrap month/half within the same year.
         if (!this.currentPicker) return;
-        const { year } = this.currentPicker;
         const months = this.monthOrder;
         const halves = this.halfOrder; // ['1st','2nd']
+        const yearOrder = ['junior','classics','senior'];
+        let yi = yearOrder.indexOf(this.currentPicker.year);
         let mi = months.indexOf(this.currentPicker.month);
         let hi = halves.indexOf(this.currentPicker.half);
         const step = direction > 0 ? 1 : -1;
         hi += step;
-        if (hi < 0) { hi = halves.length - 1; mi = (mi - 1 + months.length) % months.length; }
-        if (hi >= halves.length) { hi = 0; mi = (mi + 1) % months.length; }
+        if (hi < 0) { hi = halves.length - 1; mi -= 1; }
+        if (hi >= halves.length) { hi = 0; mi += 1; }
+        if (mi < 0) { mi = months.length - 1; yi = (yi - 1 + yearOrder.length) % yearOrder.length; }
+        if (mi >= months.length) { mi = 0; yi = (yi + 1) % yearOrder.length; }
+        const year = yearOrder[yi];
         this.currentPicker = { year, month: months[mi], half: halves[hi] };
         // Update title and list
         const title = document.getElementById('picker-title');
@@ -867,6 +909,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
             title.textContent = `${yearMap[year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
         }
         this.renderPickerList();
+        this.positionPickerNavs();
     }
 
     attachPickerSwipeHandlers() {
@@ -894,27 +937,69 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         panel.ontouchend = onTouchEnd;
     }
 
-		addRaceToCurrentCell(raceName) {
-		if (!this.currentPicker) return;
-		const { year, month, half } = this.currentPicker;
-		const key = this.cellKey(month, half);
-			const prev = this.plannerData[year][key];
-			this.plannerData[year][key] = raceName;
-			// reflect global selection: remove previous if no longer planned anywhere
-			if (prev && !this.isPlannedAnywhere(prev)) {
-				this.selectedRaces.delete(prev);
-				this.wonRaces.delete(prev);
-				this.lostRaces.delete(prev);
-			}
-			// add new as selected and won by default
-			this.selectedRaces.add(raceName);
-			this.lostRaces.delete(raceName);
-			this.wonRaces.add(raceName);
-			this.closePicker();
-			this.renderPlannerGrid();
-			this.renderRaces();
-			this.updateProgress();
-	}
+    positionPickerNavs() {
+        setTimeout(() => {
+            const panel = document.getElementById('picker-panel');
+            const leftBtn = document.querySelector('.picker-nav-left');
+            const rightBtn = document.querySelector('.picker-nav-right');
+            if (panel && leftBtn && rightBtn) {
+                const rect = panel.getBoundingClientRect();
+                const gap = 12; // distance from panel edge
+                leftBtn.style.left = `${rect.left - leftBtn.offsetWidth - gap}px`;
+                leftBtn.style.top = `${rect.top + rect.height / 2 - leftBtn.offsetHeight / 2}px`;
+                rightBtn.style.left = `${rect.right + gap}px`;
+                rightBtn.style.top = `${rect.top + rect.height / 2 - rightBtn.offsetHeight / 2}px`;
+            }
+        }, 0);
+    }
+
+    addRaceToCurrentCell(raceName) {
+        // Backward-compat: resolve by name then delegate to ID-based handler
+        const race = this.races.find(r => r.name === raceName);
+        if (race) {
+            return this.addRaceToCurrentCellById(String(race.id));
+        }
+        // If not found, keep prior behavior but store as string (unlikely now)
+        if (!this.currentPicker) return;
+        const { year, month, half } = this.currentPicker;
+        const key = this.cellKey(month, half);
+        const prev = this.plannerData[year][key];
+        const id = String(raceName);
+        this.plannerData[year][key] = id;
+        if (prev && !this.isPlannedAnywhere(prev)) {
+            this.selectedRaces.delete(prev);
+            this.wonRaces.delete(prev);
+            this.lostRaces.delete(prev);
+        }
+        this.selectedRaces.add(id);
+        this.lostRaces.delete(id);
+        this.wonRaces.add(id);
+        if (this.closeOnSelection) this.closePicker();
+        this.renderPlannerGrid();
+        this.renderRaces();
+        this.updateProgress();
+    }
+
+    addRaceToCurrentCellById(raceId) {
+        if (!this.currentPicker) return;
+        const id = String(raceId);
+        const { year, month, half } = this.currentPicker;
+        const key = this.cellKey(month, half);
+        const prev = this.plannerData[year][key];
+        this.plannerData[year][key] = id;
+        if (prev && !this.isPlannedAnywhere(prev)) {
+            this.selectedRaces.delete(prev);
+            this.wonRaces.delete(prev);
+            this.lostRaces.delete(prev);
+        }
+        this.selectedRaces.add(id);
+        this.lostRaces.delete(id);
+        this.wonRaces.add(id);
+        if (this.closeOnSelection) this.closePicker();
+        this.renderPlannerGrid();
+        this.renderRaces();
+        this.updateProgress();
+    }
 
 		removeRaceFromPlanner(month, half) {
 		const key = this.cellKey(month, half);
@@ -931,12 +1016,12 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		this.updateProgress();
 	}
 
-		toggleWinFromPlanner(month, half) {
+    toggleWinFromPlanner(month, half) {
 			const key = this.cellKey(month, half);
-			const name = this.plannerData[this.plannerYear][key];
-			if (!name) return;
+            const id = this.plannerData[this.plannerYear][key];
+            if (!id) return;
 			// Cycle Won -> Lost -> Won
-			this.toggleWin(name);
+            this.toggleWinById(id);
 		this.renderPlannerGrid();
 	}
 
@@ -954,9 +1039,9 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		}});
 	}
 
-		isPlannedAnywhere(raceName) {
+    isPlannedAnywhere(raceId) {
 			return Object.values(this.plannerData).some(yearCells => {
-				return Object.values(yearCells).some(value => value === raceName);
+            return Object.values(yearCells).some(value => value === raceId);
 			});
 		}
 
@@ -972,20 +1057,20 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         }
         if (!targetYear) targetYear = this.plannerYear;
         const key = this.cellKey(race.month, race.half);
-        const prev = this.plannerData[targetYear][key];
-        this.plannerData[targetYear][key] = race.name;
-        if (prev && !this.isPlannedAnywhere(prev)) {
-            this.selectedRaces.delete(prev);
-            this.wonRaces.delete(prev);
-            this.lostRaces.delete(prev);
+        const prevId = this.plannerData[targetYear][key];
+        this.plannerData[targetYear][key] = String(race.id);
+        if (prevId && !this.isPlannedAnywhere(prevId)) {
+            this.selectedRaces.delete(prevId);
+            this.wonRaces.delete(prevId);
+            this.lostRaces.delete(prevId);
         }
     }
 
-    removeRaceEverywhereFromPlanner(raceName) {
+    removeRaceEverywhereFromPlanner(raceId) {
         Object.keys(this.plannerData).forEach(yearKey => {
             const yearCells = this.plannerData[yearKey];
             Object.keys(yearCells).forEach(cellKey => {
-                if (yearCells[cellKey] === raceName) yearCells[cellKey] = null;
+                if (yearCells[cellKey] === raceId) yearCells[cellKey] = null;
             });
         });
     }
@@ -995,8 +1080,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         const filteredRaces = this.getFilteredRaces();
         
         grid.innerHTML = filteredRaces.map(race => `
-            <div class="race-card ${this.selectedRaces.has(race.name) ? 'selected' : ''} ${this.wonRaces.has(race.name) ? 'won' : ''}" 
-                 data-race="${race.name}" onclick="tracker.toggleParticipation('${race.name}')">
+            <div class="race-card ${this.selectedRaces.has(String(race.id)) ? 'selected' : ''} ${this.wonRaces.has(String(race.id)) ? 'won' : ''}" 
+                 data-race-id="${race.id}" data-race="${race.name}" onclick="tracker.toggleParticipationById('${race.id}')">
                 ${(() => {
                     const primary = race.image || race.imageRemote || '';
                     const fallback = race.image && race.imageRemote ? race.imageRemote : '';
@@ -1017,11 +1102,11 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                     • ${this.translations.months[race.month] || race.month} ${this.translations.halves[race.half] || race.half} / ${race.month} ${race.half}
                     ${race.direction ? `• ${this.translations.directions[race.direction]} / ${race.direction}` : ''}
                 </div>
-                ${this.selectedRaces.has(race.name) ? `
+                ${this.selectedRaces.has(String(race.id)) ? `
                 <div class="win-button-container">
-                    <button class="loss-toggle-btn ${this.lostRaces.has(race.name) ? 'lost' : 'won'}" 
-                            onclick="event.stopPropagation(); tracker.toggleWin('${race.name}')">
-                        ${this.lostRaces.has(race.name) ? '👎' : '🏆'}
+                    <button class="loss-toggle-btn ${this.lostRaces.has(String(race.id)) ? 'lost' : 'won'}" 
+                            onclick="event.stopPropagation(); tracker.toggleWinById('${race.id}')">
+                        ${this.lostRaces.has(String(race.id)) ? '👎' : '🏆'}
                     </button>
                 </div>
                 ` : ''}
@@ -1056,7 +1141,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 list = this.races.filter(r => set.has(r.name));
                 break;
             }
-            case 'selected': list = this.races.filter(r => this.selectedRaces.has(r.name)); break;
+            case 'selected': list = this.races.filter(r => this.selectedRaces.has(String(r.id))); break;
             default: list = [...this.races];
         }
         const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
@@ -1075,20 +1160,21 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         });
     }
 
-    toggleParticipation(raceName) {
-        if (this.selectedRaces.has(raceName)) {
+    toggleParticipationById(raceId) {
+        const id = String(raceId);
+        if (this.selectedRaces.has(id)) {
             // Remove participation and clear all results
-            this.selectedRaces.delete(raceName);
-            this.wonRaces.delete(raceName);
-            this.lostRaces.delete(raceName);
+            this.selectedRaces.delete(id);
+            this.wonRaces.delete(id);
+            this.lostRaces.delete(id);
             // Also remove from planner wherever it appears
-            this.removeRaceEverywhereFromPlanner(raceName);
+            this.removeRaceEverywhereFromPlanner(id);
         } else {
             // Add participation and automatically mark as won
-            this.selectedRaces.add(raceName);
-            this.wonRaces.add(raceName);
+            this.selectedRaces.add(id);
+            this.wonRaces.add(id);
             // Also place into planner for the appropriate year/month/half
-            const race = this.races.find(r => r.name === raceName);
+            const race = this.raceById.get(id);
             if (race) this.planRaceIntoPlanner(race, this.plannerYear);
         }
         this.renderRaces();
@@ -1096,18 +1182,44 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         this.updateProgress();
     }
 
-    toggleWin(raceName) {
-        if (!this.selectedRaces.has(raceName)) return; // Can't win/lose if not participating
+    // Helpers to support name-based conditions while the authoritative state uses IDs
+    getIdsForNames(nameList) {
+        const result = new Set();
+        (nameList || []).forEach(name => {
+            const ids = this.raceIdsByName.get(name);
+            if (ids) ids.forEach(id => result.add(id));
+        });
+        return result;
+    }
+
+    hasWonAnyByNames(nameList) {
+        const ids = this.getIdsForNames(nameList);
+        for (const id of ids) if (this.wonRaces.has(id)) return true;
+        return false;
+    }
+
+    countWinsByFilter(predicate) {
+        let count = 0;
+        this.wonRaces.forEach(id => {
+            const race = this.raceById.get(String(id));
+            if (race && predicate(race)) count++;
+        });
+        return count;
+    }
+
+    toggleWinById(raceId) {
+        const id = String(raceId);
+        if (!this.selectedRaces.has(id)) return; // Can't win/lose if not participating
         
         // Toggle between Won and Lost
-        if (this.wonRaces.has(raceName)) {
+        if (this.wonRaces.has(id)) {
             // Currently won, change to lost
-            this.wonRaces.delete(raceName);
-            this.lostRaces.add(raceName);
-        } else if (this.lostRaces.has(raceName)) {
+            this.wonRaces.delete(id);
+            this.lostRaces.add(id);
+        } else if (this.lostRaces.has(id)) {
             // Currently lost, change to won
-            this.lostRaces.delete(raceName);
-            this.wonRaces.add(raceName);
+            this.lostRaces.delete(id);
+            this.wonRaces.add(id);
         }
         this.renderRaces();
         this.renderPlannerGrid();
@@ -1216,42 +1328,39 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkEasternG1Wins() {
-        const easternG1Wins = Array.from(this.wonRaces).filter(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && this.isGradeOne(race) && this.easternTracks.includes(race.racetrack);
-        });
-        
+        const eastern = Array.from(this.wonRaces)
+            .map(id => this.raceById.get(String(id)))
+            .filter(race => race && this.isGradeOne(race) && this.easternTracks.includes(race.racetrack))
+            .map(r => r.name);
         return {
-            completed: easternG1Wins.length >= 7,
-            current: easternG1Wins.length,
+            completed: eastern.length >= 7,
+            current: eastern.length,
             required: 7,
-            progress: (easternG1Wins.length / 7) * 100,
-            details: `Eastern G1 wins: ${easternG1Wins.join(', ')}`
+            progress: (eastern.length / 7) * 100,
+            details: `Eastern G1 wins: ${eastern.join(', ')}`
         };
     }
 
     checkWesternG1Wins() {
-        const westernG1Wins = Array.from(this.wonRaces).filter(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && this.isGradeOne(race) && this.westernTracks.includes(race.racetrack);
-        });
-        
+        const western = Array.from(this.wonRaces)
+            .map(id => this.raceById.get(String(id)))
+            .filter(race => race && this.isGradeOne(race) && this.westernTracks.includes(race.racetrack))
+            .map(r => r.name);
         return {
-            completed: westernG1Wins.length >= 7,
-            current: westernG1Wins.length,
+            completed: western.length >= 7,
+            current: western.length,
             required: 7,
-            progress: (westernG1Wins.length / 7) * 100,
-            details: `Western G1 wins: ${westernG1Wins.join(', ')}`
+            progress: (western.length / 7) * 100,
+            details: `Western G1 wins: ${western.join(', ')}`
         };
     }
 
     checkDifferentRacecourses() {
         const racecourses = new Set();
-        this.selectedRaces.forEach(raceName => {
-            const race = this.races.find(r => r.name === raceName);
+        this.selectedRaces.forEach(id => {
+            const race = this.raceById.get(String(id));
             if (race) racecourses.add(race.racetrack);
         });
-        
         return {
             completed: racecourses.size >= 7,
             current: racecourses.size,
@@ -1264,9 +1373,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     checkAllDistanceG1() {
         // CSV-aligned: any race win counts (not GI-restricted)
         const distanceWins = { short: false, mile: false, medium: false, long: false };
-
-        Array.from(this.wonRaces).forEach(raceName => {
-            const race = this.races.find(r => r.name === raceName);
+        Array.from(this.wonRaces).forEach(id => {
+            const race = this.raceById.get(String(id));
             if (!race) return;
             Object.keys(distanceWins).forEach(category => {
                 if (this.distanceCategories[category](race)) {
@@ -1274,10 +1382,8 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                 }
             });
         });
-
         const completed = Object.values(distanceWins).every(won => won);
         const current = Object.values(distanceWins).filter(won => won).length;
-        
         return {
             completed,
             current,
@@ -1288,91 +1394,107 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkNewspaperCups() {
-        const newspaperRaces = ['Kyoto Shimbun Hai', 'Kobe Shimbun Hai', 'Chunichi Shimbun Hai', 'Tokyo Shimbun Hai'];
-        const wonNewspaperRaces = newspaperRaces.filter(race => this.wonRaces.has(race));
-        
+        const names = ['Kyoto Shimbun Hai', 'Kobe Shimbun Hai', 'Chunichi Shimbun Hai', 'Tokyo Shimbun Hai'];
+        const wonNames = names.filter(n => {
+            const ids = this.raceIdsByName.get(n);
+            if (!ids) return false;
+            for (const id of ids) if (this.wonRaces.has(String(id))) return true;
+            return false;
+        });
         return {
-            completed: wonNewspaperRaces.length >= 4,
-            current: wonNewspaperRaces.length,
+            completed: wonNames.length >= 4,
+            current: wonNames.length,
             required: 4,
-            progress: (wonNewspaperRaces.length / 4) * 100,
-            details: `Won: ${wonNewspaperRaces.join(', ')}`
+            progress: (wonNames.length / 4) * 100,
+            details: `Won: ${wonNames.join(', ')}`
         };
     }
 
     checkSummerSeries(seriesKey) {
-        const targetList = (this.summerSeries && this.summerSeries[seriesKey]) ? this.summerSeries[seriesKey] : [];
-        const wins = targetList.filter(name => this.wonRaces.has(name));
+        const targetNames = (this.summerSeries && this.summerSeries[seriesKey]) ? this.summerSeries[seriesKey] : [];
+        const wonNames = targetNames.filter(n => {
+            const ids = this.raceIdsByName.get(n);
+            if (!ids) return false;
+            for (const id of ids) if (this.wonRaces.has(String(id))) return true;
+            return false;
+        });
         return {
-            completed: wins.length >= 3,
-            current: wins.length,
+            completed: wonNames.length >= 3,
+            current: wonNames.length,
             required: 3,
-            progress: Math.min(100, (wins.length / 3) * 100),
-            details: `Won: ${wins.join(', ')}`
+            progress: Math.min(100, (wonNames.length / 3) * 100),
+            details: `Won: ${wonNames.join(', ')}`
         };
     }
 
     checkNewYearGold() {
-        // CSV-aligned: Senior year, January, first half; must win Nakayama Kinen or Kyoto Kinen
-        const candidates = ['Nakayama Kinen', 'Kyoto Kinen'];
-        const qualifyingWins = candidates.filter(raceName => {
-            if (!this.wonRaces.has(raceName)) return false;
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.senior && race.month === 'January' && race.half === '1st';
+        // Senior year, January, first half; must win Nakayama Kinen or Kyoto Kinen
+        const targets = new Set(['Nakayama Kinen', 'Kyoto Kinen']);
+        const qualified = [];
+        this.wonRaces.forEach(id => {
+            const race = this.raceById.get(String(id));
+            if (!race) return;
+            if (!targets.has(race.name)) return;
+            if (race.senior && race.month === 'January' && race.half === '1st') qualified.push(race.name);
         });
-
+        const unique = Array.from(new Set(qualified));
         return {
-            completed: qualifyingWins.length >= 1,
-            current: qualifyingWins.length,
+            completed: unique.length >= 1,
+            current: unique.length,
             required: 1,
-            progress: qualifyingWins.length >= 1 ? 100 : 0,
-            details: `Qualified wins: ${qualifyingWins.join(', ')}`
+            progress: unique.length >= 1 ? 100 : 0,
+            details: `Qualified wins: ${unique.join(', ')}`
         };
     }
 
     checkStarRaces() {
-        const starRaces = [
+        const names = [
             'Procyon Stakes', 'Capella Stakes', 'Centaur Stakes', 'Aldebaran Stakes',
             'Rigel Stakes', 'Betelgeuse Stakes', 'Cassiopeia Stakes', 'Sirius Stakes'
         ];
-        const wonStarRaces = starRaces.filter(race => this.wonRaces.has(race));
-        
+        const wonNames = names.filter(n => {
+            const ids = this.raceIdsByName.get(n);
+            if (!ids) return false;
+            for (const id of ids) if (this.wonRaces.has(String(id))) return true;
+            return false;
+        });
         return {
-            completed: wonStarRaces.length >= 3,
-            current: wonStarRaces.length,
+            completed: wonNames.length >= 3,
+            current: wonNames.length,
             required: 3,
-            progress: (wonStarRaces.length / 3) * 100,
-            details: `Won: ${wonStarRaces.join(', ')}`
+            progress: (wonNames.length / 3) * 100,
+            details: `Won: ${wonNames.join(', ')}`
         };
     }
 
     checkJewelryRaces() {
         // Dataset-limited: only a subset available; CSV requires 3 distinct wins
-        const jewelryRaces = ['Diamond Stakes', 'Turquoise Stakes', 'Opal Stakes'];
-        const wonJewelryRaces = jewelryRaces.filter(race => this.wonRaces.has(race));
-        
+        const names = ['Diamond Stakes', 'Turquoise Stakes', 'Opal Stakes'];
+        const wonNames = names.filter(n => {
+            const ids = this.raceIdsByName.get(n);
+            if (!ids) return false;
+            for (const id of ids) if (this.wonRaces.has(String(id))) return true;
+            return false;
+        });
         return {
-            completed: wonJewelryRaces.length >= 3,
-            current: wonJewelryRaces.length,
+            completed: wonNames.length >= 3,
+            current: wonNames.length,
             required: 3,
-            progress: Math.min(100, (wonJewelryRaces.length / 3) * 100),
-            details: `Won: ${wonJewelryRaces.join(', ')}`
+            progress: Math.min(100, (wonNames.length / 3) * 100),
+            details: `Won: ${wonNames.join(', ')}`
         };
     }
 
     checkDualSurface() {
-        const turfWins = Array.from(this.wonRaces).some(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.surface === 'turf';
+        let turfWins = false;
+        let dirtWins = false;
+        this.wonRaces.forEach(id => {
+            const race = this.raceById.get(String(id));
+            if (!race) return;
+            if (race.surface === 'turf') turfWins = true;
+            if (race.surface === 'dirt') dirtWins = true;
         });
-        
-        const dirtWins = Array.from(this.wonRaces).some(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.surface === 'dirt';
-        });
-        
         const current = (turfWins ? 1 : 0) + (dirtWins ? 1 : 0);
-        
         return {
             completed: turfWins && dirtWins,
             current,
@@ -1383,62 +1505,62 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkPerfectCrown() {
-        const tripleCrownRaces = ['Satsuki Sho', 'Japan Derby', 'Kikka Sho'];
-        const groupA = ['Yayoi Sho', 'Spring Stakes', 'Wakaba Stakes']; // Satsuki Sho trials
-        const groupB = ['Aoba Sho', 'Principal Stakes']; // Japan Derby trials
-        const groupC = ['Kobe Shimbun Hai', 'Saint Lite Kinen']; // Kikka Sho trials
-
-        const wonCrown = tripleCrownRaces.filter(r => this.wonRaces.has(r));
-        const groupAHit = groupA.some(r => this.wonRaces.has(r));
-        const groupBHit = groupB.some(r => this.wonRaces.has(r));
-        const groupCHit = groupC.some(r => this.wonRaces.has(r));
-
+        const triple = ['Satsuki Sho', 'Japan Derby', 'Kikka Sho'];
+        const groupA = ['Yayoi Sho', 'Spring Stakes', 'Wakaba Stakes'];
+        const groupB = ['Aoba Sho', 'Principal Stakes'];
+        const groupC = ['Kobe Shimbun Hai', 'Saint Lite Kinen'];
+        const wonNamesSet = new Set(Array.from(this.wonRaces).map(id => {
+            const r = this.raceById.get(String(id));
+            return r ? r.name : null;
+        }).filter(Boolean));
+        const wonCrown = triple.filter(n => wonNamesSet.has(n));
+        const groupAHit = groupA.some(n => wonNamesSet.has(n));
+        const groupBHit = groupB.some(n => wonNamesSet.has(n));
+        const groupCHit = groupC.some(n => wonNamesSet.has(n));
         const crownComplete = wonCrown.length === 3;
         const trialsComplete = groupAHit && groupBHit && groupCHit;
         const completed = crownComplete && trialsComplete;
-
         const wonTrialsList = [
-            ...groupA.filter(r => this.wonRaces.has(r)),
-            ...groupB.filter(r => this.wonRaces.has(r)),
-            ...groupC.filter(r => this.wonRaces.has(r))
+            ...groupA.filter(n => wonNamesSet.has(n)),
+            ...groupB.filter(n => wonNamesSet.has(n)),
+            ...groupC.filter(n => wonNamesSet.has(n))
         ];
-
         return {
             completed,
             current: wonCrown.length + wonTrialsList.length,
             required: 6,
             progress: completed ? 100 : ((wonCrown.length + wonTrialsList.length) / 6) * 100,
-            details: `Crown: ${wonCrown.join(', ')} | Trials A:${groupA.filter(r => this.wonRaces.has(r)).join('/')} B:${groupB.filter(r => this.wonRaces.has(r)).join('/')} C:${groupC.filter(r => this.wonRaces.has(r)).join('/')}`
+            details: `Crown: ${wonCrown.join(', ')} | Trials A:${groupA.filter(n => wonNamesSet.has(n)).join('/')} B:${groupB.filter(n => wonNamesSet.has(n)).join('/')} C:${groupC.filter(n => wonNamesSet.has(n)).join('/')}`
         };
     }
 
     checkPerfectTiara() {
-        const tripleTiaraRaces = ['Oka Sho', 'Oaks', 'Akika Sho'];
-        const groupA = ['Fillies Review', 'Tulip Sho', 'Anemone Stakes']; // Oka Sho trials (dataset spelling)
-        const groupB = ['Flora Stakes', 'Sweet Pea Stakes']; // Oaks trials
-        const groupC = ['Rose Stakes', 'Shion Stakes']; // Akika Sho trials
-
-        const wonTiara = tripleTiaraRaces.filter(r => this.wonRaces.has(r));
-        const groupAHit = groupA.some(r => this.wonRaces.has(r));
-        const groupBHit = groupB.some(r => this.wonRaces.has(r));
-        const groupCHit = groupC.some(r => this.wonRaces.has(r));
-
+        const triple = ['Oka Sho', 'Oaks', 'Akika Sho'];
+        const groupA = ['Fillies Review', 'Tulip Sho', 'Anemone Stakes'];
+        const groupB = ['Flora Stakes', 'Sweet Pea Stakes'];
+        const groupC = ['Rose Stakes', 'Shion Stakes'];
+        const wonNamesSet = new Set(Array.from(this.wonRaces).map(id => {
+            const r = this.raceById.get(String(id));
+            return r ? r.name : null;
+        }).filter(Boolean));
+        const wonTiara = triple.filter(n => wonNamesSet.has(n));
+        const groupAHit = groupA.some(n => wonNamesSet.has(n));
+        const groupBHit = groupB.some(n => wonNamesSet.has(n));
+        const groupCHit = groupC.some(n => wonNamesSet.has(n));
         const tiaraComplete = wonTiara.length === 3;
         const trialsComplete = groupAHit && groupBHit && groupCHit;
         const completed = tiaraComplete && trialsComplete;
-
         const wonTrialsList = [
-            ...groupA.filter(r => this.wonRaces.has(r)),
-            ...groupB.filter(r => this.wonRaces.has(r)),
-            ...groupC.filter(r => this.wonRaces.has(r))
+            ...groupA.filter(n => wonNamesSet.has(n)),
+            ...groupB.filter(n => wonNamesSet.has(n)),
+            ...groupC.filter(n => wonNamesSet.has(n))
         ];
-
         return {
             completed,
             current: wonTiara.length + wonTrialsList.length,
             required: 6,
             progress: completed ? 100 : ((wonTiara.length + wonTrialsList.length) / 6) * 100,
-            details: `Tiara: ${wonTiara.join(', ')} | Trials A:${groupA.filter(r => this.wonRaces.has(r)).join('/')} B:${groupB.filter(r => this.wonRaces.has(r)).join('/')} C:${groupC.filter(r => this.wonRaces.has(r)).join('/')}`
+            details: `Tiara: ${wonTiara.join(', ')} | Trials A:${groupA.filter(n => wonNamesSet.has(n)).join('/')} B:${groupB.filter(n => wonNamesSet.has(n)).join('/')} C:${groupC.filter(n => wonNamesSet.has(n)).join('/')}`
         };
     }
 
@@ -1484,32 +1606,30 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     checkDirectionalAwakening(direction) {
-        const directionalWins = Array.from(this.wonRaces).filter(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.direction === direction;
-        });
-        
+        const names = Array.from(this.wonRaces)
+            .map(id => this.raceById.get(String(id)))
+            .filter(r => r && r.direction === direction)
+            .map(r => r.name);
         return {
-            completed: directionalWins.length >= 6,
-            current: directionalWins.length,
+            completed: names.length >= 6,
+            current: names.length,
             required: 6,
-            progress: (directionalWins.length / 6) * 100,
-            details: `${direction}-handed wins: ${directionalWins.join(', ')}`
+            progress: (names.length / 6) * 100,
+            details: `${direction}-handed wins: ${names.join(', ')}`
         };
     }
 
     checkSeasonalAwakening(season) {
-        const seasonalWins = Array.from(this.wonRaces).filter(raceName => {
-            const race = this.races.find(r => r.name === raceName);
-            return race && race.season === season;
-        });
-        
+        const names = Array.from(this.wonRaces)
+            .map(id => this.raceById.get(String(id)))
+            .filter(r => r && r.season === season)
+            .map(r => r.name);
         return {
-            completed: seasonalWins.length >= 6,
-            current: seasonalWins.length,
+            completed: names.length >= 6,
+            current: names.length,
             required: 6,
-            progress: (seasonalWins.length / 6) * 100,
-            details: `${season} wins: ${seasonalWins.join(', ')}`
+            progress: (names.length / 6) * 100,
+            details: `${season} wins: ${names.join(', ')}`
         };
     }
 }
