@@ -416,8 +416,8 @@ h1 {
 .race-card {
     border: 2px solid #e2e8f0;
     border-radius: 10px;
-    padding: 8px;
     cursor: pointer;
+    padding: 2px;
     transition: all 0.3s ease;
     background: #f8f9fa;
     position: relative;
@@ -430,7 +430,7 @@ h1 {
     overflow: hidden;
     background: #edf2f7;
     border: 1px solid #e2e8f0;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .race-thumb-img {
@@ -469,37 +469,37 @@ h1 {
 }
 
 .race-name {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .race-name-en {
     font-weight: bold;
     color: #2d3748;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     margin-bottom: 2px;
 }
 
 .race-name-jp {
     font-weight: 600;
     color: #4a5568;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-style: italic;
 }
 
 .race-details {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: #718096;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 /* Calendar-specific compact text */
-#calendar-section .race-details { font-size: 0.68rem; }
+#calendar-section .race-details { font-size: 0.62rem; }
 /* Details are already compact (two rows rendered). Do not hide them by nth-of-type. */
 
 .race-grade {
     display: inline-block;
     padding: 1px 6px;
     border-radius: 12px;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: bold;
     margin-right: 5px;
 }

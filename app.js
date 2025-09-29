@@ -1169,6 +1169,13 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
                     ${race.racetrack}/${this.translations.tracks[race.racetrack] || race.racetrack}
                     • ${this.translations.months[race.month] || race.month} ${this.translations.halves[race.half] || race.half} / ${race.month} ${race.half}
                     ${race.direction ? `• ${this.translations.directions[race.direction]} / ${race.direction}` : ''}
+                    ${(() => {
+                        const years = [];
+                        if (race.junior) years.push('Junior');
+                        if (race.classics) years.push('Classic');
+                        if (race.senior) years.push('Senior');
+                        return years.length > 0 ? `• ${years.join('/')}` : '';
+                    })()}
                 </div>
                 ${this.selectedRaces.has(String(race.id)) ? `
                 <div class="win-button-container">
