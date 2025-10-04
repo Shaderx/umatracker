@@ -1276,12 +1276,46 @@ class UmaMusumeTracker {
             result: factor.check()
         }));
         
+        // Sort results: completed first, in-progress second, not started last
+        results.sort((a, b) => {
+            const aCompleted = a.result.completed ? 1 : 0;
+            const bCompleted = b.result.completed ? 1 : 0;
+            const aInProgress = (!a.result.completed && a.result.current > 0) ? 1 : 0;
+            const bInProgress = (!b.result.completed && b.result.current > 0) ? 1 : 0;
+            
+            // Completed factors come first (descending)
+            if (aCompleted !== bCompleted) return bCompleted - aCompleted;
+            
+            // Among non-completed, in-progress come before not started (descending)
+            if (aInProgress !== bInProgress) return bInProgress - aInProgress;
+            
+            // Within the same category, maintain original order (by comparing indices)
+            // This preserves the logical grouping from hiddenFactors array
+            return 0;
+        });
+        
+        // Auto-clear tracking if the tracked factor is now completed
+        let trackingAutoCleared = false;
+        if (this.trackedFactorId) {
+            const trackedFactor = results.find(r => r.id === this.trackedFactorId);
+            if (trackedFactor && trackedFactor.result.completed) {
+                this.trackedFactorId = null;
+                trackingAutoCleared = true;
+            }
+        }
+        
         const completedCount = results.filter(r => r.result.completed).length;
         document.getElementById('completed-factors').textContent = completedCount;
         
         // Render hidden factors
         this.renderHiddenFactors(results);
         this.syncProgressHeightToPlanner();
+        
+        // If tracking was auto-cleared, update the planner and races to remove highlights
+        if (trackingAutoCleared) {
+            this.renderRaces();
+            this.renderPlannerGrid();
+        }
     }
 
     syncProgressHeightToPlanner() {
@@ -1489,7 +1523,7 @@ class UmaMusumeTracker {
                                factor.result.progress > 0 ? 'partial' : '';
             const progressPercentage = Math.min(100, (factor.result.current / factor.result.required) * 100);
             const isTracked = this.trackedFactorId === factor.id;
-            const showTrackButton = factor.trackable !== false;
+            const showTrackButton = factor.trackable !== false && !factor.result.completed;
             
             // On mobile/tablet, initially show only first 2 factors
             const shouldCollapseInitially = isCompactView && index >= 2 && !this.factorsExpanded;
