@@ -11,7 +11,19 @@ body {
     color: #333;
 }
 
-/* Prevent background scroll when modal is open - REMOVED */
+/* Body lock for mobile/tablet when modals are open */
+body.modal-open-mobile {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+/* Lock scroll to specific element on mobile/tablet */
+body.modal-open-mobile .scroll-lock-target {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
 
 .container {
     max-width: 1400px;

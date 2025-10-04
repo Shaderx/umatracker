@@ -36,6 +36,62 @@ class UmaMusumeTracker {
         this.updateProgress();
         // Sync progress panel height with planner after initial render
         setTimeout(() => this.syncProgressHeightToPlanner(), 0);
+        
+        // Body scroll lock state
+        this.scrollPosition = 0;
+        this.lockCount = 0;
+        this.currentLockTarget = null;
+    }
+
+    // Utility: Check if device is mobile or tablet
+    isMobileOrTablet() {
+        return window.innerWidth <= 900;
+    }
+
+    // Lock body scroll on mobile/tablet to a specific element
+    lockBodyScroll(targetElement) {
+        if (!this.isMobileOrTablet()) return;
+        
+        this.lockCount++;
+        
+        // Only apply lock on first lock (not nested)
+        if (this.lockCount === 1) {
+            // Save current scroll position
+            this.scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Apply body lock
+            document.body.classList.add('modal-open-mobile');
+            document.body.style.top = `-${this.scrollPosition}px`;
+            
+            // Mark target element as scrollable
+            if (targetElement) {
+                this.currentLockTarget = targetElement;
+                targetElement.classList.add('scroll-lock-target');
+            }
+        }
+    }
+
+    // Unlock body scroll
+    unlockBodyScroll(targetElement) {
+        if (!this.isMobileOrTablet()) return;
+        
+        this.lockCount = Math.max(0, this.lockCount - 1);
+        
+        // Only unlock when all locks are released
+        if (this.lockCount === 0) {
+            // Remove body lock
+            document.body.classList.remove('modal-open-mobile');
+            document.body.style.top = '';
+            
+            // Restore scroll position
+            window.scrollTo(0, this.scrollPosition);
+            
+            // Remove scroll lock from target element
+            if (this.currentLockTarget) {
+                this.currentLockTarget.classList.remove('scroll-lock-target');
+                this.currentLockTarget = null;
+            }
+        }
     }
 
     initializeData() {
@@ -778,11 +834,19 @@ class UmaMusumeTracker {
         this.positionPickerNavs();
         // Setup swipe listeners
         this.attachPickerSwipeHandlers();
+        
+        // Lock body scroll to planner section on mobile/tablet
+        const plannerSection = document.getElementById('planner-section');
+        this.lockBodyScroll(plannerSection);
 	}
 
 	closePicker() {
 		const modal = document.getElementById('picker-modal');
 		if (modal) modal.classList.add('hidden');
+		
+		// Unlock body scroll on mobile/tablet
+		const plannerSection = document.getElementById('planner-section');
+		this.unlockBodyScroll(plannerSection);
 	}
 
 	toggleCloseOnSelection() {
@@ -2200,33 +2264,57 @@ class UmaMusumeTracker {
         const modal = document.getElementById('save-modal');
         modal.classList.remove('hidden');
         this.renderSaveSlots();
+        
+        // Lock body scroll to progress panel on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.lockBodyScroll(progressPanel);
     }
 
     closeSaveDialog() {
         const modal = document.getElementById('save-modal');
         modal.classList.add('hidden');
+        
+        // Unlock body scroll on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.unlockBodyScroll(progressPanel);
     }
 
     openLoadDialog() {
         const modal = document.getElementById('load-modal');
         modal.classList.remove('hidden');
         this.renderLoadSlots();
+        
+        // Lock body scroll to progress panel on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.lockBodyScroll(progressPanel);
     }
 
     closeLoadDialog() {
         const modal = document.getElementById('load-modal');
         modal.classList.add('hidden');
+        
+        // Unlock body scroll on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.unlockBodyScroll(progressPanel);
     }
 
     openShareDialog() {
         const modal = document.getElementById('share-modal');
         modal.classList.remove('hidden');
         this.generateShareURL();
+        
+        // Lock body scroll to progress panel on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.lockBodyScroll(progressPanel);
     }
 
     closeShareDialog() {
         const modal = document.getElementById('share-modal');
         modal.classList.add('hidden');
+        
+        // Unlock body scroll on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.unlockBodyScroll(progressPanel);
     }
 
     openNameDialog(slotId) {
@@ -2240,6 +2328,10 @@ class UmaMusumeTracker {
         input.select();
         
         modal.classList.remove('hidden');
+        
+        // Lock body scroll to progress panel on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.lockBodyScroll(progressPanel);
         
         // Allow Enter key to confirm
         input.onkeydown = (e) => {
@@ -2255,6 +2347,10 @@ class UmaMusumeTracker {
         const modal = document.getElementById('name-modal');
         modal.classList.add('hidden');
         this.currentSaveSlot = null;
+        
+        // Unlock body scroll on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.unlockBodyScroll(progressPanel);
     }
 
     openDeleteDialog(slotId, saveName) {
@@ -2263,12 +2359,20 @@ class UmaMusumeTracker {
         const message = document.getElementById('delete-message');
         message.textContent = `Are you sure you want to delete "${saveName}"? This cannot be undone.`;
         modal.classList.remove('hidden');
+        
+        // Lock body scroll to progress panel on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.lockBodyScroll(progressPanel);
     }
 
     closeDeleteDialog() {
         const modal = document.getElementById('delete-modal');
         modal.classList.add('hidden');
         this.currentDeleteSlot = null;
+        
+        // Unlock body scroll on mobile/tablet
+        const progressPanel = document.getElementById('progress-panel');
+        this.unlockBodyScroll(progressPanel);
     }
 
     // Save/Load Operations
