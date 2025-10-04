@@ -1611,6 +1611,18 @@ h1 {
         line-height: 1.1;
     }
 
+    /* Reset button in planner to match year-tab height on mobile */
+    .year-tabs .filter-btn {
+        height: 44px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+
+    .year-tabs .filter-btn span {
+        font-size: 0.6rem;
+        line-height: 1.1;
+    }
+
     /* Discord button mobile */
     .discord-contact {
         margin-bottom: 15px;
