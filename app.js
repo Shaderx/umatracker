@@ -771,6 +771,8 @@ class UmaMusumeTracker {
         if (modal) modal.classList.remove('hidden');
         // Update toggle button state
         this.updateToggleButton();
+        // Update pagination dots
+        this.updatePickerPagination();
         // Position side navs just outside the panel edges
         this.positionPickerNavs();
         // Setup swipe listeners
@@ -886,7 +888,51 @@ class UmaMusumeTracker {
             title.textContent = `${yearMap[year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
         }
         this.renderPickerList();
+        this.updatePickerPagination();
         this.positionPickerNavs();
+    }
+
+    updatePickerPagination() {
+        const paginationEl = document.getElementById('picker-pagination');
+        if (!paginationEl || !this.currentPicker) return;
+        
+        const months = this.monthOrder;
+        const halves = this.halfOrder;
+        const totalSlots = months.length * halves.length; // 12 months * 2 halves = 24
+        
+        // Calculate current position
+        const currentMonthIdx = months.indexOf(this.currentPicker.month);
+        const currentHalfIdx = halves.indexOf(this.currentPicker.half);
+        const currentPosition = currentMonthIdx * halves.length + currentHalfIdx;
+        
+        // Generate pagination dots
+        paginationEl.innerHTML = Array.from({ length: totalSlots }, (_, i) => {
+            const isActive = i === currentPosition;
+            return `<div class="pagination-dot ${isActive ? 'active' : ''}" onclick="tracker.jumpToPickerPosition(${i})"></div>`;
+        }).join('');
+    }
+
+    jumpToPickerPosition(position) {
+        const months = this.monthOrder;
+        const halves = this.halfOrder;
+        
+        const monthIdx = Math.floor(position / halves.length);
+        const halfIdx = position % halves.length;
+        
+        if (monthIdx >= 0 && monthIdx < months.length && halfIdx >= 0 && halfIdx < halves.length) {
+            this.currentPicker.month = months[monthIdx];
+            this.currentPicker.half = halves[halfIdx];
+            
+            // Update title and list
+            const title = document.getElementById('picker-title');
+            if (title) {
+                const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
+                title.textContent = `${yearMap[this.currentPicker.year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
+            }
+            this.renderPickerList();
+            this.updatePickerPagination();
+            this.positionPickerNavs();
+        }
     }
 
     attachPickerSwipeHandlers() {

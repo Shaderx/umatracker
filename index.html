@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
     <title>Uma Musume Hidden Factors Tracker</title>
     
     <!-- SEO Meta Tags -->
@@ -198,8 +198,27 @@
             <div class="picker-actions">
                 <button class="btn btn-primary" onclick="tracker.closePicker()">完了</button>
             </div>
+            <!-- Swipe Indicator -->
+            <div class="picker-swipe-indicator">
+                <div class="swipe-hint">
+                    <span class="swipe-icon">←</span>
+                    <span class="swipe-text">Swipe</span>
+                    <span class="swipe-icon">→</span>
+                </div>
+                <div class="picker-pagination" id="picker-pagination"></div>
+            </div>
         </div>
-
+        <!-- Mobile Navigation Arrows -->
+        <div class="picker-mobile-nav">
+            <button class="picker-mobile-nav-btn picker-mobile-nav-prev" onclick="tracker.navigatePicker(-1)" aria-label="Previous">
+                <span>‹</span>
+                <span class="nav-label">Previous</span>
+            </button>
+            <button class="picker-mobile-nav-btn picker-mobile-nav-next" onclick="tracker.navigatePicker(1)" aria-label="Next">
+                <span class="nav-label">Next</span>
+                <span>›</span>
+            </button>
+        </div>
     </div>
 
     <!-- Save Dialog Modal -->

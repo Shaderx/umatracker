@@ -485,6 +485,122 @@ h1 {
 .picker-item h4 { font-size: 0.95rem; color: #2d3748; margin-bottom: 2px; }
 .picker-item .sub { font-size: 0.8rem; color: #4a5568; }
 
+/* Swipe Indicator */
+.picker-swipe-indicator {
+    display: none; /* Hidden on desktop */
+    padding: 10px 16px;
+    border-top: 1px solid #e2e8f0;
+    background: #f7fafc;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.swipe-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #718096;
+    animation: swipeHintPulse 2s ease-in-out infinite;
+}
+
+.swipe-icon {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.swipe-text {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+@keyframes swipeHintPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Pagination Dots */
+.picker-pagination {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #cbd5e0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.pagination-dot.active {
+    background: #667eea;
+    width: 24px;
+    border-radius: 4px;
+}
+
+.pagination-dot:hover {
+    background: #a0aec0;
+}
+
+/* Mobile Navigation Arrows */
+.picker-mobile-nav {
+    display: none; /* Hidden on desktop */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 2px solid #e2e8f0;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1003;
+}
+
+.picker-mobile-nav-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.picker-mobile-nav-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 1px 4px rgba(102, 126, 234, 0.3);
+}
+
+.picker-mobile-nav-btn .nav-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.picker-mobile-nav-prev {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.picker-mobile-nav-next {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
 .race-card {
     border: 2px solid #e2e8f0;
     border-radius: 10px;
@@ -1542,13 +1658,16 @@ h1 {
     }
 
     .planner-slot-head {
-        padding: 2px 3px;
-        font-size: 0.6rem;
-        line-height: 1.1;
+        padding: 1px 2px;
+        font-size: 0.5rem;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .planner-slot-head .en {
-        font-size: 0.5rem;
+        font-size: 0.45rem;
+        line-height: 1;
     }
 
     .planner-slot-body {
@@ -1605,21 +1724,21 @@ h1 {
     }
 
     .year-tab {
-        padding: 4px 8px;
-        font-size: 0.7rem;
-        height: 44px;
+        padding: 3px 6px;
+        font-size: 0.6rem;
+        height: 40px;
         line-height: 1.1;
     }
 
     /* Reset button in planner to match year-tab height on mobile */
     .year-tabs .filter-btn {
-        height: 44px;
-        padding: 4px 8px;
-        font-size: 0.7rem;
+        height: 40px;
+        padding: 3px 6px;
+        font-size: 0.6rem;
     }
 
     .year-tabs .filter-btn span {
-        font-size: 0.6rem;
+        font-size: 0.5rem;
         line-height: 1.1;
     }
 
@@ -1640,33 +1759,33 @@ h1 {
     }
 
     #calendar-section .filter-btn {
-        padding: 4px 8px;
-        font-size: 0.65rem;
-        height: 40px;
+        padding: 3px 6px;
+        font-size: 0.55rem;
+        height: 36px;
         flex: 1 1 calc(33.333% - 4px);
-        min-width: 70px;
+        min-width: 65px;
     }
 
     #calendar-section .filter-btn span {
-        font-size: 0.55rem;
+        font-size: 0.48rem;
     }
 
     /* Storage toolbar mobile */
     .storage-toolbar {
-        gap: 6px;
+        gap: 4px;
         padding: 8px 0;
         margin-bottom: 8px;
     }
 
     .btn-storage {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-        flex: 1 1 calc(33.333% - 6px);
+        padding: 5px 8px;
+        font-size: 0.7rem;
+        flex: 1 1 calc(33.333% - 4px);
         min-width: 0;
     }
 
     .btn-storage .btn-label {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
     }
 
     /* Section titles */
@@ -1764,7 +1883,7 @@ h1 {
     /* Modals mobile */
     .picker-panel {
         width: 95vw;
-        max-height: 85vh;
+        max-height: calc(85vh - 80px); /* Account for bottom nav buttons */
     }
 
     .picker-list {
@@ -1782,10 +1901,28 @@ h1 {
         height: 45px;
     }
 
+    /* Hide side navigation arrows on mobile */
     .picker-nav {
-        width: 48px;
-        height: 48px;
-        font-size: 24px;
+        display: none !important;
+    }
+
+    /* Show swipe indicator on mobile */
+    .picker-swipe-indicator {
+        display: flex !important;
+    }
+
+    /* Show mobile navigation arrows on mobile */
+    .picker-mobile-nav {
+        display: flex !important;
+    }
+
+    .picker-mobile-nav-btn {
+        padding: 10px 12px;
+        font-size: 1rem;
+    }
+
+    .picker-mobile-nav-btn .nav-label {
+        font-size: 0.75rem;
     }
 
     .storage-panel {
@@ -1965,5 +2102,25 @@ h1 {
 
     .races-grid {
         grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* Picker panel adjustment for tablet */
+    .picker-panel {
+        max-height: calc(80vh - 80px); /* Account for bottom nav buttons */
+    }
+
+    /* Hide side navigation arrows on tablet */
+    .picker-nav {
+        display: none !important;
+    }
+
+    /* Show swipe indicator on tablet */
+    .picker-swipe-indicator {
+        display: flex !important;
+    }
+
+    /* Show mobile navigation arrows on tablet */
+    .picker-mobile-nav {
+        display: flex !important;
     }
 }
