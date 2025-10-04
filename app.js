@@ -466,13 +466,20 @@ class UmaMusumeTracker {
                         b.classList.remove('summer-active');
                     });
                     e.target.classList.add('active');
+                    // Change text back to "All Races" when clicked
+                    e.target.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
                     this.renderRaces();
                     this.renderPlannerGrid();
                     return;
                 }
                 
                 // Remove 'all' button active state when selecting specific filters
-                document.querySelector('.filter-btn[data-filter="all"]')?.classList.remove('active');
+                const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) {
+                    allBtn.classList.remove('active');
+                    // Change text to "Clear Filters" when other filters are active
+                    allBtn.innerHTML = 'Clear Filters<br><span style="font-size: 0.7em;">フィルター解除</span>';
+                }
                 
                 // Find which group this filter belongs to
                 let filterGroup = null;
@@ -556,7 +563,12 @@ class UmaMusumeTracker {
                 
                 // If no filters are active, activate 'all'
                 if (this.currentFilters.size === 0) {
-                    document.querySelector('.filter-btn[data-filter="all"]')?.classList.add('active');
+                    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                    if (allBtn) {
+                        allBtn.classList.add('active');
+                        // Ensure text shows "All Races" when no filters are active
+                        allBtn.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
+                    }
                 }
                 
                 this.renderRaces();
