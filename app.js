@@ -1022,21 +1022,21 @@ class UmaMusumeTracker {
             const absDy = Math.abs(dy);
             
             // Determine gesture direction on first significant movement
-            if (!isDragging && !isScrolling && (absDx > 5 || absDy > 5)) {
+            if (!isDragging && !isScrolling && (absDx > 10 || absDy > 10)) {
                 // Check if user is inside a scrollable area
                 const target = e.target;
                 const pickerBody = target.closest('.picker-body');
                 
                 if (pickerBody && pickerBody.scrollHeight > pickerBody.clientHeight) {
-                    // If vertical movement is dominant, it's a scroll
-                    if (absDy > absDx * 1.5) {
+                    // If vertical movement is more dominant, it's a scroll
+                    if (absDy > absDx) {
                         isScrolling = true;
                         return; // Let native scroll handle it
                     }
                 }
                 
-                // If horizontal movement is dominant, it's a swipe
-                if (absDx > absDy * 1.5) {
+                // If horizontal movement is more dominant, it's a swipe
+                if (absDx > absDy) {
                     isDragging = true;
                 }
             }
