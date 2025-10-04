@@ -820,7 +820,7 @@ class UmaMusumeTracker {
 		const title = document.getElementById('picker-title');
 		if (title) {
 			const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
-			title.textContent = `${yearMap[this.plannerYear]} — ${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
+			title.innerHTML = `${month} ${half}<br>${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
 		}
         // Render current and adjacent cards
         this.renderPickerCarousel();
@@ -855,19 +855,48 @@ class UmaMusumeTracker {
 	}
 
 	updateToggleButton() {
-		const btn = document.getElementById('toggle-close-btn');
-		if (btn) {
-			const enText = btn.querySelector('.toggle-text-en');
-			const jpText = btn.querySelector('.toggle-text-jp');
-			if (this.closeOnSelection) {
-				btn.classList.remove('active');
-				if (enText) enText.textContent = 'Auto-close';
-				if (jpText) jpText.textContent = '自動閉じる';
-			} else {
-				btn.classList.add('active');
-				if (enText) enText.textContent = 'Stay open';
-				if (jpText) jpText.textContent = '開いたまま';
+		// Update all toggle buttons on carousel cards (prev, current, next)
+		const positions = ['current', 'prev', 'next'];
+		positions.forEach(position => {
+			const card = document.getElementById(`picker-card-${position}`);
+			if (card) {
+				const btn = card.querySelector('.toggle-close-on-selection');
+				if (btn) {
+					const enText = btn.querySelector('.toggle-text-en');
+					const jpText = btn.querySelector('.toggle-text-jp');
+					if (this.closeOnSelection) {
+						btn.classList.remove('active');
+						if (enText) enText.textContent = 'Auto-close';
+						if (jpText) jpText.textContent = '自動閉じる';
+					} else {
+						btn.classList.add('active');
+						if (enText) enText.textContent = 'Stay open';
+						if (jpText) jpText.textContent = '開いたまま';
+					}
+				}
 			}
+		});
+	}
+
+	updatePickerHighlighting() {
+		if (!this.currentPicker) return;
+
+		const { year, month, half } = this.currentPicker;
+		const cellValue = this.plannerData[year][this.cellKey(month, half)];
+		const currentCard = document.getElementById('picker-card-current');
+
+		if (currentCard) {
+			const pickerItems = currentCard.querySelectorAll('.picker-item');
+			pickerItems.forEach(item => {
+				const raceId = item.getAttribute('data-race-id');
+				const isSelected = String(cellValue) === String(raceId);
+
+				if (isSelected) {
+					item.classList.add('selected');
+				} else {
+					item.classList.remove('selected');
+				}
+			});
 		}
 	}
 
@@ -930,16 +959,16 @@ class UmaMusumeTracker {
 		const suffix = position === 'current' ? '' : `-${position}`;
 		const listEl = document.getElementById(`picker-list${suffix}`);
 		const titleEl = document.getElementById(`picker-title${suffix}`);
-		
+
 		if (!listEl || !slot) return;
-		
+
 		const { year, month, half } = slot;
 		const yearFlag = { junior: 'junior', classics: 'classics', senior: 'senior' }[year];
-		
+
 		// Update title
 		if (titleEl) {
 			const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
-			titleEl.textContent = `${yearMap[year]} — ${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
+			titleEl.innerHTML = `${month} ${half}<br>${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
 		}
 		
 		// Filter and sort races
@@ -1042,7 +1071,7 @@ class UmaMusumeTracker {
             const title = document.getElementById('picker-title');
             if (title) {
                 const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
-                title.textContent = `${yearMap[this.currentPicker.year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
+                title.innerHTML = `${this.currentPicker.month} ${this.currentPicker.half}<br>${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
             }
             this.renderPickerList();
             this.updatePickerPagination();
@@ -1249,6 +1278,8 @@ class UmaMusumeTracker {
         this.selectedRaces.add(id);
         this.lostRaces.delete(id);
         this.wonRaces.add(id);
+        // Update picker highlighting to reflect the new selection
+        this.updatePickerHighlighting();
         if (this.closeOnSelection) this.closePicker();
         this.renderPlannerGrid();
         this.renderRaces();
