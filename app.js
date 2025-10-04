@@ -996,26 +996,18 @@ class UmaMusumeTracker {
         if (!modal || !carousel) return;
         
         let startX = 0, startY = 0, startTime = 0, isTouch = false;
-        let currentX = 0, isDragging = false;
+        let currentX = 0, currentY = 0, isDragging = false, isScrolling = false;
         const baseTranslate = -33.333; // Center position percentage
         
         const onTouchStart = (e) => {
-            // Don't interfere with scrolling in picker-body
-            const target = e.target;
-            const pickerBody = target.closest('.picker-body');
-            if (pickerBody) {
-                // Check if content is scrollable
-                if (pickerBody.scrollHeight > pickerBody.clientHeight) {
-                    return; // Let the scroll happen
-                }
-            }
-            
             isTouch = true;
             isDragging = false;
+            isScrolling = false;
             const t = e.touches ? e.touches[0] : e;
             startX = t.clientX;
             startY = t.clientY;
             currentX = startX;
+            currentY = startY;
             startTime = Date.now();
         };
         
@@ -1023,17 +1015,40 @@ class UmaMusumeTracker {
             if (!isTouch) return;
             const t = e.touches ? e.touches[0] : e;
             currentX = t.clientX;
+            currentY = t.clientY;
             const dx = currentX - startX;
-            const dy = Math.abs(t.clientY - startY);
+            const dy = currentY - startY;
+            const absDx = Math.abs(dx);
+            const absDy = Math.abs(dy);
             
-            // If horizontal swipe is dominant, start dragging
-            if (Math.abs(dx) > 10 && Math.abs(dx) > dy && !isDragging) {
-                isDragging = true;
+            // Determine gesture direction on first significant movement
+            if (!isDragging && !isScrolling && (absDx > 5 || absDy > 5)) {
+                // Check if user is inside a scrollable area
+                const target = e.target;
+                const pickerBody = target.closest('.picker-body');
+                
+                if (pickerBody && pickerBody.scrollHeight > pickerBody.clientHeight) {
+                    // If vertical movement is dominant, it's a scroll
+                    if (absDy > absDx * 1.5) {
+                        isScrolling = true;
+                        return; // Let native scroll handle it
+                    }
+                }
+                
+                // If horizontal movement is dominant, it's a swipe
+                if (absDx > absDy * 1.5) {
+                    isDragging = true;
+                }
             }
             
-            // Apply transform during drag for visual feedback
+            // If we determined it's scrolling, don't interfere
+            if (isScrolling) {
+                return;
+            }
+            
+            // Apply transform during horizontal drag
             if (isDragging) {
-                e.preventDefault(); // Prevent scrolling while swiping
+                e.preventDefault(); // Only prevent when we're sure it's a horizontal swipe
                 const panel = document.getElementById('picker-panel');
                 const dragPercent = (dx / panel.offsetWidth) * 33.333; // Convert px to %
                 carousel.style.transition = 'none';
@@ -1045,7 +1060,7 @@ class UmaMusumeTracker {
             if (!isTouch) return;
             const t = (e.changedTouches && e.changedTouches[0]) || e;
             const dx = currentX - startX;
-            const dy = Math.abs(t.clientY - startY);
+            const dy = Math.abs(currentY - startY);
             const dt = Date.now() - startTime;
             const velocity = Math.abs(dx) / dt; // pixels per ms
             
@@ -1056,13 +1071,14 @@ class UmaMusumeTracker {
             if (isDragging && (Math.abs(dx) > 80 || velocity > 0.3) && Math.abs(dx) > dy) {
                 const direction = dx < 0 ? 1 : -1;
                 this.navigatePickerWithAnimation(direction);
-            } else {
-                // Snap back to center
+            } else if (isDragging) {
+                // Snap back to center if swipe wasn't strong enough
                 carousel.style.transform = `translateX(${baseTranslate}%)`;
             }
             
             isTouch = false;
             isDragging = false;
+            isScrolling = false;
         };
         
         const onTouchCancel = () => {
@@ -1071,14 +1087,15 @@ class UmaMusumeTracker {
                 carousel.style.transform = `translateX(${baseTranslate}%)`;
                 isTouch = false;
                 isDragging = false;
+                isScrolling = false;
             }
         };
         
         // Attach to modal for full-screen swipe detection
-        modal.addEventListener('touchstart', onTouchStart, { passive: false });
+        modal.addEventListener('touchstart', onTouchStart, { passive: true });
         modal.addEventListener('touchmove', onTouchMove, { passive: false });
-        modal.addEventListener('touchend', onTouchEnd, { passive: false });
-        modal.addEventListener('touchcancel', onTouchCancel, { passive: false });
+        modal.addEventListener('touchend', onTouchEnd, { passive: true });
+        modal.addEventListener('touchcancel', onTouchCancel, { passive: true });
         
         // Mouse events for desktop testing
         modal.addEventListener('mousedown', onTouchStart);
