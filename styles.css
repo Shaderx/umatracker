@@ -460,9 +460,12 @@ h1 {
     background: #fff;
     width: min(900px, 92vw);
     max-height: 80vh;
+    height: 80vh; /* Set explicit height to constrain carousel */
     border-radius: 12px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.35);
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Carousel Container */
@@ -1996,6 +1999,7 @@ h1 {
     .picker-panel {
         width: 95vw;
         max-height: calc(85vh - 80px); /* Account for bottom nav buttons */
+        height: calc(85vh - 80px); /* Set explicit height to constrain carousel */
     }
     
     /* Add padding to picker body to account for fixed swipe indicator */
@@ -2224,6 +2228,7 @@ h1 {
     /* Picker panel adjustment for tablet */
     .picker-panel {
         max-height: calc(80vh - 80px); /* Account for bottom nav buttons */
+        height: calc(80vh - 80px); /* Set explicit height to constrain carousel */
     }
     
     /* Add padding to picker body to account for fixed swipe indicator */

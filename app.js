@@ -1018,21 +1018,23 @@ class UmaMusumeTracker {
             const absDy = Math.abs(dy);
             
             // Determine gesture direction on first significant movement
-            if (!isDragging && !isScrolling && (absDx > 10 || absDy > 10)) {
+            if (!isDragging && !isScrolling && (absDx > 5 || absDy > 5)) {
                 // Check if user is inside a scrollable area
-                const target = e.target;
-                const pickerBody = target.closest('.picker-body');
-                
-                if (pickerBody && pickerBody.scrollHeight > pickerBody.clientHeight) {
-                    // If vertical movement is more dominant, it's a scroll
-                    if (absDy > absDx) {
-                        isScrolling = true;
-                        return; // Let native scroll handle it
+                const target = e.target || (e.touches && e.touches[0] && e.touches[0].target);
+                if (target) {
+                    const pickerBody = target.closest('.picker-body');
+                    
+                    if (pickerBody && pickerBody.scrollHeight > pickerBody.clientHeight) {
+                        // If vertical movement is more dominant or equal, prioritize scrolling
+                        if (absDy >= absDx * 0.8) {  // Allow some diagonal tolerance
+                            isScrolling = true;
+                            return; // Let native scroll handle it
+                        }
                     }
                 }
                 
-                // If horizontal movement is more dominant, it's a swipe
-                if (absDx > absDy) {
+                // If horizontal movement is clearly more dominant, it's a swipe
+                if (absDx > absDy * 1.5) {  // Require horizontal to be 1.5x more than vertical
                     isDragging = true;
                 }
             }
@@ -1097,7 +1099,11 @@ class UmaMusumeTracker {
         modal.addEventListener('mousedown', onTouchStart);
         modal.addEventListener('mousemove', (e) => {
             if (isTouch && e.buttons === 1) {
-                onTouchMove({ touches: [e] });
+                onTouchMove({ 
+                    touches: [{ clientX: e.clientX, clientY: e.clientY, target: e.target }],
+                    target: e.target,
+                    preventDefault: () => e.preventDefault()
+                });
             }
         });
         modal.addEventListener('mouseup', onTouchEnd);
