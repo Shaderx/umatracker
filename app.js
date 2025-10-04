@@ -1055,6 +1055,10 @@ class UmaMusumeTracker {
         const carousel = document.getElementById('picker-carousel');
         if (!modal || !carousel) return;
         
+        // Prevent attaching multiple times
+        if (modal.dataset.swipeHandlersAttached === 'true') return;
+        modal.dataset.swipeHandlersAttached = 'true';
+        
         let startX = 0, startY = 0, startTime = 0, isTouch = false;
         let currentX = 0, currentY = 0, isDragging = false, isScrolling = false;
         const baseTranslate = -33.333; // Center position percentage
