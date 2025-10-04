@@ -1,29 +1,6 @@
-// Discord contact function
+// Discord contact function - opens Discord invite link
 function contactOnDiscord() {
-    navigator.clipboard.writeText('crazyfellow').then(() => {
-        // Show feedback
-        const btn = document.querySelector('.discord-btn');
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = `<svg class="discord-icon" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
-        </svg><span class="discord-text">✓ You have copied the name, add him on Discord<br><span style="font-size: 0.8em; opacity: 0.8;">✓ 名前をコピーしました！Discordで追加してください</span></span>`;
-
-        // Reset after 3 seconds
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-        }, 3000);
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
-        // Show error feedback
-        const btn = document.querySelector('.discord-btn');
-        const originalHTML = btn.innerHTML;
-        btn.innerHTML = `<svg class="discord-icon" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
-        </svg><span class="discord-text">✗ Failed to copy username<br><span style="font-size: 0.8em; opacity: 0.8;">✗ ユーザー名のコピーに失敗しました</span></span>`;
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-        }, 3000);
-    });
+    window.open('https://discord.gg/d83pCZTwvB', '_blank');
 }
 
 // Race data and hidden factors
@@ -44,6 +21,9 @@ class UmaMusumeTracker {
         this.closeOnSelection = true;
         // Hidden factor tracking state
         this.trackedFactorId = null;
+        // Mobile/tablet factors expansion state
+        this.factorsExpanded = false;
+        this.lastKnownCompact = window.innerWidth <= 900;
         
         // Storage system state
         this.currentSaveSlot = null;
@@ -586,6 +566,22 @@ class UmaMusumeTracker {
                 this.navigatePicker?.(1);
             }
         });
+
+        // Handle window resize for responsive layout
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.syncProgressHeightToPlanner();
+                // Re-render factors if switching between compact/desktop views
+                const wasCompact = this.lastKnownCompact || false;
+                const isCompact = window.innerWidth <= 900;
+                if (wasCompact !== isCompact) {
+                    this.lastKnownCompact = isCompact;
+                    this.updateProgress();
+                }
+            }, 150);
+        });
     }
 
 	// =============================
@@ -680,8 +676,9 @@ class UmaMusumeTracker {
 									slotBody = `<button class=\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\" ${hasAnyForSlot ? `onclick=\"tracker.openPicker('${month}','${half}')\"` : ''}>＋ Add / 追加</button>`;
 					}
 					const isSummer = (month === 'July' || month === 'August');
+					const isEmptySlot = !selectedId && !hasAnyForSlot;
 					slots.push(`
-						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTracked ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''}\">
+						<div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTracked ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''}\">
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
 								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
@@ -1289,6 +1286,9 @@ class UmaMusumeTracker {
 
     syncProgressHeightToPlanner() {
         try {
+            // Skip on mobile/tablet - let natural flow work
+            if (window.innerWidth <= 900) return;
+            
             const planner = document.getElementById('planner-section');
             const panel = document.getElementById('progress-panel');
             if (!planner || !panel) return;
@@ -1480,16 +1480,22 @@ class UmaMusumeTracker {
 
     renderHiddenFactors(results) {
         const container = document.getElementById('hidden-factors');
+        const isMobile = window.innerWidth <= 640;
+        const isTablet = window.innerWidth > 640 && window.innerWidth <= 900;
+        const isCompactView = isMobile || isTablet;
         
-        container.innerHTML = results.map(factor => {
+        container.innerHTML = results.map((factor, index) => {
             const statusClass = factor.result.completed ? 'completed' : 
                                factor.result.progress > 0 ? 'partial' : '';
             const progressPercentage = Math.min(100, (factor.result.current / factor.result.required) * 100);
             const isTracked = this.trackedFactorId === factor.id;
             const showTrackButton = factor.trackable !== false;
             
+            // On mobile/tablet, initially show only first 2 factors
+            const shouldCollapseInitially = isCompactView && index >= 2 && !this.factorsExpanded;
+            
             return `
-                <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''}">
+                <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''} ${shouldCollapseInitially ? 'hidden-factor-collapsed' : ''}">
                     <div class="factor-header">
                         <div class="factor-name">
                             <div class="factor-name-en">${factor.nameEN}</div>
@@ -1519,6 +1525,19 @@ class UmaMusumeTracker {
             `;
         }).join('');
         
+        // Add show more button on mobile/tablet if there are more than 2 factors
+        if (isCompactView && results.length > 2) {
+            const showMoreBtn = document.createElement('button');
+            showMoreBtn.className = 'show-more-factors' + (this.factorsExpanded ? ' expanded' : '');
+            showMoreBtn.innerHTML = `
+                <span>${this.factorsExpanded ? 'Show Less' : `Show More (${results.length - 2} hidden)`}</span>
+                <span class="arrow">▼</span>
+                <br><span style="font-size: 0.8em; opacity: 0.8;">${this.factorsExpanded ? '表示を減らす' : `さらに表示 (${results.length - 2}件)`}</span>
+            `;
+            showMoreBtn.onclick = () => this.toggleFactorsExpanded();
+            container.appendChild(showMoreBtn);
+        }
+        
         // Show/hide clear tracking button
         const clearBtn = document.getElementById('clear-tracking-btn');
         if (clearBtn) {
@@ -1530,6 +1549,11 @@ class UmaMusumeTracker {
         if (trackedFilterBtn) {
             trackedFilterBtn.style.display = this.trackedFactorId ? 'inline-flex' : 'none';
         }
+    }
+
+    toggleFactorsExpanded() {
+        this.factorsExpanded = !this.factorsExpanded;
+        this.updateProgress();
     }
 
     // Planner-aware chronological helpers
