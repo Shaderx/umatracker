@@ -766,7 +766,8 @@ class UmaMusumeTracker {
 			const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
 			title.textContent = `${yearMap[this.plannerYear]} — ${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
 		}
-        this.renderPickerList();
+        // Render current and adjacent cards
+        this.renderPickerCarousel();
         const modal = document.getElementById('picker-modal');
         if (modal) modal.classList.remove('hidden');
         // Prevent background scrolling
@@ -820,78 +821,128 @@ class UmaMusumeTracker {
         }
     }
 
-		renderPickerList() {
-		const listEl = document.getElementById('picker-list');
-		if (!listEl || !this.currentPicker) return;
-		const { year, month, half } = this.currentPicker;
+	renderPickerCarousel() {
+		if (!this.currentPicker) return;
+		
+		// Get adjacent time slots
+		const prevSlot = this.getAdjacentSlot(-1);
+		const nextSlot = this.getAdjacentSlot(1);
+		
+		// Render all three cards
+		this.renderPickerCard('prev', prevSlot);
+		this.renderPickerCard('current', this.currentPicker);
+		this.renderPickerCard('next', nextSlot);
+		
+		// Reset carousel position
+		const carousel = document.getElementById('picker-carousel');
+		if (carousel) {
+			carousel.classList.add('no-transition');
+			carousel.style.transform = 'translateX(-33.333%)';
+			setTimeout(() => carousel.classList.remove('no-transition'), 50);
+		}
+	}
+
+	getAdjacentSlot(direction) {
+		if (!this.currentPicker) return null;
+		const months = this.monthOrder;
+		const halves = this.halfOrder;
+		const yearOrder = ['junior','classics','senior'];
+		
+		let yi = yearOrder.indexOf(this.currentPicker.year);
+		let mi = months.indexOf(this.currentPicker.month);
+		let hi = halves.indexOf(this.currentPicker.half);
+		
+		const step = direction > 0 ? 1 : -1;
+		hi += step;
+		if (hi < 0) { hi = halves.length - 1; mi -= 1; }
+		if (hi >= halves.length) { hi = 0; mi += 1; }
+		if (mi < 0) { mi = months.length - 1; yi = (yi - 1 + yearOrder.length) % yearOrder.length; }
+		if (mi >= months.length) { mi = 0; yi = (yi + 1) % yearOrder.length; }
+		
+		return {
+			year: yearOrder[yi],
+			month: months[mi],
+			half: halves[hi]
+		};
+	}
+
+	renderPickerCard(position, slot) {
+		const suffix = position === 'current' ? '' : `-${position}`;
+		const listEl = document.getElementById(`picker-list${suffix}`);
+		const titleEl = document.getElementById(`picker-title${suffix}`);
+		
+		if (!listEl || !slot) return;
+		
+		const { year, month, half } = slot;
 		const yearFlag = { junior: 'junior', classics: 'classics', senior: 'senior' }[year];
-        const filtered = this.races.filter(r => r.month === month && r.half === half && (!!r[yearFlag]));
-        const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
-        const sorted = filtered.slice().sort((a, b) => {
-            const ao = typeOrder[a.type] ?? 99;
-            const bo = typeOrder[b.type] ?? 99;
-            if (ao !== bo) return ao - bo;
-            return (a.name || '').localeCompare(b.name || '');
-        });
-			const cellValue = this.plannerData[year][this.cellKey(month, half)];
-        listEl.innerHTML = sorted.map(r => {
-				const selected = String(cellValue) === String(r.id);
-				const isTracked = this.isRaceTracked(r.id);
-				const imageUrl = r.image || '';
-				return `
-					<div class=\"picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\">
-					${imageUrl ? `<img src=\"${imageUrl}\" alt=\"${(r.name || '').replace(/\\"/g, '&quot;')}\">` : ''}
-					<div>
-						<div class="race-name">
-							<div class="race-name-en">${r.name}</div>
-							<div class="race-name-jp">${r.nameJP}</div>
-						</div>
-						<div class="race-details">
-							<span class="race-grade grade-${r.type}">${r.type}</span>
-							${r.length} • ${r.surface}/${this.translations.surfaces[r.surface] || r.surface}
-						</div>
-						<div class="race-details">
-							${r.racetrack}/${this.translations.tracks[r.racetrack] || r.racetrack}
-							• ${this.translations.months[r.month] || r.month} ${this.translations.halves[r.half] || r.half}
-							${r.direction ? `• ${this.translations.directions[r.direction]} / ${r.direction}` : ''}
-							${(() => {
-								const years = [];
-								if (r.junior) years.push('Junior');
-								if (r.classics) years.push('Classic');
-								if (r.senior) years.push('Senior');
-								return years.length > 0 ? `• ${years.join('/')}` : '';
-							})()}
-						</div>
+		
+		// Update title
+		if (titleEl) {
+			const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
+			titleEl.textContent = `${yearMap[year]} — ${this.translations.months[month] || month} ${this.translations.halves[half] || half}`;
+		}
+		
+		// Filter and sort races
+		const filtered = this.races.filter(r => r.month === month && r.half === half && (!!r[yearFlag]));
+		const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
+		const sorted = filtered.slice().sort((a, b) => {
+			const ao = typeOrder[a.type] ?? 99;
+			const bo = typeOrder[b.type] ?? 99;
+			if (ao !== bo) return ao - bo;
+			return (a.name || '').localeCompare(b.name || '');
+		});
+		
+		const cellValue = this.plannerData[year][this.cellKey(month, half)];
+		listEl.innerHTML = sorted.map(r => {
+			const selected = String(cellValue) === String(r.id);
+			const isTracked = this.isRaceTracked(r.id);
+			const imageUrl = r.image || '';
+			return `
+				<div class="picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}" data-race-id="${r.id}" onclick="tracker.addRaceToCurrentCellById('${r.id}')">
+				${imageUrl ? `<img src="${imageUrl}" alt="${(r.name || '').replace(/\\"/g, '&quot;')}">` : ''}
+				<div>
+					<div class="race-name">
+						<div class="race-name-en">${r.name}</div>
+						<div class="race-name-jp">${r.nameJP}</div>
+					</div>
+					<div class="race-details">
+						<span class="race-grade grade-${r.type}">${r.type}</span>
+						${r.length} • ${r.surface}/${this.translations.surfaces[r.surface] || r.surface}
+					</div>
+					<div class="race-details">
+						${r.racetrack}/${this.translations.tracks[r.racetrack] || r.racetrack}
+						• ${this.translations.months[r.month] || r.month} ${this.translations.halves[r.half] || r.half}
+						${r.direction ? `• ${this.translations.directions[r.direction]} / ${r.direction}` : ''}
+						${(() => {
+							const years = [];
+							if (r.junior) years.push('Junior');
+							if (r.classics) years.push('Classic');
+							if (r.senior) years.push('Senior');
+							return years.length > 0 ? `• ${years.join('/')}` : '';
+						})()}
 					</div>
 				</div>
+			</div>
 			`;
 		}).join('');
+	}
+	
+	renderPickerList() {
+		// Keep this for backwards compatibility
+		this.renderPickerCard('current', this.currentPicker);
 	}
 
     navigatePicker(direction) {
         // direction: -1 (prev half) or 1 (next half). Wrap month/half within the same year.
         if (!this.currentPicker) return;
-        const months = this.monthOrder;
-        const halves = this.halfOrder; // ['1st','2nd']
-        const yearOrder = ['junior','classics','senior'];
-        let yi = yearOrder.indexOf(this.currentPicker.year);
-        let mi = months.indexOf(this.currentPicker.month);
-        let hi = halves.indexOf(this.currentPicker.half);
-        const step = direction > 0 ? 1 : -1;
-        hi += step;
-        if (hi < 0) { hi = halves.length - 1; mi -= 1; }
-        if (hi >= halves.length) { hi = 0; mi += 1; }
-        if (mi < 0) { mi = months.length - 1; yi = (yi - 1 + yearOrder.length) % yearOrder.length; }
-        if (mi >= months.length) { mi = 0; yi = (yi + 1) % yearOrder.length; }
-        const year = yearOrder[yi];
-        this.currentPicker = { year, month: months[mi], half: halves[hi] };
-        // Update title and list
-        const title = document.getElementById('picker-title');
-        if (title) {
-            const yearMap = { junior: 'ジュニア級', classics: 'クラシック級', senior: 'シニア級' };
-            title.textContent = `${yearMap[year]} — ${this.translations.months[this.currentPicker.month] || this.currentPicker.month} ${this.translations.halves[this.currentPicker.half] || this.currentPicker.half}`;
-        }
-        this.renderPickerList();
+        
+        // Update current picker to the new slot
+        const newSlot = this.getAdjacentSlot(direction);
+        if (!newSlot) return;
+        this.currentPicker = newSlot;
+        
+        // Re-render the carousel with new adjacent cards
+        this.renderPickerCarousel();
         this.updatePickerPagination();
         this.positionPickerNavs();
     }
@@ -941,17 +992,18 @@ class UmaMusumeTracker {
 
     attachPickerSwipeHandlers() {
         const modal = document.getElementById('picker-modal');
-        const panel = document.getElementById('picker-panel');
-        if (!modal || !panel) return;
+        const carousel = document.getElementById('picker-carousel');
+        if (!modal || !carousel) return;
         
         let startX = 0, startY = 0, startTime = 0, isTouch = false;
         let currentX = 0, isDragging = false;
+        const baseTranslate = -33.333; // Center position percentage
         
         const onTouchStart = (e) => {
             // Don't interfere with scrolling in picker-body
             const target = e.target;
-            const pickerBody = document.querySelector('.picker-body');
-            if (pickerBody && pickerBody.contains(target)) {
+            const pickerBody = target.closest('.picker-body');
+            if (pickerBody) {
                 // Check if content is scrollable
                 if (pickerBody.scrollHeight > pickerBody.clientHeight) {
                     return; // Let the scroll happen
@@ -982,9 +1034,10 @@ class UmaMusumeTracker {
             // Apply transform during drag for visual feedback
             if (isDragging) {
                 e.preventDefault(); // Prevent scrolling while swiping
-                const dragAmount = dx * 0.3; // Dampen the drag effect
-                panel.style.transition = 'none';
-                panel.style.transform = `translateX(${dragAmount}px)`;
+                const panel = document.getElementById('picker-panel');
+                const dragPercent = (dx / panel.offsetWidth) * 33.333; // Convert px to %
+                carousel.style.transition = 'none';
+                carousel.style.transform = `translateX(${baseTranslate + dragPercent}%)`;
             }
         };
         
@@ -996,14 +1049,16 @@ class UmaMusumeTracker {
             const dt = Date.now() - startTime;
             const velocity = Math.abs(dx) / dt; // pixels per ms
             
-            // Reset transform
-            panel.style.transition = '';
-            panel.style.transform = '';
+            // Reset transition
+            carousel.style.transition = '';
             
             // Check if it's a valid swipe (fast or long enough)
             if (isDragging && (Math.abs(dx) > 80 || velocity > 0.3) && Math.abs(dx) > dy) {
                 const direction = dx < 0 ? 1 : -1;
                 this.navigatePickerWithAnimation(direction);
+            } else {
+                // Snap back to center
+                carousel.style.transform = `translateX(${baseTranslate}%)`;
             }
             
             isTouch = false;
@@ -1012,8 +1067,8 @@ class UmaMusumeTracker {
         
         const onTouchCancel = () => {
             if (isTouch) {
-                panel.style.transition = '';
-                panel.style.transform = '';
+                carousel.style.transition = '';
+                carousel.style.transform = `translateX(${baseTranslate}%)`;
                 isTouch = false;
                 isDragging = false;
             }
@@ -1036,22 +1091,17 @@ class UmaMusumeTracker {
     }
     
     navigatePickerWithAnimation(direction) {
-        const panel = document.getElementById('picker-panel');
-        if (!panel) return;
+        const carousel = document.getElementById('picker-carousel');
+        if (!carousel) return;
         
-        // Add animation class based on direction
-        const animClass = direction > 0 ? 'slide-left' : 'slide-right';
-        panel.classList.add(animClass);
+        // Slide to the target card
+        const targetTranslate = direction > 0 ? -66.666 : 0; // Next or Previous card
+        carousel.style.transform = `translateX(${targetTranslate}%)`;
         
-        // Navigate after a brief moment
+        // After animation, update data and reset position
         setTimeout(() => {
             this.navigatePicker(direction);
-            
-            // Remove animation class after transition
-            setTimeout(() => {
-                panel.classList.remove(animClass);
-            }, 300);
-        }, 50);
+        }, 300); // Match CSS transition duration
     }
 
     positionPickerNavs() {
