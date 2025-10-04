@@ -561,9 +561,9 @@ class UmaMusumeTracker {
             if (e.key === 'Escape') {
                 this.closePicker();
             } else if (e.key === 'ArrowLeft') {
-                this.navigatePicker?.(-1);
+                this.navigatePickerWithAnimation?.(-1);
             } else if (e.key === 'ArrowRight') {
-                this.navigatePicker?.(1);
+                this.navigatePickerWithAnimation?.(1);
             }
         });
 
@@ -940,28 +940,118 @@ class UmaMusumeTracker {
     }
 
     attachPickerSwipeHandlers() {
+        const modal = document.getElementById('picker-modal');
         const panel = document.getElementById('picker-panel');
-        if (!panel) return;
-        let startX = 0, startY = 0, isTouch = false;
+        if (!modal || !panel) return;
+        
+        let startX = 0, startY = 0, startTime = 0, isTouch = false;
+        let currentX = 0, isDragging = false;
+        
         const onTouchStart = (e) => {
+            // Don't interfere with scrolling in picker-body
+            const target = e.target;
+            const pickerBody = document.querySelector('.picker-body');
+            if (pickerBody && pickerBody.contains(target)) {
+                // Check if content is scrollable
+                if (pickerBody.scrollHeight > pickerBody.clientHeight) {
+                    return; // Let the scroll happen
+                }
+            }
+            
             isTouch = true;
+            isDragging = false;
             const t = e.touches ? e.touches[0] : e;
-            startX = t.clientX; startY = t.clientY;
+            startX = t.clientX;
+            startY = t.clientY;
+            currentX = startX;
+            startTime = Date.now();
         };
+        
+        const onTouchMove = (e) => {
+            if (!isTouch) return;
+            const t = e.touches ? e.touches[0] : e;
+            currentX = t.clientX;
+            const dx = currentX - startX;
+            const dy = Math.abs(t.clientY - startY);
+            
+            // If horizontal swipe is dominant, start dragging
+            if (Math.abs(dx) > 10 && Math.abs(dx) > dy && !isDragging) {
+                isDragging = true;
+            }
+            
+            // Apply transform during drag for visual feedback
+            if (isDragging) {
+                e.preventDefault(); // Prevent scrolling while swiping
+                const dragAmount = dx * 0.3; // Dampen the drag effect
+                panel.style.transition = 'none';
+                panel.style.transform = `translateX(${dragAmount}px)`;
+            }
+        };
+        
         const onTouchEnd = (e) => {
             if (!isTouch) return;
             const t = (e.changedTouches && e.changedTouches[0]) || e;
-            const dx = t.clientX - startX;
-            const dy = t.clientY - startY;
-            if (Math.abs(dx) > 50 && Math.abs(dy) < 40) {
-                this.navigatePicker(dx < 0 ? 1 : -1);
+            const dx = currentX - startX;
+            const dy = Math.abs(t.clientY - startY);
+            const dt = Date.now() - startTime;
+            const velocity = Math.abs(dx) / dt; // pixels per ms
+            
+            // Reset transform
+            panel.style.transition = '';
+            panel.style.transform = '';
+            
+            // Check if it's a valid swipe (fast or long enough)
+            if (isDragging && (Math.abs(dx) > 80 || velocity > 0.3) && Math.abs(dx) > dy) {
+                const direction = dx < 0 ? 1 : -1;
+                this.navigatePickerWithAnimation(direction);
             }
+            
             isTouch = false;
+            isDragging = false;
         };
-        panel.onmousedown = onTouchStart;
-        panel.onmouseup = onTouchEnd;
-        panel.ontouchstart = onTouchStart;
-        panel.ontouchend = onTouchEnd;
+        
+        const onTouchCancel = () => {
+            if (isTouch) {
+                panel.style.transition = '';
+                panel.style.transform = '';
+                isTouch = false;
+                isDragging = false;
+            }
+        };
+        
+        // Attach to modal for full-screen swipe detection
+        modal.addEventListener('touchstart', onTouchStart, { passive: false });
+        modal.addEventListener('touchmove', onTouchMove, { passive: false });
+        modal.addEventListener('touchend', onTouchEnd, { passive: false });
+        modal.addEventListener('touchcancel', onTouchCancel, { passive: false });
+        
+        // Mouse events for desktop testing
+        modal.addEventListener('mousedown', onTouchStart);
+        modal.addEventListener('mousemove', (e) => {
+            if (isTouch && e.buttons === 1) {
+                onTouchMove({ touches: [e] });
+            }
+        });
+        modal.addEventListener('mouseup', onTouchEnd);
+    }
+    
+    navigatePickerWithAnimation(direction) {
+        const panel = document.getElementById('picker-panel');
+        if (!panel) return;
+        
+        // Add animation class based on direction
+        const animClass = direction > 0 ? 'slide-left' : 'slide-right';
+        panel.classList.add(animClass);
+        
+        // Navigate after a brief moment
+        setTimeout(() => {
+            this.navigatePicker(direction);
+            
+            // Remove animation class after transition
+            setTimeout(() => {
+                panel.classList.remove(animClass);
+            }, 300);
+        }, 50);
     }
 
     positionPickerNavs() {

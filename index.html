@@ -177,8 +177,8 @@
     <!-- Picker Modal -->
     <div id="picker-modal" class="picker-modal hidden">
         <div class="picker-backdrop" onclick="tracker.closePicker()"></div>
-        <button class="picker-nav picker-nav-left" onclick="tracker.navigatePicker(-1)" aria-label="Previous">‹</button>
-        <button class="picker-nav picker-nav-right" onclick="tracker.navigatePicker(1)" aria-label="Next">›</button>
+        <button class="picker-nav picker-nav-left" onclick="tracker.navigatePickerWithAnimation(-1)" aria-label="Previous">‹</button>
+        <button class="picker-nav picker-nav-right" onclick="tracker.navigatePickerWithAnimation(1)" aria-label="Next">›</button>
         <div class="picker-panel" id="picker-panel">
             <div class="picker-head">
                 <div class="picker-title" id="picker-title">レース選択</div>
@@ -210,11 +210,11 @@
         </div>
         <!-- Mobile Navigation Arrows -->
         <div class="picker-mobile-nav">
-            <button class="picker-mobile-nav-btn picker-mobile-nav-prev" onclick="tracker.navigatePicker(-1)" aria-label="Previous">
+            <button class="picker-mobile-nav-btn picker-mobile-nav-prev" onclick="tracker.navigatePickerWithAnimation(-1)" aria-label="Previous">
                 <span>‹</span>
                 <span class="nav-label">Previous</span>
             </button>
-            <button class="picker-mobile-nav-btn picker-mobile-nav-next" onclick="tracker.navigatePicker(1)" aria-label="Next">
+            <button class="picker-mobile-nav-btn picker-mobile-nav-next" onclick="tracker.navigatePickerWithAnimation(1)" aria-label="Next">
                 <span class="nav-label">Next</span>
                 <span>›</span>
             </button>
