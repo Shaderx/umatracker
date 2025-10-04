@@ -242,9 +242,41 @@ h1 {
     justify-content: center;
 }
 
-.filter-btn:hover, .filter-btn.active {
+.filter-btn:hover {
     background: #667eea;
     color: white;
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.filter-btn.summer-active {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+    border-color: #ea580c;
+}
+
+/* Summer series filter buttons - non-active state with orange outline */
+.filter-btn[data-filter="SSS"]:not(.active),
+.filter-btn[data-filter="SMS"]:not(.active),
+.filter-btn[data-filter="S2000"]:not(.active) {
+    border-color: #f97316;
+    background: white;
+    color: #f97316;
+}
+
+.filter-btn[data-filter="SSS"]:not(.active):hover,
+.filter-btn[data-filter="SMS"]:not(.active):hover,
+.filter-btn[data-filter="S2000"]:not(.active):hover {
+    background: rgba(249, 115, 22, 0.1);
+    border-color: #ea580c;
+    color: #ea580c;
 }
 
 .races-grid {
@@ -827,8 +859,35 @@ h1 {
     top: 8px;
     left: 8px;
     font-size: 1.1rem;
+}
+
+/* Planner highlight - different from tracked */
+.race-card.race-in-planner {
+    outline: 3px solid #ff9800;
+    outline-offset: -3px;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.4);
+}
+
+.race-card.race-in-planner::after {
+    content: "📅";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 1.1rem;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
     z-index: 2;
+}
+
+/* When both tracked and in planner, show both indicators */
+.race-card.race-tracked.race-in-planner {
+    outline: 3px solid #1890ff;
+    outline-offset: -3px;
+    box-shadow: 0 0 12px rgba(24, 144, 255, 0.4), 0 0 8px rgba(255, 152, 0, 0.3);
+}
+
+.race-card.race-tracked.race-in-planner::after {
+    content: "📍📅";
+    left: 5px;
 }
 
 /* Planner Slot Tracking Highlight */
@@ -848,6 +907,32 @@ h1 {
 
 .planner-slot.slot-tracked .planner-slot-head::after {
     content: " 📍";
+    font-size: 0.9rem;
+}
+
+/* Planner Slot Filter Match Highlight */
+.planner-slot.filter-match {
+    background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+    border-color: #f97316;
+    border-width: 3px;
+    box-shadow: 0 0 12px rgba(249, 115, 22, 0.4);
+}
+
+.planner-slot.filter-match .planner-slot-head {
+    background: #fb923c;
+    color: #7c2d12;
+    border-bottom-color: #f97316;
+    font-weight: 800;
+}
+
+.planner-slot.filter-match .planner-slot-head::after {
+    content: " 🔎";
+    font-size: 0.9rem;
+}
+
+/* When both tracked and filter match, prioritize tracked style but add filter indicator */
+.planner-slot.slot-tracked.filter-match .planner-slot-head::after {
+    content: " 📍🔎";
     font-size: 0.9rem;
 }
 

@@ -807,6 +807,12 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		this.renderPlannerGrid();
 		this.renderRaces();
 		this.updateProgress();
+
+		// Remove active state from reset button
+		const resetBtn = document.querySelector('button[onclick*="clearPlannerYear"]');
+		if (resetBtn) {
+			resetBtn.classList.remove('active');
+		}
 	}
 
 		renderPlannerGrid() {
