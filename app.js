@@ -886,16 +886,19 @@ class UmaMusumeTracker {
 		const currentCard = document.getElementById('picker-card-current');
 
 		if (currentCard) {
-			const pickerItems = currentCard.querySelectorAll('.picker-item');
-			pickerItems.forEach(item => {
-				const raceId = item.getAttribute('data-race-id');
-				const isSelected = String(cellValue) === String(raceId);
+			// Use requestAnimationFrame for immediate visual update
+			requestAnimationFrame(() => {
+				const pickerItems = currentCard.querySelectorAll('.picker-item');
+				pickerItems.forEach(item => {
+					const raceId = item.getAttribute('data-race-id');
+					const isSelected = String(cellValue) === String(raceId);
 
-				if (isSelected) {
-					item.classList.add('selected');
-				} else {
-					item.classList.remove('selected');
-				}
+					if (isSelected) {
+						item.classList.add('selected');
+					} else {
+						item.classList.remove('selected');
+					}
+				});
 			});
 		}
 	}
@@ -987,7 +990,7 @@ class UmaMusumeTracker {
 			const isTracked = this.isRaceTracked(r.id);
 			const imageUrl = r.image || '';
 			return `
-				<div class="picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}" data-race-id="${r.id}" onclick="tracker.addRaceToCurrentCellById('${r.id}')">
+				<div class="picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}" data-race-id="${r.id}">
 				${imageUrl ? `<img src="${imageUrl}" alt="${(r.name || '').replace(/\\"/g, '&quot;')}">` : ''}
 				<div>
 					<div class="race-name">
@@ -1014,6 +1017,21 @@ class UmaMusumeTracker {
 			</div>
 			`;
 		}).join('');
+		
+		// Attach event listeners using event delegation for better iOS performance
+		if (position === 'current') {
+			listEl.removeEventListener('click', this.pickerItemClickHandler);
+			this.pickerItemClickHandler = (e) => {
+				const pickerItem = e.target.closest('.picker-item');
+				if (pickerItem) {
+					const raceId = pickerItem.getAttribute('data-race-id');
+					if (raceId) {
+						this.addRaceToCurrentCellById(raceId);
+					}
+				}
+			};
+			listEl.addEventListener('click', this.pickerItemClickHandler);
+		}
 	}
 	
 	renderPickerList() {
@@ -1269,6 +1287,8 @@ class UmaMusumeTracker {
         const { year, month, half } = this.currentPicker;
         const key = this.cellKey(month, half);
         const prev = this.plannerData[year][key];
+        
+        // Update data state first
         this.plannerData[year][key] = id;
         if (prev && !this.isPlannedAnywhere(prev)) {
             this.selectedRaces.delete(prev);
@@ -1278,12 +1298,30 @@ class UmaMusumeTracker {
         this.selectedRaces.add(id);
         this.lostRaces.delete(id);
         this.wonRaces.add(id);
-        // Update picker highlighting to reflect the new selection
-        this.updatePickerHighlighting();
+        
+        // Immediate visual feedback - update highlighting synchronously
+        const cellValue = this.plannerData[year][this.cellKey(month, half)];
+        const currentCard = document.getElementById('picker-card-current');
+        if (currentCard) {
+            const pickerItems = currentCard.querySelectorAll('.picker-item');
+            pickerItems.forEach(item => {
+                const itemRaceId = item.getAttribute('data-race-id');
+                if (String(cellValue) === String(itemRaceId)) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+        
         if (this.closeOnSelection) this.closePicker();
-        this.renderPlannerGrid();
-        this.renderRaces();
-        this.updateProgress();
+
+        // Defer expensive DOM operations to next tick to prevent UI blocking on mobile
+        setTimeout(() => {
+            this.renderPlannerGrid();
+            this.renderRaces();
+            this.updateProgress();
+        }, 0);
     }
 
 		removeRaceFromPlanner(month, half) {

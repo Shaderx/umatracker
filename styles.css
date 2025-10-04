@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -572,7 +573,7 @@ h1 {
 .btn-primary { background: #38a169; color: #fff; border-color: #38a169; }
 .btn-secondary { background: #edf2f7; color: #2d3748; border-color: #cbd5e0; }
 .picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-.picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; gap: 10px; background: #fff; cursor: pointer; padding: 8px; }
+.picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; gap: 10px; background: #fff; cursor: pointer; padding: 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .picker-item:hover { background: #f7fafc; }
 .picker-item.selected { outline: 3px solid #38a169; }
 .picker-item.picker-item-tracked { background: #e6f7ff; border-color: #1890ff; }
