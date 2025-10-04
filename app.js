@@ -770,8 +770,6 @@ class UmaMusumeTracker {
         this.renderPickerCarousel();
         const modal = document.getElementById('picker-modal');
         if (modal) modal.classList.remove('hidden');
-        // Prevent background scrolling
-        document.body.classList.add('modal-open');
         // Update toggle button state
         this.updateToggleButton();
         // Update pagination dots
@@ -785,8 +783,6 @@ class UmaMusumeTracker {
 	closePicker() {
 		const modal = document.getElementById('picker-modal');
 		if (modal) modal.classList.add('hidden');
-		// Re-enable background scrolling
-		document.body.classList.remove('modal-open');
 	}
 
 	toggleCloseOnSelection() {
@@ -2197,40 +2193,34 @@ class UmaMusumeTracker {
     openSaveDialog() {
         const modal = document.getElementById('save-modal');
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
         this.renderSaveSlots();
     }
 
     closeSaveDialog() {
         const modal = document.getElementById('save-modal');
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
     }
 
     openLoadDialog() {
         const modal = document.getElementById('load-modal');
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
         this.renderLoadSlots();
     }
 
     closeLoadDialog() {
         const modal = document.getElementById('load-modal');
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
     }
 
     openShareDialog() {
         const modal = document.getElementById('share-modal');
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
         this.generateShareURL();
     }
 
     closeShareDialog() {
         const modal = document.getElementById('share-modal');
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
     }
 
     openNameDialog(slotId) {
@@ -2244,7 +2234,6 @@ class UmaMusumeTracker {
         input.select();
         
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
         
         // Allow Enter key to confirm
         input.onkeydown = (e) => {
@@ -2259,7 +2248,6 @@ class UmaMusumeTracker {
     closeNameDialog() {
         const modal = document.getElementById('name-modal');
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
         this.currentSaveSlot = null;
     }
 
@@ -2269,13 +2257,11 @@ class UmaMusumeTracker {
         const message = document.getElementById('delete-message');
         message.textContent = `Are you sure you want to delete "${saveName}"? This cannot be undone.`;
         modal.classList.remove('hidden');
-        document.body.classList.add('modal-open');
     }
 
     closeDeleteDialog() {
         const modal = document.getElementById('delete-modal');
         modal.classList.add('hidden');
-        document.body.classList.remove('modal-open');
         this.currentDeleteSlot = null;
     }
 
