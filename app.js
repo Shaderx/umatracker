@@ -34,7 +34,7 @@ class UmaMusumeTracker {
         this.selectedRaces = new Set();
         this.wonRaces = new Set();
         this.lostRaces = new Set();
-        this.currentFilter = 'all';
+        this.currentFilters = new Set(); // Multiple filters now
 		// Planner state (game-like UI)
 		this.plannerYear = 'junior'; // 'junior' | 'classics' | 'senior'
 		this.monthOrder = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -64,13 +64,13 @@ class UmaMusumeTracker {
             short: race => parseInt(race.length.replace(/[^\d]/g, '')) <= 1400,
             mile: race => {
                 const length = parseInt(race.length.replace(/[^\d]/g, ''));
-                return length >= 1500 && length <= 1700;
+                return length >= 1401 && length <= 1800;
             },
             medium: race => {
                 const length = parseInt(race.length.replace(/[^\d]/g, ''));
-                return length >= 1800 && length <= 2200;
+                return length >= 1801 && length <= 2400;
             },
-            long: race => parseInt(race.length.replace(/[^\d]/g, '')) >= 2300
+            long: race => parseInt(race.length.replace(/[^\d]/g, '')) >= 2401
         };
 
         // Eastern Japan tracks
@@ -183,12 +183,12 @@ class UmaMusumeTracker {
             this.buildRaceMaps();
             return;
         }
-        // Fallback: parse embedded sample CSV
-        this.races = this.parseCSVData();
+        // No races.js found - initialize empty
+        this.races = [];
         this.buildRaceMaps();
         const ind = document.getElementById('data-source-indicator');
         if (ind) {
-            ind.textContent = 'Data source: embedded fallback dataset (sample)';
+            ind.textContent = 'No race data loaded. Please ensure races.js is available.';
         }
     }
 
@@ -205,313 +205,11 @@ class UmaMusumeTracker {
         });
     }
 
-    parseCSVData() {
-        // CSV data from RaceComplete.csv - representative sample
-        const csvData = `函館ジュニアステークス,Hakodate Junior Stakes,6月後半,1年目,ジュニア,,,G3,函館,芝,1200m,短距離,右,,,
-中京ジュニアステークス,Chukyo Junior Stakes,7月後半,1年目,ジュニア,,,OP,中京,芝,1600m,マイル,左,,,
-朝日杯フューチュリティステークス,Asahi Hai Futurity Stakes,12月前半,1年目,ジュニア,,,G1,阪神,芝,1600m,マイル,右,外,,
-阪神ジュベナイルフィリーズ,Hanshin Juvenile Fillies,12月前半,1年目,ジュニア,,,G1,阪神,芝,1600m,マイル,右,外,,
-ホープフルステークス,Hopeful Stakes,12月後半,1年目,ジュニア,,,G1,中山,芝,2000m,中距離,右,内,,
-京成杯,Keisei Hai,1月前半,2年目,,クラシック,,G3,中山,芝,2000m,中距離,右,内,,
-フェアリーステークス,Fairy Stakes,1月前半,2年目,,クラシック,,G3,中山,芝,1600m,マイル,右,外,,
-シンザン記念,Shinzan Kinen,1月前半,2年目,,クラシック,,G3,京都,芝,1600m,マイル,右,外,,
-皐月賞,Satsuki Sho,4月前半,2年目,,クラシック,,G1,中山,芝,2000m,中距離,右,内,,
-桜花賞,Oka Sho,4月前半,2年目,,クラシック,,G1,阪神,芝,1600m,マイル,右,外,,
-NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東京,芝,1600m,マイル,左,,,
-日本ダービー,Japan Derby,5月後半,2年目,,クラシック,,G1,東京,芝,2400m,中距離,左,,,
-オークス,Oaks,5月後半,2年目,,クラシック,,G1,東京,芝,2400m,中距離,左,,,
-安田記念,Yasuda Kinen,6月前半,2年目,,クラシック,シニア,G1,東京,芝,1600m,マイル,左,,,
-宝塚記念,Takarazuka Kinen,6月後半,2年目,,クラシック,シニア,G1,阪神,芝,2200m,中距離,右,内,,
-スプリンターズステークス,Sprinters Stakes,9月後半,2年目,,クラシック,シニア,G1,中山,芝,1200m,短距離,右,外,,
-神戸新聞杯,Kobe Shimbun Hai,9月後半,2年目,,クラシック,,G2,阪神,芝,2400m,中距離,右,外,,
-菊花賞,Kikka Sho,10月後半,2年目,,クラシック,,G1,京都,芝,3000m,長距離,右,外,,
-秋華賞,Akika Sho,10月後半,2年目,,クラシック,,G1,京都,芝,2000m,中距離,右,内,,
-天皇賞（秋）,Tenno Sho (Autumn),10月後半,2年目,,クラシック,シニア,G1,東京,芝,2000m,中距離,左,,,
-エリザベス女王杯,Queen Elizabeth II Cup,11月前半,2年目,,クラシック,シニア,G1,京都,芝,2200m,中距離,右,外,,
-ジャパンカップ,Japan Cup,11月後半,2年目,,クラシック,シニア,G1,東京,芝,2400m,中距離,左,,,
-マイルチャンピオンシップ,Mile Championship,11月後半,2年目,,クラシック,シニア,G1,京都,芝,1600m,マイル,右,外,,
-チャンピオンズカップ,Champions Cup,12月前半,2年目,,クラシック,シニア,G1,中京,ダート,1800m,マイル,左,,,
-有馬記念,Arima Kinen,12月後半,2年目,,クラシック,シニア,G1,中山,芝,2500m,長距離,右,内,,
-京都金杯,Kyoto Kinen,1月前半,3年目,,,シニア,G3,京都,芝,1600m,マイル,右,外,,
-中山金杯,Nakayama Kinen,1月前半,3年目,,,シニア,G3,中山,芝,2000m,中距離,右,内,,
-東京新聞杯,Tokyo Shimbun Hai,2月前半,3年目,,,シニア,G3,東京,芝,1600m,マイル,左,,,
-フェブラリーステークス,February Stakes,2月後半,3年目,,,シニア,G1,東京,ダート,1600m,マイル,左,,,
-高松宮記念,Takamatsunomiya Kinen,3月後半,3年目,,,シニア,G1,中京,芝,1200m,短距離,左,,,
-大阪杯,Osaka Hai,3月後半,3年目,,,シニア,G1,阪神,芝,2000m,中距離,右,内,,
-天皇賞（春）,Tenno Sho (Spring),4月後半,3年目,,,シニア,G1,京都,芝,3200m,長距離,右,外,,
-ヴィクトリアマイル,Victoria Mile,5月前半,3年目,,,シニア,G1,東京,芝,1600m,マイル,左,,,
-帝王賞,Teioh Sho,6月後半,3年目,,,シニア,G1,大井,ダート,2000m,中距離,右,,,
-プロキオンステークス,Procyon Stakes,7月前半,3年目,,クラシック,シニア,G3,中京,ダート,1400m,短距離,左,,,
-カペラステークス,Capella Stakes,12月前半,3年目,,クラシック,シニア,G3,中山,ダート,1200m,短距離,右,,,
-セントウルステークス,Centaur Stakes,9月前半,3年目,,クラシック,シニア,G2,阪神,芝,1200m,短距離,右,内,,
-ダイヤモンドステークス,Diamond Stakes,2月後半,3年目,,,シニア,G3,東京,芝,3400m,長距離,左,,,
-ターコイズステークス,Turquoise Stakes,12月前半,3年目,,クラシック,シニア,G3,中山,芝,1600m,マイル,右,外,,
-シルクロードステークス,Silk Road Stakes,1月後半,3年目,,,シニア,G3,京都,芝,1200m,短距離,右,内,,
-オーシャンステークス,Ocean Stakes,3月前半,3年目,,,シニア,G3,中山,芝,1200m,短距離,右,外,,
-アルデバランステークス,Aldebaran Stakes,2月前半,3年目,,,シニア,OP,京都,ダート,1900m,中距離,右,,,
-リゲルステークス,Rigel Stakes,12月前半,3年目,,クラシック,シニア,OP,阪神,芝,1600m,マイル,右,外,,
-ベテルギウスステークス,Betelgeuse Stakes,12月後半,3年目,,クラシック,シニア,OP,阪神,ダート,1800m,マイル,右,,,
-京都新聞杯,Kyoto Shimbun Hai,5月前半,2年目,,クラシック,,G2,京都,芝,2200m,中距離,右,外,,
-中日新聞杯,Chunichi Shimbun Hai,12月前半,3年目,,クラシック,シニア,G3,中京,芝,2000m,中距離,左,,,
-弥生賞,Yayoi Sho,3月前半,2年目,,クラシック,,G2,中山,芝,2000m,中距離,右,内,,
-スプリングステークス,Spring Stakes,3月後半,2年目,,クラシック,,G2,中山,芝,1800m,マイル,右,内,,
-セントライト記念,Saint Lite Kinen,9月後半,2年目,,クラシック,,G2,中山,芝,2200m,中距離,右,外,,
-チューリップ賞,Tulip Sho,3月前半,2年目,,クラシック,,G2,阪神,芝,1600m,マイル,右,外,,
-フローラステークス,Flora Stakes,4月後半,2年目,,クラシック,,G2,東京,芝,2000m,中距離,左,,,
-ローズステークス,Rose Stakes,9月前半,2年目,,クラシック,,G2,阪神,芝,1800m,マイル,右,外,,
-アネモネステークス,Anemone Stakes,3月前半,2年目,,クラシック,,OP,中山,芝,1600m,マイル,右,外,,,
-フィリーズレビュー,Fillies Review,3月前半,2年目,,クラシック,,G2,阪神,芝,1400m,短距離,右,内,,,
-若葉ステークス,Wakaba Stakes,3月後半,2年目,,クラシック,,OP,阪神,芝,2000m,中距離,右,内,,,
-青葉賞,Aoba Sho,4月後半,2年目,,クラシック,,G2,東京,芝,2400m,中距離,左,,,
-スイートピーステークス,Sweet Pea Stakes,4月後半,2年目,,クラシック,,OP,東京,芝,1800m,マイル,左,,,
-プリンシパルステークス,Principal Stakes,5月前半,2年目,,クラシック,,OP,東京,芝,2000m,中距離,左,,,
-紫苑ステークス,Shion Stakes,9月前半,2年目,,クラシック,,G3,中山,芝,2000m,中距離,右,内,,`;
-
-        const lines = csvData.trim().split('\n');
-        const races = [];
-        
-        // Parse each line of CSV data
-        for (let i = 0; i < lines.length; i++) {
-            const values = this.parseCSVLine(lines[i]);
-            if (values.length >= 13) {
-                const race = this.createRaceObject(values);
-                if (race) {
-                    races.push(race);
-                }
-            }
-        }
-        
-        return races;
-    }
-
     // Normalize grade-one detection across possible encodings (GI, G1)
     isGradeOne(race) {
         if (!race || !race.type) return false;
         const t = String(race.type).toUpperCase().replace(/\s+/g, '');
         return t === 'GI' || t === 'G1';
-    }
-
-    parseCSVLine(line) {
-        return line.split(',');
-    }
-
-    createRaceObject(values) {
-	        const [nameJP, nameEN, date, year, junior, classics, senior, grade, location, ground, distance, distanceCategory, direction, innerOuter, imageField, imageLink] = values;
-        
-        // Use English name if available, otherwise use Japanese name
-        const name = nameEN.trim() || nameJP.trim();
-        
-        // Parse month and half from date (e.g., "6月後半" -> month: "June", half: "2nd")
-        const monthHalf = this.parseDateString(date);
-        
-        // Convert grade format
-        const type = this.convertGrade(grade);
-        
-        // Convert surface
-        const surface = this.convertSurface(ground);
-        
-        // Convert track name
-        const racetrack = this.convertTrackName(location);
-        
-        // Convert direction
-        const convertedDirection = this.convertDirection(direction);
-        
-        // Determine season from month
-        const season = this.getSeason(monthHalf.month);
-        
-        // Image fields (local + remote). Prefer CSV-provided link; else enrich via known mapping.
-        let imageRemote = (imageLink || '').trim();
-        let image = (imageField || '').trim();
-        
-        // If remote is present, derive local path from its filename
-        if (imageRemote && !image) {
-            const filename = imageRemote.split('/').pop();
-            if (filename) image = `race_images/${filename}`;
-        } else if (image && !image.startsWith('race_images/')) {
-            // If CSV included a bare filename, prefix with local folder
-            image = `race_images/${image}`;
-        }
-        
-	        // Enrich missing remote images using a small built-in mapping for the fallback sample
-        if (!imageRemote) {
-            const imageRemoteByName = {
-                'Hakodate Junior Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race2.png',
-                'Chukyo Junior Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race1.png',
-                'Asahi Hai Futurity Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race52.png',
-                'Hanshin Juvenile Fillies': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race51.png',
-                'Hopeful Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race55.png',
-                'Keisei Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race60.png',
-                'Fairy Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race56.png',
-                'Shinzan Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race59.png',
-                'Satsuki Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race83.png',
-                'Oka Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race82.png',
-                'NHK Mile Cup': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race93.png',
-                'Japan Derby': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race98.png',
-                'Oaks': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race97.png',
-                'Yasuda Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race102.png',
-                'Takarazuka Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race112.png',
-                'Sprinters Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race156.png',
-                'Kobe Shimbun Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race150.png',
-                'Kikka Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race173.png',
-                'Tenno Sho (Autumn)': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race171.png',
-                'Queen Elizabeth II Cup': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race179.png',
-                'Japan Cup': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race190.png',
-                'Mile Championship': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race189.png',
-                'Champions Cup': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race201.png',
-                'Arima Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race205.png',
-                'Tokyo Shimbun Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race224.png',
-                'February Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race236.png',
-                'Takamatsunomiya Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race249.png',
-                'Osaka Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race250.png',
-                'Tenno Sho (Spring)': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race263.png',
-                'Victoria Mile': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race272.png',
-                'Teioh Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race285.png',
-                'Procyon Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race115.png',
-                'Capella Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race194.png',
-                'Centaur Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race142.png',
-                'Diamond Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race231.png',
-                'Turquoise Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race195.png',
-                'Silk Road Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race219.png',
-                'Ocean Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race238.png',
-                'Aldebaran Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race227.png',
-                'Rigel Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race198.png',
-                'Betelgeuse Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race204.png',
-                'Kyoto Shimbun Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race94.png',
-                'Chunichi Shimbun Hai': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race193.png',
-                'Yayoi Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race72.png',
-                'Spring Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race77.png',
-                'Tulip Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race74.png',
-                'Flora Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race89.png',
-                'Rose Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race143.png',
-                'Akika Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race172.png',
-                'Saint Lite Kinen': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race152.png',
-                'Anemone Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race70.png',
-                'Fillies Review': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race73.png',
-                'Wakaba Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race76.png',
-                'Aoba Sho': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race90.png',
-                'Sweet Pea Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race88.png',
-                'Principal Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race91.png',
-                'Shion Stakes': 'https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race146.png'
-            };
-            imageRemote = imageRemoteByName[name] || '';
-            if (imageRemote && !image) {
-                const filename = imageRemote.split('/').pop();
-                if (filename) image = `race_images/${filename}`;
-            }
-        }
-	        
-	        // Derive year flags exclusively from Year (fallback to explicit columns if Year missing)
-	        const yearStr = (year || '').trim();
-	        let juniorFlag = false, classicsFlag = false, seniorFlag = false;
-	        const yMatch = yearStr.match(/(\d)年目/);
-	        if (yMatch) {
-	            const y = parseInt(yMatch[1], 10);
-	            if (y === 1) juniorFlag = true;
-	            else if (y === 2) classicsFlag = true;
-	            else if (y === 3) seniorFlag = true;
-	        } else {
-	            juniorFlag = (junior || '').trim() === 'ジュニア';
-	            classicsFlag = (classics || '').trim() === 'クラシック';
-	            seniorFlag = (senior || '').trim() === 'シニア';
-	        }
-	        
-	        return {
-            name: name,
-            nameJP: nameJP.trim(),
-            type: type,
-            length: distance,
-            surface: surface,
-            racetrack: racetrack,
-	            junior: juniorFlag,
-	            classics: classicsFlag,
-	            senior: seniorFlag,
-            month: monthHalf.month,
-            half: monthHalf.half,
-            direction: convertedDirection,
-            season: season,
-            ...(image ? { image } : {}),
-            ...(imageRemote ? { imageRemote } : {})
-        };
-    }
-
-    parseDateString(dateStr) {
-        const monthMap = {
-            '1月': 'January', '2月': 'February', '3月': 'March', '4月': 'April',
-            '5月': 'May', '6月': 'June', '7月': 'July', '8月': 'August',
-            '9月': 'September', '10月': 'October', '11月': 'November', '12月': 'December'
-        };
-        
-        const halfMap = {
-            '前半': '1st',
-            '後半': '2nd'
-        };
-        
-        // Extract month and half from strings like "6月後半"
-        const monthMatch = dateStr.match(/(\d+月)/);
-        const halfMatch = dateStr.match(/(前半|後半)/);
-        
-        const month = monthMatch ? monthMap[monthMatch[1]] || 'January' : 'January';
-        const half = halfMatch ? halfMap[halfMatch[1]] || '1st' : '1st';
-        
-        return { month, half };
-    }
-
-    convertGrade(grade) {
-        const gradeMap = {
-            'G1': 'GI',
-            'G2': 'GII',
-            'G3': 'GIII',
-            'OP': 'Open',
-            'Pre-OP': 'Pre-OP'
-        };
-        return gradeMap[grade] || grade;
-    }
-
-    convertSurface(ground) {
-        const surfaceMap = {
-            '芝': 'turf',
-            'ダート': 'dirt'
-        };
-        return surfaceMap[ground] || ground;
-    }
-
-    convertTrackName(location) {
-        const trackMap = {
-            '東京': 'Tokyo',
-            '中山': 'Nakayama (Chiba)',
-            '京都': 'Kyoto',
-            '阪神': 'Hanshin (Takarazuka)',
-            '中京': 'Chukyou (Nagoya)',
-            '小倉': 'Kokura (Kitakyushu)',
-            '札幌': 'Sapporo',
-            '函館': 'Hakodate',
-            '新潟': 'Niigata',
-            '福島': 'Fukushima',
-            '川崎': 'Kawasaki',
-            '大井': 'Ooi',
-            '船橋': 'Funabashi',
-            '盛岡': 'Morioka'
-        };
-        return trackMap[location] || location;
-    }
-
-    convertDirection(direction) {
-        const directionMap = {
-            '右': 'right',
-            '左': 'left',
-            '直線': 'straight'
-        };
-        return directionMap[direction] || direction;
-    }
-
-    getSeason(month) {
-        const seasonMap = {
-            'December': 'winter', 'January': 'winter', 'February': 'winter',
-            'March': 'spring', 'April': 'spring', 'May': 'spring',
-            'June': 'summer', 'July': 'summer', 'August': 'summer',
-            'September': 'autumn', 'October': 'autumn', 'November': 'autumn'
-        };
-        return seasonMap[month] || 'spring';
     }
 
     loadHiddenFactors() {
@@ -745,13 +443,124 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     setupEventListeners() {
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        // Define filter groups
+        const filterGroups = {
+            grade: ['GI', 'GII', 'GIII', 'Open', 'Pre-OP'], // OR logic
+            surface: ['turf', 'dirt'], // Exclusive
+            distance: ['short', 'mile', 'medium', 'long'], // Exclusive
+            year: ['junior', 'classic', 'senior'], // Exclusive
+            summer: ['SSS', 'SMS', 'S2000'], // Exclusive, clears all others
+            other: ['selected', 'tracked']
+        };
+        
+        // Filter buttons (only buttons with data-filter attribute)
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.currentFilter = e.target.dataset.filter;
+                const filter = e.target.dataset.filter;
+                
+                // Special handling for 'all' - clear all filters
+                if (filter === 'all') {
+                    this.currentFilters.clear();
+                    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
+                        b.classList.remove('active');
+                        b.classList.remove('summer-active');
+                    });
+                    e.target.classList.add('active');
+                    this.renderRaces();
+                    this.renderPlannerGrid();
+                    return;
+                }
+                
+                // Remove 'all' button active state when selecting specific filters
+                document.querySelector('.filter-btn[data-filter="all"]')?.classList.remove('active');
+                
+                // Find which group this filter belongs to
+                let filterGroup = null;
+                for (const [groupName, filters] of Object.entries(filterGroups)) {
+                    if (filters.includes(filter)) {
+                        filterGroup = groupName;
+                        break;
+                    }
+                }
+                
+                // Handle summer series filters - they clear everything else
+                if (filterGroup === 'summer') {
+                    // Clear all filters except summer ones
+                    this.currentFilters.clear();
+                    document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
+                        if (!filterGroups.summer.includes(b.dataset.filter) && b.dataset.filter !== 'all') {
+                            b.classList.remove('active');
+                        }
+                        b.classList.remove('summer-active');
+                    });
+                    
+                    // Toggle this summer filter
+                    if (this.currentFilters.has(filter)) {
+                        this.currentFilters.delete(filter);
+                        e.target.classList.remove('active');
+                        e.target.classList.remove('summer-active');
+                    } else {
+                        // Clear other summer filters (exclusive within summer group)
+                        filterGroups.summer.forEach(f => {
+                            this.currentFilters.delete(f);
+                            const btn = document.querySelector(`.filter-btn[data-filter="${f}"]`);
+                            if (btn) {
+                                btn.classList.remove('active');
+                                btn.classList.remove('summer-active');
+                            }
+                        });
+                        this.currentFilters.add(filter);
+                        e.target.classList.add('active');
+                        e.target.classList.add('summer-active');
+                    }
+                }
+                // Handle exclusive groups (surface, distance, year)
+                else if (filterGroup === 'surface' || filterGroup === 'distance' || filterGroup === 'year') {
+                    const groupFilters = filterGroups[filterGroup];
+                    
+                    // If clicking the same filter, toggle it off
+                    if (this.currentFilters.has(filter)) {
+                        this.currentFilters.delete(filter);
+                        e.target.classList.remove('active');
+                    } else {
+                        // Remove all filters from this group and add the new one
+                        groupFilters.forEach(f => {
+                            this.currentFilters.delete(f);
+                            const btn = document.querySelector(`.filter-btn[data-filter="${f}"]`);
+                            if (btn) btn.classList.remove('active');
+                        });
+                        this.currentFilters.add(filter);
+                        e.target.classList.add('active');
+                    }
+                }
+                // Handle grade filters (OR logic - can have multiple)
+                else if (filterGroup === 'grade') {
+                    if (this.currentFilters.has(filter)) {
+                        this.currentFilters.delete(filter);
+                        e.target.classList.remove('active');
+                    } else {
+                        this.currentFilters.add(filter);
+                        e.target.classList.add('active');
+                    }
+                }
+                // Handle other filters (selected, tracked)
+                else {
+                    if (this.currentFilters.has(filter)) {
+                        this.currentFilters.delete(filter);
+                        e.target.classList.remove('active');
+                    } else {
+                        this.currentFilters.add(filter);
+                        e.target.classList.add('active');
+                    }
+                }
+                
+                // If no filters are active, activate 'all'
+                if (this.currentFilters.size === 0) {
+                    document.querySelector('.filter-btn[data-filter="all"]')?.classList.add('active');
+                }
+                
                 this.renderRaces();
+                this.renderPlannerGrid(); // Update planner to show filter highlights
             });
         });
 
@@ -807,12 +616,6 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		this.renderPlannerGrid();
 		this.renderRaces();
 		this.updateProgress();
-
-		// Remove active state from reset button
-		const resetBtn = document.querySelector('button[onclick*="clearPlannerYear"]');
-		if (resetBtn) {
-			resetBtn.classList.remove('active');
-		}
 	}
 
 		renderPlannerGrid() {
@@ -833,18 +636,20 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 					const selectedId = (typeof rawValue === 'string' && rawValue) ? String(rawValue) : null;
 					const isSlotTracked = this.isSlotTracked(month, half, this.plannerYear);
 					let slotBody = '';
+					
+					// Check if ANY available races in this slot match the current filters
+					const hasMatchingRaces = this.currentFilters.size > 0 && this.races.some(r => {
+						return r.month === month && r.half === half && !!r[this.plannerYear] && this.raceMatchesFilters(r);
+					});
+					
 					if (selectedId) {
 						let r = this.raceById ? this.raceById.get(selectedId) : null;
 						if (!r) {
 							// Backward compatibility: previously stored race name
 							r = this.races.find(rr => rr.name === selectedId) || null;
 						}
-						const hasLocal = r && r.image;
-						const hasRemote = r && r.imageRemote;
-						const bgLayers = [];
-						if (hasLocal) bgLayers.push(`url('${r.image}')`);
-						if (hasRemote) bgLayers.push(`url('${r.imageRemote}')`);
-						const bgStyle = bgLayers.length ? `background-image: ${bgLayers.join(', ')}` : '';
+						const hasImage = r && r.image;
+						const bgStyle = hasImage ? `background-image: url('${r.image}')` : '';
 						const badgeClass = this.lostRaces.has(selectedId) ? 'badge-lost' : (this.wonRaces.has(selectedId) ? 'badge-won' : '');
 						slotBody = `
 							<div class=\"slot-wrapper\"> 
@@ -864,7 +669,7 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 					}
 					const isSummer = (month === 'July' || month === 'August');
 					slots.push(`
-						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTracked ? 'slot-tracked' : ''}\">
+						<div class=\"planner-slot ${!selectedId && !hasAnyForSlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTracked ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''}\">
 							<div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
 								<div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"tracker.openPicker('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
 						</div>
@@ -873,6 +678,76 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
 		});
         container.innerHTML = slots.join('');
         this.syncProgressHeightToPlanner();
+	}
+	
+	// Check if a race matches the current filters
+	raceMatchesFilters(race) {
+		// If no filters are active, don't highlight anything
+		if (this.currentFilters.size === 0) {
+			return false;
+		}
+		
+		// Separate filters by type
+		const gradeFilters = ['GI', 'GII', 'GIII', 'Open', 'Pre-OP'];
+		const activeGrades = [...this.currentFilters].filter(f => gradeFilters.includes(f));
+		const otherFilters = [...this.currentFilters].filter(f => !gradeFilters.includes(f));
+		
+		// Check grade filters with OR logic
+		if (activeGrades.length > 0) {
+			const gradeMatches = activeGrades.some(filter => {
+				switch(filter) {
+					case 'GI': return race.type === 'GI';
+					case 'GII': return race.type === 'GII';
+					case 'GIII': return race.type === 'GIII';
+					case 'Open': return race.type === 'Open';
+					case 'Pre-OP': return race.type === 'Pre-OP';
+					default: return false;
+				}
+			});
+			if (!gradeMatches) return false;
+		}
+		
+		// Check other filters with AND logic
+		for (const filter of otherFilters) {
+			let matches = false;
+			switch(filter) {
+				case 'junior': matches = race.junior; break;
+				case 'classic': matches = race.classics; break;
+				case 'senior': matches = race.senior; break;
+				case 'SSS': {
+					const set = new Set(this.summerSeries?.sprint || []);
+					matches = set.has(race.name);
+					break;
+				}
+				case 'SMS': {
+					const set = new Set(this.summerSeries?.mile || []);
+					matches = set.has(race.name);
+					break;
+				}
+				case 'S2000': {
+					const set = new Set(this.summerSeries?.s2000 || []);
+					matches = set.has(race.name);
+					break;
+				}
+				case 'selected': matches = this.selectedRaces.has(String(race.id)); break;
+				case 'tracked': {
+					const trackedIds = this.getTrackedFactorRaceIds();
+					matches = trackedIds.has(String(race.id));
+					break;
+				}
+				case 'turf': matches = race.surface === 'turf'; break;
+				case 'dirt': matches = race.surface === 'dirt'; break;
+				case 'short': matches = this.distanceCategories.short(race); break;
+				case 'mile': matches = this.distanceCategories.mile(race); break;
+				case 'medium': matches = this.distanceCategories.medium(race); break;
+				case 'long': matches = this.distanceCategories.long(race); break;
+				default: matches = true;
+			}
+			// If any filter doesn't match, return false
+			if (!matches) return false;
+		}
+		// All filters matched
+		return true;
 	}
 
 	openPicker(month, half) {
@@ -947,14 +822,31 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         listEl.innerHTML = sorted.map(r => {
 				const selected = String(cellValue) === String(r.id);
 				const isTracked = this.isRaceTracked(r.id);
-				const primary = r.image || r.imageRemote || '';
-				const onerr = (r.image && r.imageRemote) ? `onerror=\"this.onerror=null; this.src='${r.imageRemote}'\"` : '';
+				const imageUrl = r.image || '';
 				return `
-					<div class=\"picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\"> 
-					<img src=\"${primary}\" alt=\"${(r.name || '').replace(/\\"/g, '&quot;')}\" ${onerr}>
+					<div class=\"picker-item ${selected ? 'selected' : ''} ${isTracked ? 'picker-item-tracked' : ''}\" data-race-id=\"${r.id}\" onclick=\"tracker.addRaceToCurrentCellById('${r.id}')\">
+					${imageUrl ? `<img src=\"${imageUrl}\" alt=\"${(r.name || '').replace(/\\"/g, '&quot;')}\">` : ''}
 					<div>
-						<h4>${r.name}</h4>
-						<div class=\"sub\">${r.nameJP || ''} ・ ${r.type} ・ ${r.length} ・ ${r.racetrack}/${this.translations.tracks[r.racetrack] || r.racetrack}</div>
+						<div class="race-name">
+							<div class="race-name-en">${r.name}</div>
+							<div class="race-name-jp">${r.nameJP}</div>
+						</div>
+						<div class="race-details">
+							<span class="race-grade grade-${r.type}">${r.type}</span>
+							${r.length} • ${r.surface}/${this.translations.surfaces[r.surface] || r.surface}
+						</div>
+						<div class="race-details">
+							${r.racetrack}/${this.translations.tracks[r.racetrack] || r.racetrack}
+							• ${this.translations.months[r.month] || r.month} ${this.translations.halves[r.half] || r.half}
+							${r.direction ? `• ${this.translations.directions[r.direction]} / ${r.direction}` : ''}
+							${(() => {
+								const years = [];
+								if (r.junior) years.push('Junior');
+								if (r.classics) years.push('Classic');
+								if (r.senior) years.push('Senior');
+								return years.length > 0 ? `• ${years.join('/')}` : '';
+							})()}
+						</div>
 					</div>
 				</div>
 			`;
@@ -1157,16 +1049,11 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
         
         grid.innerHTML = filteredRaces.map(race => {
             const isTracked = this.isRaceTracked(race.id);
+            const isInPlanner = this.isPlannedAnywhere(String(race.id));
             return `
-            <div class="race-card ${this.selectedRaces.has(String(race.id)) ? 'selected' : ''} ${this.wonRaces.has(String(race.id)) ? 'won' : ''} ${isTracked ? 'race-tracked' : ''}" 
+            <div class="race-card ${this.selectedRaces.has(String(race.id)) ? 'selected' : ''} ${this.wonRaces.has(String(race.id)) ? 'won' : ''} ${isTracked ? 'race-tracked' : ''} ${isInPlanner ? 'race-in-planner' : ''}" 
                  data-race-id="${race.id}" data-race="${race.name}" onclick="tracker.toggleParticipationById('${race.id}')">
-                ${(() => {
-                    const primary = race.image || race.imageRemote || '';
-                    const fallback = race.image && race.imageRemote ? race.imageRemote : '';
-                    if (!primary) return '';
-                    const onerr = fallback ? `onerror=\"this.onerror=null; this.src='${fallback}'\"` : '';
-                    return `<div class=\"race-thumb\"><img class=\"race-thumb-img\" src=\"${primary}\" alt=\"${(race.name || '').replace(/"/g, '&quot;')}\" loading=\"lazy\" ${onerr}></div>`;
-                })()}
+                ${race.image ? `<div class="race-thumb"><img class="race-thumb-img" src="${race.image}" alt="${(race.name || '').replace(/"/g, '&quot;')}" loading="lazy"></div>` : ''}
                 <div class="race-name">
                     <div class="race-name-en">${race.name}</div>
                     <div class="race-name-jp">${race.nameJP}</div>
@@ -1202,39 +1089,73 @@ NHKマイルカップ,NHK Mile Cup,5月前半,2年目,,クラシック,,G1,東�
     }
 
     getFilteredRaces() {
-        let list;
-        switch(this.currentFilter) {
-            case 'GI': list = this.races.filter(r => r.type === 'GI'); break;
-            case 'GII': list = this.races.filter(r => r.type === 'GII'); break;
-            case 'GIII': list = this.races.filter(r => r.type === 'GIII'); break;
-            case 'Open': list = this.races.filter(r => r.type === 'Open'); break;
-            case 'Pre-OP': list = this.races.filter(r => r.type === 'Pre-OP'); break;
-            case 'junior': list = this.races.filter(r => r.junior); break;
-            case 'classic': list = this.races.filter(r => r.classics); break;
-            case 'senior': list = this.races.filter(r => r.senior); break;
-            case 'SSS': {
-                const set = new Set(this.summerSeries?.sprint || []);
-                list = this.races.filter(r => set.has(r.name));
-                break;
-            }
-            case 'SMS': {
-                const set = new Set(this.summerSeries?.mile || []);
-                list = this.races.filter(r => set.has(r.name));
-                break;
-            }
-            case 'S2000': {
-                const set = new Set(this.summerSeries?.s2000 || []);
-                list = this.races.filter(r => set.has(r.name));
-                break;
-            }
-            case 'selected': list = this.races.filter(r => this.selectedRaces.has(String(r.id))); break;
-            case 'tracked': {
-                const trackedIds = this.getTrackedFactorRaceIds();
-                list = this.races.filter(r => trackedIds.has(String(r.id)));
-                break;
-            }
-            default: list = [...this.races];
+        // If no filters are active, show all races
+        if (this.currentFilters.size === 0) {
+            return this.sortRacesList([...this.races]);
         }
+        
+        // Separate filters by type
+        const gradeFilters = ['GI', 'GII', 'GIII', 'Open', 'Pre-OP'];
+        const activeGrades = [...this.currentFilters].filter(f => gradeFilters.includes(f));
+        const otherFilters = [...this.currentFilters].filter(f => !gradeFilters.includes(f));
+        
+        let list = [...this.races];
+        
+        // Apply grade filters with OR logic
+        if (activeGrades.length > 0) {
+            list = list.filter(race => {
+                return activeGrades.some(filter => {
+                    switch(filter) {
+                        case 'GI': return race.type === 'GI';
+                        case 'GII': return race.type === 'GII';
+                        case 'GIII': return race.type === 'GIII';
+                        case 'Open': return race.type === 'Open';
+                        case 'Pre-OP': return race.type === 'Pre-OP';
+                        default: return false;
+                    }
+                });
+            });
+        }
+        
+        // Apply other filters with AND logic
+        for (const filter of otherFilters) {
+            list = list.filter(race => {
+                switch(filter) {
+                    case 'junior': return race.junior;
+                    case 'classic': return race.classics;
+                    case 'senior': return race.senior;
+                    case 'SSS': {
+                        const set = new Set(this.summerSeries?.sprint || []);
+                        return set.has(race.name);
+                    }
+                    case 'SMS': {
+                        const set = new Set(this.summerSeries?.mile || []);
+                        return set.has(race.name);
+                    }
+                    case 'S2000': {
+                        const set = new Set(this.summerSeries?.s2000 || []);
+                        return set.has(race.name);
+                    }
+                    case 'selected': return this.selectedRaces.has(String(race.id));
+                    case 'tracked': {
+                        const trackedIds = this.getTrackedFactorRaceIds();
+                        return trackedIds.has(String(race.id));
+                    }
+                    case 'turf': return race.surface === 'turf';
+                    case 'dirt': return race.surface === 'dirt';
+                    case 'short': return this.distanceCategories.short(race);
+                    case 'mile': return this.distanceCategories.mile(race);
+                    case 'medium': return this.distanceCategories.medium(race);
+                    case 'long': return this.distanceCategories.long(race);
+                    default: return true;
+                }
+            });
+        }
+        
+        return this.sortRacesList(list);
+    }
+    
+    sortRacesList(list) {
         const typeOrder = { 'GI': 0, 'GII': 1, 'GIII': 2, 'Open': 3, 'Pre-OP': 4 };
         return list.sort((a, b) => {
             const ao = typeOrder[a.type] ?? 99;
