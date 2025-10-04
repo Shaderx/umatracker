@@ -491,6 +491,7 @@ h1 {
     display: flex;
     flex-direction: column;
     background: #fff;
+    height: 100%;
 }
 
 .picker-card-prev,
@@ -505,11 +506,60 @@ h1 {
 .picker-nav:hover { background: rgba(0,0,0,0.6); }
 .picker-nav-left { left: auto; }
 .picker-nav-right { right: auto; }
-.picker-head { padding: 12px 16px; background: #38a169; color: #fff; display:flex; align-items:center; justify-content: space-between; }
-.picker-title { font-weight: 800; }
-.picker-body { padding: 12px 16px; overflow: auto; }
-.picker-actions { padding: 10px 16px; border-top: 1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:8px; }
-.btn { padding: 8px 14px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; font-weight: 700; }
+.picker-head { 
+    padding: 12px 16px; 
+    background: #38a169; 
+    color: #fff; 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    flex-shrink: 0;
+    min-height: 60px;
+}
+.picker-title { 
+    font-weight: 800;
+    line-height: 1.3;
+}
+.picker-body { 
+    padding: 12px 16px; 
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
+}
+.picker-actions { 
+    padding: 10px 16px; 
+    border-top: 1px solid #e2e8f0; 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 8px;
+    flex-shrink: 0;
+    min-height: 60px;
+}
+.btn { 
+    padding: 8px 14px; 
+    border-radius: 8px; 
+    border: 2px solid transparent; 
+    cursor: pointer; 
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.btn-text-en {
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.btn-text-jp {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.9;
+    line-height: 1.1;
+}
 .btn-primary { background: #38a169; color: #fff; border-color: #38a169; }
 .btn-secondary { background: #edf2f7; color: #2d3748; border-color: #cbd5e0; }
 .picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
@@ -525,12 +575,19 @@ h1 {
 /* Swipe Indicator */
 .picker-swipe-indicator {
     display: none; /* Hidden on desktop */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 10px 16px;
     border-top: 1px solid #e2e8f0;
-    background: #f7fafc;
+    background: rgba(247, 250, 252, 0.98);
+    backdrop-filter: blur(10px);
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    z-index: 10;
+    min-height: 80px;
 }
 
 .swipe-hint {
@@ -1922,6 +1979,11 @@ h1 {
         width: 95vw;
         max-height: calc(85vh - 80px); /* Account for bottom nav buttons */
     }
+    
+    /* Add padding to picker body to account for fixed swipe indicator */
+    .picker-card-current .picker-body {
+        padding-bottom: 90px; /* Space for swipe indicator */
+    }
 
     .picker-list {
         grid-template-columns: 1fr;
@@ -2144,6 +2206,11 @@ h1 {
     /* Picker panel adjustment for tablet */
     .picker-panel {
         max-height: calc(80vh - 80px); /* Account for bottom nav buttons */
+    }
+    
+    /* Add padding to picker body to account for fixed swipe indicator */
+    .picker-card-current .picker-body {
+        padding-bottom: 90px; /* Space for swipe indicator */
     }
 
     /* Hide side navigation arrows on tablet */
