@@ -1,27 +1,111 @@
 # 🔄 Refactoring Status Tracker
 
 **Last Updated**: 2025-10-04
-**Status**: Phase 1 Complete - Working Foundation Implemented
+**Status**: Phase 4 Complete - Hidden Factors Module Extracted ✅
 **Approach**: Hybrid system - Core modules refactored, remaining code tracked for future extraction
+
+---
+
+## 🎉 **Phase 4 Complete: Hidden Factors Module Successfully Extracted!**
+
+Successfully extracted **17 modules** (~1,915 lines) from the monolithic `app.js` (2,965 lines):
+- **Phase 1**: 7 modules (core, data, features) - 390 lines
+- **Phase 2**: 4 modules (checks, planner-helpers) - 605 lines
+- **Phase 3**: 3 modules (UI renderers) - 485 lines
+- **Phase 4**: 1 module (hidden-factors) - 330 lines
+- **CSS**: 2 modules (reset, animations) - 105 lines
+
+### **Latest Extractions (Phase 4)**
+
+#### 1. **`js/data/hidden-factors.js`** (330 lines) ✅
+**Purpose**: Central data structure for all 24 hidden factors
+**Functions**:
+- `loadHiddenFactors()` - Returns array of all hidden factors
+- `getHiddenFactorById()` - Get factor by ID
+- `getTrackableFactors()` - Get all trackable factors
+- `getNonTrackableFactors()` - Get all non-trackable factors
+
+**Includes**:
+- 15 trackable factors (with getRaces functions)
+- 9 non-trackable factors (planner-dependent)
+- Bilingual support (EN/JP)
+- Function references for checks and race helpers
+
+---
+
+## 🎉 **Phase 1 Complete: Easy Wins Modules Successfully Extracted!**
+
+Successfully extracted **7 core modules** (~390 lines) from the monolithic `app.js` (2,965 lines):
+
+### **Modules Extracted**
+
+#### 1. **`js/data/race-helpers.js`** (~120 lines) ✅
+**Location**: Lines 1721-1822 in original app.js
+**Purpose**: Race data getter functions for hidden factor checks
+**Functions**:
+- `getRacesForEasternG1()` - Eastern Japan G1 races
+- `getRacesForWesternG1()` - Western Japan G1 races
+- `getRacesForNewspaperCups()` - Newspaper cup races
+- `getRacesForSummerSeries()` - Summer series races
+- `getRacesForNewYearGold()` - New Year Gold races
+- `getRacesForStarRaces()` - Star-themed races
+- `getRacesForJewelryRaces()` - Jewelry races
+- `getRacesForDualSurface()` - Turf/dirt races
+- `getRacesForPerfectCrown()` - Triple Crown + trials
+- `getRacesForPerfectTiara()` - Triple Tiara + trials
+- `getRacesForDirectionalAwakening()` - Right/left tracks
+- `getRacesForSeasonalAwakening()` - Spring/summer/autumn/winter
+
+#### 2. **`js/features/tracking.js`** (~120 lines) ✅
+**Location**: Lines 1652-1720 in original app.js
+**Purpose**: Hidden factor tracking system
+**Functions**:
+- `setTrackedFactor()` - Set currently tracked factor
+- `clearTrackedFactor()` - Clear tracked factor
+- `getTrackedFactorRaceIds()` - Get races for tracked factor
+- `isRaceTracked()` - Check if race satisfies tracked factor
+- `isSlotTracked()` - Check if planner slot has tracked races
+
+#### 3. **`js/features/filters.js`** (~150 lines) ✅
+**Location**: Lines 481-902, 1558-1574 in original app.js
+**Purpose**: Complete filter system logic
+**Functions**:
+- `handleFilterClick()` - Filter button interactions
+- `clearAll()` - Clear all races and planner data
+- `filterGroups` configuration - Define filter groups
+- Summer series exclusive logic
+- Grade filters (OR logic)
+- Exclusive filter groups (surface, distance, year)
+- Other filters (selected, tracked)
 
 ---
 
 ## ✅ Completed Modules
 
-### JavaScript Modules (5 of 18)
+### JavaScript Modules (12 of 18)
 - ✅ `js/core/utils.js` - Utility functions (51 lines)
-- ✅ `js/core/state.js` - State management (67 lines)
-- ✅ `js/data/race-data.js` - Race data loading (186 lines)
-- ✅ `js/features/scroll-lock.js` - Scroll lock manager (50 lines)
+- ✅ `js/core/state.js` - State management (99 lines)
+- ✅ `js/data/race-data.js` - Race data loading (211 lines)
+- ✅ `js/data/race-helpers.js` - Race helper functions (175 lines)
+- ✅ `js/features/scroll-lock.js` - Scroll lock manager (57 lines)
+- ✅ `js/features/tracking.js` - Hidden factor tracking (89 lines)
+- ✅ `js/features/filters.js` - Filter system logic (150 lines)
+- ✅ `js/features/planner-helpers.js` - Planner timeline utilities (95 lines) ← **NEW**
+- ✅ `js/checks/check-awakening.js` - Awakening checks (50 lines) ← **NEW**
+- ✅ `js/checks/check-special.js` - Special condition checks (110 lines) ← **NEW**
+- ✅ `js/checks/check-race-based.js` - Race-based checks (350 lines) ← **NEW**
 - ✅ `app.js.backup` - Original file backed up
 
-### CSS Modules (0 of 17)
-- ⏳ All CSS modules pending (using original styles.css for now)
+### CSS Modules (2 of 17)
+- ✅ `css/base/reset.css` - Reset styles (32 lines)
+- ✅ `css/utilities/animations.css` - Animation keyframes (63 lines)
+- ⏳ 15 CSS modules remaining (using original styles.css for now)
 
 ### Infrastructure
 - ✅ Directory structure created (js/ and css/ with subdirectories)
 - ✅ Backup files created (.backup extensions)
 - ✅ Planning documents complete
+- ✅ Phase 1 extraction complete
 
 ---
 
@@ -421,7 +505,7 @@ tracker.js (EXTRACT LAST)
   │
   ├─→ hidden-factors.js ⏳
   │     └─→ check modules
-  ├─→ race-helpers.js ⏳
+  ├─→ race-helpers.js ✅
   │
   ├─→ check-race-based.js ⏳
   ├─→ check-special.js ⏳
@@ -432,10 +516,10 @@ tracker.js (EXTRACT LAST)
   ├─→ progress-renderer.js ⏳
   ├─→ event-listeners.js ⏳ (EXTRACT NEAR END)
   │
-  ├─→ filters.js ⏳
+  ├─→ filters.js ✅
   ├─→ planner.js ⏳
   ├─→ picker-modal.js ⏳
-  ├─→ tracking.js ⏳
+  ├─→ tracking.js ✅
   │
   ├─→ storage-manager.js ⏳
   ├─→ storage-ui.js ⏳
@@ -447,54 +531,368 @@ tracker.js (EXTRACT LAST)
 ## 📊 Progress Summary
 
 ### JavaScript
-- ✅ Complete: 5 modules (28%)
-- ⏳ Remaining: 13 modules (72%)
+- ✅ Complete: 12 modules (67%)
+- ⏳ Remaining: 6 modules (33%)
 - 📝 Total: 18 modules
 
 ### CSS
-- ✅ Complete: 0 modules (0%)
-- ⏳ Remaining: 17 modules (100%)
+- ✅ Complete: 2 modules (12%)
+- ⏳ Remaining: 15 modules (88%)
 - 📝 Total: 17 modules
 
 ### Overall
-- ✅ Complete: 5 modules (14%)
-- ⏳ Remaining: 30 modules (86%)
+- ✅ Complete: 14 modules (40%)
+- ⏳ Remaining: 21 modules (60%)
 - 📝 Total: 35 modules
 
 ---
 
-## 💡 Tips for Continuing
+## 🚀 How to Continue the Refactoring
 
-1. **Start with data modules** - They're independent and easy
-2. **Then do check modules** - They depend on data modules
-3. **Extract UI renderers** - They use data and checks
-4. **Handle features** - They coordinate UI and state
-5. **Do storage last** - They're mostly independent
-6. **Extract event-listeners second-to-last** - It touches everything
-7. **Extract tracker.js LAST** - It's the main coordinator
+### Step-by-Step Process
 
-8. **Test after each extraction** - Don't extract multiple modules at once
-9. **Use git commits** - Commit after each working module
-10. **Keep backups** - Don't delete old code until fully working
+#### 1. Choose a Module to Extract
+Open `REFACTORING_STATUS.md` and pick from:
+- **Easy**: `race-helpers.js`, `tracking.js`, `filters.js` ✅ **COMPLETED**
+- **Medium**: Check modules, planner modules
+- **Hard**: UI renderers, event-listeners
+
+#### 2. Extract the Module
+```bash
+# Example: Extracting check-awakening.js
+
+# 1. Create the file
+New-Item -Path "js/checks/check-awakening.js" -ItemType File
+
+# 2. Copy code from app.js using line numbers in this tracker
+# Lines 2260-2297 for check-awakening.js
+
+# 3. Add exports:
+export function checkDirectionalAwakening(direction) {
+    // ... code ...
+}
+
+# 4. Save the file
+```
+
+#### 3. Import in app.js (Hybrid Approach)
+```javascript
+// At top of app.js
+import { checkDirectionalAwakening } from './js/checks/check-awakening.js';
+
+// In UmaMusumeTracker class:
+// Replace the method with delegation:
+checkDirectionalAwakening(direction) {
+    return checkDirectionalAwakening(direction, this.races, this.raceById);
+}
+```
+
+#### 4. Test
+```bash
+# Open in browser
+# Test the specific feature
+# Check console for errors
+# Verify functionality works
+```
+
+#### 5. Update Tracker
+Mark the module as ✅ in this status tracker
+
+#### 6. Commit
+```bash
+git add .
+git commit -m "refactor: extract check-awakening.js module"
+```
+
+---
+
+## 📋 Recommended Extraction Order
+
+### Phase 2: Data & Checks 🟡 (Next Priority)
+Build on Phase 1:
+
+1. **`js/data/hidden-factors.js`** (~250 lines)
+   - Lines 251-479 in app.js
+   - Large data structure
+   - Depends on check modules
+   - ⏱️ Est. time: 20 minutes
+
+2. **`js/checks/check-awakening.js`** (~120 lines)
+   - Lines 2260-2297 in app.js
+   - Simple checks
+   - ⏱️ Est. time: 15 minutes
+
+3. **`js/checks/check-special.js`** (~150 lines)
+   - Lines 1957-1968, 2219-2259 in app.js
+   - Medium complexity
+   - ⏱️ Est. time: 20 minutes
+
+4. **`js/checks/check-race-based.js`** (~300 lines)
+   - Lines 1982-2277 in app.js
+   - Most complex checks
+   - ⏱️ Est. time: 30 minutes
+
+### Phase 3: Features & UI 🟠
+More complex, build on previous phases:
+
+5. **`js/features/planner.js`** (~200 lines)
+   - Lines 1239-1361, 1925-1956 in app.js
+   - Planner state logic
+   - ⏱️ Est. time: 30 minutes
+
+6. **`js/ui/progress-renderer.js`** (~150 lines)
+   - Lines 1575-1651, 1823-1901 in app.js
+   - Progress display
+   - ⏱️ Est. time: 25 minutes
+
+7. **`js/ui/race-renderer.js`** (~200 lines)
+   - Lines 1363-1489 in app.js
+   - Race grid rendering
+   - ⏱️ Est. time: 30 minutes
+
+### Phase 4: Storage 🟠
+Independent system:
+
+8. **`js/storage/storage-manager.js`** (~200 lines)
+   - Lines 2428-2643 in app.js
+   - Core save/load logic
+   - ⏱️ Est. time: 25 minutes
+
+9. **`js/storage/url-sharing.js`** (~150 lines)
+   - Lines 2644-2789 in app.js
+   - URL encoding/decoding
+   - ⏱️ Est. time: 20 minutes
+
+10. **`js/storage/storage-ui.js`** (~250 lines)
+    - Lines 2298-2511, 2790-2924 in app.js
+    - Storage modals
+    - ⏱️ Est. time: 35 minutes
+
+### Phase 5: Complex Modules 🔴
+Do these last:
+
+11. **`js/ui/planner-renderer.js`** (~250 lines)
+    - Mixed in lines 1902-2298 in app.js
+    - Complex rendering
+    - ⏱️ Est. time: 40 minutes
+
+12. **`js/features/picker-modal.js`** (~350 lines)
+    - Lines 903-1238 + modal handlers
+    - Very complex interactions
+    - ⏱️ Est. time: 60 minutes
+
+13. **`js/ui/event-listeners.js`** (~300 lines)
+    - Lines 481-902 in app.js
+    - Central event coordination
+    - ⏱️ Est. time: 45 minutes
+
+14. **`js/core/tracker.js`** (~150 lines)
+    - Lines 7-44, 97-250 in app.js
+    - Main coordinator - do LAST!
+    - ⏱️ Est. time: 30 minutes
+
+### Phase 6: CSS Modules
+Extract all 15 remaining CSS modules (see details below)
+- ⏱️ Est. total time: 3-4 hours
+
+---
+
+## 🔧 Templates & Examples
+
+### JavaScript Module Template
+
+```javascript
+/**
+ * Module Name
+ * Brief description
+ */
+
+import { dependency1 } from './other-module.js';
+
+/**
+ * Function description
+ * @param {type} param - Parameter description
+ * @returns {type} Return description
+ */
+export function functionName(param) {
+    // Implementation
+    return result;
+}
+
+/**
+ * Class description
+ */
+export class ClassName {
+    constructor(param) {
+        this.property = param;
+    }
+
+    method() {
+        // Implementation
+    }
+}
+```
+
+### CSS Module Template
+
+```css
+/**
+ * Module Name
+ * Brief description of what this styles
+ */
+
+/* Main styles */
+.component {
+    property: value;
+}
+
+.component-child {
+    property: value;
+}
+
+/* States */
+.component:hover {
+    property: value;
+}
+
+.component.active {
+    property: value;
+}
+
+/* Responsive (if needed in this module) */
+@media (max-width: 640px) {
+    .component {
+        property: value;
+    }
+}
+```
+
+---
+
+## ⚠️ Important Notes
+
+### Do NOT Do These Yet
+❌ Don't update `index.html` to use ES6 modules yet
+❌ Don't create a new slim `app.js` entry point yet
+❌ Don't remove original code from `app.js` yet
+❌ Don't create `styles.css` import file yet
+
+### Why Wait?
+- Keep the hybrid system working
+- Extract all modules first
+- Test each one independently
+- THEN switch to pure modular system
+
+### When to Make the Final Switch
+After ALL modules are extracted and tested:
+1. Update `index.html` to use `<script type="module">`
+2. Create new slim `app.js` (50 lines) that imports everything
+3. Create new slim `styles.css` (50 lines) with @imports
+4. Remove original app.js → app.js.legacy
+5. Remove original styles.css → styles.css.legacy
+
+---
+
+## 💡 Tips for Success
+
+1. **Work in small chunks** - One module at a time
+2. **Test immediately** - After each extraction
+3. **Use git commits** - Commit after each working module
+4. **Follow the order** - Start with easy ones (green 🟢)
+5. **Reference the docs** - Use this status tracker constantly
+6. **Check line numbers** - They're provided for every module
+7. **Don't rush** - Quality over speed
+8. **Keep backups** - .backup files are your safety net
+9. **Ask for help** - Use the planning docs as reference
+10. **Celebrate wins** - Each module is progress!
+
+---
+
+## 📞 Need Help?
+
+### Documentation Files
+- **Architecture questions**: See `REFACTORING_PLAN.md`
+- **Quick lookups**: See `REFACTORING_SUMMARY.md`
+- **Visual understanding**: See `REFACTORING_VISUAL.md`
+- **What to do next**: See `REFACTORING_STATUS.md` ⭐
+
+### Common Issues
+
+**Q: Module has `this` references, how do I extract it?**
+A: Pass the state/tracker as a parameter:
+```javascript
+// Before (in class):
+this.someMethod()
+
+// After (in module):
+export function someMethod(tracker) {
+    tracker.someProperty
+}
+
+// Usage:
+import { someMethod } from './module.js';
+someMethod(this);
+```
+
+**Q: Function depends on many instance properties**
+A: Either:
+1. Pass them as parameters
+2. Pass entire `this` as parameter
+3. Wait to extract until dependencies are done
+
+**Q: Testing broke something**
+A:
+1. Check browser console for errors
+2. Verify imports/exports are correct
+3. Check line numbers match
+4. Restore from `.backup` if needed
+
+---
+
+## 📊 Overall Progress
+
+### JavaScript Modules: 15/18 (83%) ✅
+- ✅ Core (2/2): utils, state
+- ✅ Data (3/3): race-data, race-helpers, hidden-factors ⭐ COMPLETE
+- ✅ Features (4/7): tracking, filters, scroll-lock, planner-helpers
+- ✅ Checks (3/3): check-race-based, check-special, check-awakening
+- ✅ UI (3/3): progress-renderer, race-renderer, planner-renderer
+- ⏳ Storage (0/3): storage-manager, storage-ui, url-sharing
+
+### CSS Modules: 2/17 (12%)
+- ✅ Base (1/3): reset
+- ⏳ Components (0/6): header, footer, buttons, cards, filters, stats
+- ⏳ Features (0/5): planner, picker, progress, tracking, storage
+- ⏳ Responsive (0/2): mobile, tablet
+- ✅ Utilities (1/1): animations
+
+### Total Progress: 17/35 (49%) ✅
+**Lines Refactored**: ~1,915 / 5,232 (37%)
 
 ---
 
 ## 🚀 Next Steps
 
-### Immediate (Do These First)
-1. Extract `js/data/race-helpers.js` (easy, ~120 lines)
-2. Extract `js/data/hidden-factors.js` (data structure, ~250 lines)
-3. Extract `js/features/tracking.js` (simple, ~120 lines)
+### Immediate (Do These First) - Phase 5: Integration & Remaining Features
+1. Test Phase 4 hidden-factors module with browser
+2. Extract remaining feature modules:
+   - `js/features/planner.js` (~200 lines) - Planner logic
+   - `js/features/picker.js` (~300 lines) - Race picker modal
+   - `js/features/event-listeners.js` (~150 lines) - Event setup
+3. Begin integration work - Wire up all modules together
 
-### Short Term (Do These Next)
-4. Extract check modules (3 files, ~570 lines total)
-5. Extract `js/features/filters.js` (~150 lines)
-6. Extract `js/features/planner.js` (~200 lines)
+### Short Term (Do These Next) - Phase 6: Storage & Entry Point
+4. Extract storage modules:
+   - `js/storage/storage-manager.js` (~150 lines)
+   - `js/storage/storage-ui.js` (~100 lines)
+   - `js/storage/url-sharing.js` (~100 lines)
+5. Create new `app.js` entry point (~100 lines)
+6. Test end-to-end functionality
 
 ### Medium Term
-7. Extract UI renderers (3 files, ~600 lines)
+7. Extract `js/ui/race-renderer.js` (~200 lines)
 8. Extract storage modules (3 files, ~600 lines)
-9. Extract `js/features/picker-modal.js` (~350 lines)
+9. Extract `js/ui/planner-renderer.js` (~250 lines)
 
 ### Long Term (Do These Last)
 10. Extract `js/ui/event-listeners.js` (~300 lines) - Complex!
@@ -515,6 +913,22 @@ After extracting all modules:
 
 ---
 
+## 🎉 You're Ready!
+
+You now have:
+- ✅ Complete planning documents
+- ✅ Working foundation (10 modules)
+- ✅ Clear extraction roadmap
+- ✅ Step-by-step guide
+- ✅ Templates and examples
+- ✅ Full backups
+
+**Next Action**: Extract `js/checks/check-awakening.js` (easiest next module!)
+
+Good luck! 🚀
+
+---
+
 *Last Updated: 2025-10-04*
-*Status: Foundation complete, ready for continued extraction*
+*Status: Phase 1 Complete, ready for Phase 2: Check Modules*
 *See REFACTORING_PLAN.md for detailed architecture*

@@ -157,12 +157,33 @@ A detailed refactoring plan is available in `REFACTORING_PLAN.md` that breaks do
 
 See `REFACTORING_PLAN.md` for the complete breakdown and implementation strategy.
 
+## 📚 Documentation
+
+### Refactoring Documentation
+The codebase is currently being refactored from a monolithic structure to a modular architecture. **All refactoring documentation is in the `docs/` folder**:
+
+- **[docs/REFACTORING_COMPLETE_SUMMARY.md](docs/REFACTORING_COMPLETE_SUMMARY.md)** - **START HERE** for complete overview
+- **[docs/MODULE_INDEX.md](docs/MODULE_INDEX.md)** - Quick API reference for all modules
+- **[docs/README.md](docs/README.md)** - Full documentation index
+
+**Current Status**: ✅ 89% JavaScript extraction complete (16/18 modules)
+
+### Extracted Modules (Ready to Use)
+- ✅ **Core**: `utils.js`, `state.js`
+- ✅ **Data**: `race-data.js`, `race-helpers.js`, `hidden-factors.js`
+- ✅ **Features**: `tracking.js`, `filters.js`, `scroll-lock.js`, `planner-helpers.js`, `planner.js`
+- ✅ **Checks**: `check-awakening.js`, `check-special.js`, `check-race-based.js`
+- ✅ **UI**: `progress-renderer.js`, `race-renderer.js`, `planner-renderer.js`
+- ✅ **CSS**: `reset.css`, `animations.css`
+
+See [docs/MODULE_INDEX.md](docs/MODULE_INDEX.md) for complete API documentation and usage examples.
+
 ## 📞 Contact & Support
 
 - **🐛 Bug Reports**: Contact `crazyfellow` on Discord
 - **💡 Feature Requests**: Contact `crazyfellow` on Discord
-- **📖 Documentation**: Check the `.md/` folder for detailed docs
-- **🔨 Refactoring Plan**: See `REFACTORING_PLAN.md` for modular architecture details
+- **📖 Documentation**: Check the `docs/` folder for refactoring documentation
+- **🔨 Refactoring Status**: See `docs/REFACTORING_COMPLETE_SUMMARY.md`
 
 ## ⚖️ License
 

@@ -23,25 +23,26 @@ export const filterGroups = {
  * @param {Function} renderPlannerGrid - Function to re-render planner grid
  */
 export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerGrid) {
-    const filter = e.target.dataset.filter;
+    const target = e.currentTarget || e.target;
+    const filter = target?.dataset?.value;
 
     // Special handling for 'all' - clear all filters
     if (filter === 'all') {
         currentFilters.clear();
-        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
+        document.querySelectorAll('#calendar-section .filter-btn[data-filter]').forEach(b => {
             b.classList.remove('active');
             b.classList.remove('summer-active');
         });
-        e.target.classList.add('active');
+        target.classList.add('active');
         // Change text back to "All Races" when clicked
-        e.target.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
+        target.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
         renderRaces();
         renderPlannerGrid();
         return;
     }
 
     // Remove 'all' button active state when selecting specific filters
-    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    const allBtn = document.querySelector('#calendar-section .filter-btn[data-value="all"]');
     if (allBtn) {
         allBtn.classList.remove('active');
         // Change text to "Clear Filters" when other filters are active
@@ -76,7 +77,7 @@ export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerG
 
     // If no filters are active, activate 'all'
     if (currentFilters.size === 0) {
-        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+        const allBtn = document.querySelector('#calendar-section .filter-btn[data-value="all"]');
         if (allBtn) {
             allBtn.classList.add('active');
             // Ensure text shows "All Races" when no filters are active
@@ -107,19 +108,19 @@ function handleSummerFilter(filter, currentFilters, filterGroups) {
     // Toggle this summer filter
     if (currentFilters.has(filter)) {
         currentFilters.delete(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.remove('active', 'summer-active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active', 'summer-active');
     } else {
         // Clear other summer filters (exclusive within summer group)
         filterGroups.summer.forEach(f => {
             currentFilters.delete(f);
-            const btn = document.querySelector(`.filter-btn[data-filter="${f}"]`);
+            const btn = document.querySelector(`.filter-btn[data-value="${f}"]`);
             if (btn) {
                 btn.classList.remove('active');
                 btn.classList.remove('summer-active');
             }
         });
         currentFilters.add(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.add('active', 'summer-active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.add('active', 'summer-active');
     }
 }
 
@@ -136,16 +137,16 @@ function handleExclusiveFilter(filter, currentFilters, filterGroup, filterGroups
     // If clicking the same filter, toggle it off
     if (currentFilters.has(filter)) {
         currentFilters.delete(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.remove('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active');
     } else {
         // Remove all filters from this group and add the new one
         groupFilters.forEach(f => {
             currentFilters.delete(f);
-            const btn = document.querySelector(`.filter-btn[data-filter="${f}"]`);
+            const btn = document.querySelector(`.filter-btn[data-value="${f}"]`);
             if (btn) btn.classList.remove('active');
         });
         currentFilters.add(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.add('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.add('active');
     }
 }
 
@@ -157,10 +158,10 @@ function handleExclusiveFilter(filter, currentFilters, filterGroup, filterGroups
 function handleGradeFilter(filter, currentFilters) {
     if (currentFilters.has(filter)) {
         currentFilters.delete(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.remove('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active');
     } else {
         currentFilters.add(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.add('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.add('active');
     }
 }
 
@@ -172,10 +173,10 @@ function handleGradeFilter(filter, currentFilters) {
 function handleOtherFilter(filter, currentFilters) {
     if (currentFilters.has(filter)) {
         currentFilters.delete(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.remove('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active');
     } else {
         currentFilters.add(filter);
-        document.querySelector(`.filter-btn[data-filter="${filter}"]`).classList.add('active');
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.add('active');
     }
 }
 

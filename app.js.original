@@ -862,7 +862,17 @@ class UmaMusumeTracker {
 			if (card) {
 				const btn = card.querySelector('.toggle-close-on-selection');
 				if (btn) {
-					if (this.closeOnSelection) btn.classList.add('active'); else btn.classList.remove('active');
+					const enText = btn.querySelector('.toggle-text-en');
+					const jpText = btn.querySelector('.toggle-text-jp');
+					if (this.closeOnSelection) {
+						btn.classList.remove('active');
+						if (enText) enText.textContent = 'Auto-close';
+						if (jpText) jpText.textContent = '自動閉じる';
+					} else {
+						btn.classList.add('active');
+						if (enText) enText.textContent = 'Stay open';
+						if (jpText) jpText.textContent = '開いたまま';
+					}
 				}
 			}
 		});
@@ -1155,7 +1165,7 @@ class UmaMusumeTracker {
                 const panel = document.getElementById('picker-panel');
                 const dragPercent = (dx / panel.offsetWidth) * 33.333; // Convert px to %
                 carousel.style.transition = 'none';
-                carousel.style.transform = `translate3d(${baseTranslate + dragPercent}%, 0, 0)`;
+                carousel.style.transform = `translateX(${baseTranslate + dragPercent}%)`;
             }
         };
         
@@ -1176,7 +1186,7 @@ class UmaMusumeTracker {
                 this.navigatePickerWithAnimation(direction);
             } else if (isDragging) {
                 // Snap back to center if swipe wasn't strong enough
-                carousel.style.transform = `translate3d(${baseTranslate}%, 0, 0)`;
+                carousel.style.transform = `translateX(${baseTranslate}%)`;
             }
             
             isTouch = false;
@@ -1187,7 +1197,7 @@ class UmaMusumeTracker {
         const onTouchCancel = () => {
             if (isTouch) {
                 carousel.style.transition = '';
-                carousel.style.transform = `translate3d(${baseTranslate}%, 0, 0)`;
+                carousel.style.transform = `translateX(${baseTranslate}%)`;
                 isTouch = false;
                 isDragging = false;
                 isScrolling = false;
@@ -1214,23 +1224,19 @@ class UmaMusumeTracker {
         modal.addEventListener('mouseup', onTouchEnd);
     }
     
-		navigatePickerWithAnimation(direction) {
-			const carousel = document.getElementById('picker-carousel');
-			if (!carousel) return;
-			this.updateToggleButton(); // pre-sync toggle state on all cards
-			carousel.style.transition = 'transform 260ms cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-			const targetTranslate = direction > 0 ? '-66.666%' : '0%';
-			carousel.style.transform = `translate3d(${targetTranslate}, 0, 0)`;
-			setTimeout(() => {
-				carousel.classList.add('no-transition');
-				carousel.style.transition = 'none';
-				carousel.style.transform = 'translate3d(-33.333%, 0, 0)';
-				requestAnimationFrame(() => {
-					this.navigatePicker(direction);
-					requestAnimationFrame(() => carousel.classList.remove('no-transition'));
-				});
-			}, 270);
-		}
+    navigatePickerWithAnimation(direction) {
+        const carousel = document.getElementById('picker-carousel');
+        if (!carousel) return;
+        
+        // Slide to the target card
+        const targetTranslate = direction > 0 ? -66.666 : 0; // Next or Previous card
+        carousel.style.transform = `translateX(${targetTranslate}%)`;
+        
+        // After animation, update data and reset position
+        setTimeout(() => {
+            this.navigatePicker(direction);
+        }, 300); // Match CSS transition duration
+    }
 
     positionPickerNavs() {
         setTimeout(() => {

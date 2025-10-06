@@ -487,11 +487,14 @@ h1 {
     width: 300%; /* 3 cards side by side */
     height: 100%;
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform: translateX(-33.333%); /* Start at center card */
+    transform: translate3d(-33.333%, 0, 0); /* Start at center card */
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .picker-carousel.no-transition {
     transition: none;
+    will-change: auto;
 }
 
 /* Individual Cards */
@@ -514,8 +517,8 @@ h1 {
 }
 .picker-nav { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color:#fff; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; width: 56px; height: 56px; font-size: 28px; display:flex; align-items:center; justify-content:center; cursor: pointer; z-index: 1002; }
 .picker-nav:hover { background: rgba(0,0,0,0.6); }
-.picker-nav-left { left: auto; }
-.picker-nav-right { right: auto; }
+.picker-nav-left { left: 16px; }
+.picker-nav-right { right: 16px; }
 .picker-head { 
     padding: 12px 16px; 
     background: #38a169; 
@@ -578,6 +581,18 @@ h1 {
 .picker-item.selected { outline: 3px solid #38a169; }
 .picker-item.picker-item-tracked { background: #e6f7ff; border-color: #1890ff; }
 .picker-item.picker-item-tracked h4::before { content: "📍 "; }
+.picker-item.picker-item-filtered { background: #f0f9ff; border-color: #0ea5e9; position: relative; }
+.picker-item.picker-item-filtered::after {
+    content: "📅";
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #0ea5e9;
+}
 .picker-item img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; }
 .picker-item h4 { font-size: 0.95rem; color: #2d3748; margin-bottom: 2px; }
 .picker-item .sub { font-size: 0.8rem; color: #4a5568; }
@@ -1243,13 +1258,13 @@ h1 {
 }
 
 .planner-slot.filter-match .planner-slot-head::after {
-    content: " 🔎";
+    content: " 📅";
     font-size: 0.9rem;
 }
 
 /* When both tracked and filter match, prioritize tracked style but add filter indicator */
 .planner-slot.slot-tracked.filter-match .planner-slot-head::after {
-    content: " 📍🔎";
+    content: " 📍📅";
     font-size: 0.9rem;
 }
 
@@ -1677,29 +1692,32 @@ h1 {
 /* Toast Notification */
 .toast-notification {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: #48bb78;
     color: white;
-    padding: 12px 20px;
+    padding: 20px 32px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     z-index: 3000;
-    animation: slideInUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+    animation: slideInDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
     pointer-events: none;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .toast-notification.error {
     background: #fc8181;
 }
 
-@keyframes slideInUp {
+@keyframes slideInDown {
     from {
-        transform: translateY(100px);
+        transform: translateX(-50%) translateY(-100px);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
         opacity: 1;
     }
 }
@@ -1707,7 +1725,7 @@ h1 {
 @keyframes fadeOut {
     to {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateX(-50%) translateY(20px);
     }
 }
 

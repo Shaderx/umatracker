@@ -3,6 +3,8 @@
  * Handles loading and organizing race data from races.js
  */
 
+import { state } from '../core/state.js';
+
 /**
  * Distance categories configuration
  */
@@ -184,4 +186,25 @@ export function isGradeOne(race) {
     if (!race || !race.type) return false;
     const t = race.type.toUpperCase();
     return t === 'GI' || t === 'G1';
+}
+
+/**
+ * Initialize race data and populate state
+ * This is a convenience function that loads races and updates the global state
+ */
+export function initializeRaceData() {
+    // Load races
+    state.races = loadRaceData();
+    
+    // Build lookup maps
+    const { raceById, raceIdsByName } = buildRaceMaps(state.races);
+    state.raceById = raceById;
+    state.raceIdsByName = raceIdsByName;
+    
+    // Set data structures
+    state.distanceCategories = distanceCategories;
+    state.easternTracks = easternTracks;
+    state.westernTracks = westernTracks;
+    state.summerSeries = summerSeries;
+    state.translations = translations;
 }

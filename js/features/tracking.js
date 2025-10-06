@@ -3,6 +3,9 @@
  * Manages tracking of specific hidden factors and their associated races
  */
 
+import { state as globalState } from '../core/state.js';
+import { loadHiddenFactors } from '../data/hidden-factors.js';
+
 /**
  * Set the currently tracked hidden factor
  * @param {string|null} factorId - The ID of the factor to track, or null to clear
@@ -45,7 +48,8 @@ export function clearTrackedFactor(state, updateProgress, renderRaces, renderPla
  */
 export function getTrackedFactorRaceIds(state, hiddenFactors) {
     if (!state.trackedFactorId) return new Set();
-    const factor = hiddenFactors.find(f => f.id === state.trackedFactorId);
+    const factors = hiddenFactors || loadHiddenFactors();
+    const factor = factors.find(f => f.id === state.trackedFactorId);
     if (!factor || !factor.getRaces) return new Set();
     return factor.getRaces();
 }
@@ -67,19 +71,23 @@ export function isRaceTracked(raceId, state, hiddenFactors) {
  * @param {string} month - Month name
  * @param {string} half - Half ('1st' or '2nd')
  * @param {string} yearKey - 'junior', 'classics', or 'senior'
- * @param {Object} state - Application state object
- * @param {Array} hiddenFactors - Array of hidden factor objects
- * @param {Map} raceById - Map of race ID to race object
+ * @param {Object} stateParam - Optional application state object (uses global state if not provided)
+ * @param {Array} hiddenFactorsParam - Optional array of hidden factor objects
+ * @param {Map} raceByIdParam - Optional map of race ID to race object
  * @returns {boolean}
  */
-export function isSlotTracked(month, half, yearKey, state, hiddenFactors, raceById) {
-    if (!state.trackedFactorId) return false;
-    const trackedIds = getTrackedFactorRaceIds(state, hiddenFactors);
+export function isSlotTracked(month, half, yearKey, stateParam = null, hiddenFactorsParam = null, raceByIdParam = null) {
+    // Use provided parameters or fall back to global state
+    const stateToUse = stateParam || globalState;
+    const raceByIdToUse = raceByIdParam || globalState.raceById;
+    
+    if (!stateToUse.trackedFactorId) return false;
+    const trackedIds = getTrackedFactorRaceIds(stateToUse, hiddenFactorsParam || loadHiddenFactors());
     if (trackedIds.size === 0) return false;
 
     // Check if any tracked race matches this slot
     for (const id of trackedIds) {
-        const race = raceById.get(String(id));
+        const race = raceByIdToUse.get(String(id));
         if (race && race.month === month && race.half === half && race[yearKey]) {
             return true;
         }
