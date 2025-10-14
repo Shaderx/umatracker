@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+    <title>Uma Musume Hidden Factors Tracker</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="🏇 Track your Uma Musume race progress and unlock hidden factors with this handy web app. Keep tabs on wins/losses, plan your race strategy, and watch those factors unlock as you progress. Works great on mobile too! Made with ❤️ by shader.">
+    <meta name="keywords" content="Uma Musume, Hidden Factors, Race Tracker, Uma Musume Pretty Derby, ウマ娘, 隠し因子, レーストラッカー, game tracker, race progress">
+    <meta name="author" content="shader">
+    
+    <!-- Open Graph / Facebook / Discord -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://uma.pwnation.net/">
+    <meta property="og:title" content="🏇 Uma Musume Hidden Factors Tracker">
+    <meta property="og:description" content="Track your Uma Musume race progress and unlock hidden factors. Plan races, count your wins, and watch factors unlock as you hit milestones. Mobile-friendly, saves locally, and works in English/Japanese. Made with ❤️ by shader.">
+    <meta property="og:image" content="https://uma.pwnation.net/icon.webp">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Uma Musume Hidden Factors Tracker Logo">
+    <meta property="og:site_name" content="Uma Musume Hidden Factors Tracker">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="ja_JP">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://uma.pwnation.net/">
+    <meta name="twitter:title" content="🏇 Uma Musume Hidden Factors Tracker">
+    <meta name="twitter:description" content="Track your Uma Musume race progress and unlock hidden factors. Plan races, count your wins, and watch factors unlock as you hit milestones. Mobile-friendly with English/Japanese support. Made with ❤️ by shader.">
+    <meta name="twitter:image" content="https://uma.pwnation.net/icon.webp">
+    <meta name="twitter:image:alt" content="Uma Musume Hidden Factors Tracker Logo">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/webp" sizes="32x32" href="icons/icon.webp">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/webp" sizes="16x16" href="icons/icon.webp">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/icon.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZMGDSGP99"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-TZMGDSGP99');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="icons/icon.webp" alt="Uma Musume Logo" class="app-logo">
+            </div>
+            <h1>Uma Musume Hidden Factors Tracker</h1>
+            <h2 style="margin-top: -10px; margin-bottom: 10px; color: rgba(255,255,255,0.9); font-size: 1.4rem;">ウマ娘 隠し因子トラッカー</h2>
+            <div class="subtitle">Track your race progress and unlock hidden factors</div>
+            <div class="subtitle" style="margin-top: 5px; font-size: 1rem;">レース進捗を追跡して隠し因子を解放しよう</div>
+        </header>
+
+        <div class="discord-contact">
+            <button class="discord-btn" onclick="contactOnDiscord()" title="Join Discord server for updates, bugs, and features">
+                <svg class="discord-icon" viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1568 2.4189Z"/>
+                </svg>
+                <span class="discord-text">
+                    Join Discord for updates, bug reports & feature requests
+                    <br><span style="font-size: 0.8em; opacity: 0.8;">アップデート、バグ報告、機能リクエストはDiscordで</span>
+                </span>
+            </button>
+        </div>
+
+        <div class="main-content">
+            <div class="races-section" id="planner-section">
+                <h2 class="section-title">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span></h2>
+                <div class="year-tabs">
+                    <button class="year-tab active" id="tab-junior" onclick="tracker.setPlannerYear('junior')">ジュニア級<br><span style="font-size: 0.8em; font-weight:600;">Junior</span></button>
+                    <button class="year-tab" id="tab-classics" onclick="tracker.setPlannerYear('classics')">クラシック級<br><span style="font-size: 0.8em; font-weight:600;">Classic</span></button>
+                    <button class="year-tab" id="tab-senior" onclick="tracker.setPlannerYear('senior')">シニア級<br><span style="font-size: 0.8em; font-weight:600;">Senior</span></button>
+                    <div style="margin-left:auto; display:flex; gap:8px;">
+                        <button class="filter-btn" onclick="tracker.clearPlannerYear()">このページをリセット<br><span style="font-size: 0.8em; font-weight:600;">Reset this page</span></button>
+                </div>
+                </div>
+                <div class="planner-grid" id="planner-grid"></div>
+            </div>
+
+            <div class="progress-section" id="progress-panel">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px;">
+                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
+                    <button class="btn btn-clear-tracking" id="clear-tracking-btn" onclick="tracker.clearTrackedFactor()" style="display: none;" title="Clear tracking / 追跡解除">
+                        ✖ Clear<br><span style="font-size: 0.7em;">追跡解除</span>
+                    </button>
+                </div>
+                
+                <!-- Storage Controls Toolbar -->
+                <div class="storage-toolbar">
+                    <button class="btn-storage" id="btn-save" onclick="tracker.openSaveDialog()" title="Save / 保存">
+                        💾 <span class="btn-label">Save</span>
+                    </button>
+                    <button class="btn-storage" id="btn-load" onclick="tracker.openLoadDialog()" title="Load / 読み込み">
+                        📂 <span class="btn-label">Load</span>
+                    </button>
+                    <button class="btn-storage" id="btn-share" onclick="tracker.openShareDialog()" title="Share / 共有">
+                        🔗 <span class="btn-label">Share</span>
+                    </button>
+                </div>
+                
+                <div class="stats">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-races">0</div>
+                            <div class="stat-label">Races Run<br><span style="font-size: 0.7em;">出走回数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-wins">0</div>
+                            <div class="stat-label">Wins<br><span style="font-size: 0.7em;">勝利数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-losses">0</div>
+                            <div class="stat-label">Losses<br><span style="font-size: 0.7em;">敗北数</span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="completed-factors">0</div>
+                            <div class="stat-label">Factors<br><span style="font-size: 0.7em;">因子数</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-factors" id="hidden-factors">
+                    <!-- Hidden factors will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Full-width calendar placed at bottom -->
+        <div style="max-width: 1400px; margin: 18px auto 0 auto;">
+            <div class="races-section" id="calendar-section" style="padding: 18px;">
+                <h2 class="section-title">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
+                <div class="controls">
+                    <button class="filter-btn active" data-filter="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
+                    <button class="filter-btn" data-filter="GI">G1</button>
+                    <button class="filter-btn" data-filter="GII">G2</button>
+                    <button class="filter-btn" data-filter="GIII">G3</button>
+                    <button class="filter-btn" data-filter="Open">OP</button>
+                    <button class="filter-btn" data-filter="Pre-OP">Pre-OP</button>
+                    <button class="filter-btn" data-filter="turf">Turf<br><span style="font-size: 0.7em;">芝</span></button>
+                    <button class="filter-btn" data-filter="dirt">Dirt<br><span style="font-size: 0.7em;">ダート</span></button>
+                    <button class="filter-btn" data-filter="short">Short<br><span style="font-size: 0.7em;">短距離</span></button>
+                    <button class="filter-btn" data-filter="mile">Mile<br><span style="font-size: 0.7em;">マイル</span></button>
+                    <button class="filter-btn" data-filter="medium">Medium<br><span style="font-size: 0.7em;">中距離</span></button>
+                    <button class="filter-btn" data-filter="long">Long<br><span style="font-size: 0.7em;">長距離</span></button>
+                    <button class="filter-btn" data-filter="junior">Junior Year<br><span style="font-size: 0.7em;">ジュニア級</span></button>
+                    <button class="filter-btn" data-filter="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
+                    <button class="filter-btn" data-filter="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
+                    <button class="filter-btn" data-filter="SSS">Summer Sprint<br><span style="font-size: 0.7em;">サマースプリント</span></button>
+                    <button class="filter-btn" data-filter="SMS">Summer Mile<br><span style="font-size: 0.7em;">サマーマイル</span></button>
+                    <button class="filter-btn" data-filter="S2000">Summer 2000<br><span style="font-size: 0.7em;">サマー2000</span></button>
+                    <button class="filter-btn" data-filter="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
+                    <button class="filter-btn" id="tracked-filter-btn" data-filter="tracked" style="display: none;">🔍 Tracked<br><span style="font-size: 0.7em;">追跡中</span></button>
+                    <button class="filter-btn clear-all-btn" onclick="tracker.clearAll()" style="border-color: #e53e3e; background: white; color: #e53e3e;">Clear All Selection<br><span style="font-size: 0.7em;">全選択解除</span></button>
+                </div>
+                <div class="races-grid" id="races-grid"></div>
+                <div style="margin-top: 12px; font-size: 0.8rem; color: #718096;"><span id="data-source-indicator"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LZ-String for URL compression -->
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script src="races.js"></script>
+    <script src="app-old.js"></script>
+
+    <!-- Picker Modal -->
+    <div id="picker-modal" class="picker-modal hidden">
+        <div class="picker-backdrop" onclick="tracker.closePicker()"></div>
+        <button class="picker-nav picker-nav-left" onclick="tracker.navigatePickerWithAnimation(-1)" aria-label="Previous">‹</button>
+        <button class="picker-nav picker-nav-right" onclick="tracker.navigatePickerWithAnimation(1)" aria-label="Next">›</button>
+        <div class="picker-panel" id="picker-panel">
+            <div class="picker-carousel" id="picker-carousel">
+                <!-- Previous Card -->
+                <div class="picker-card picker-card-prev" id="picker-card-prev">
+                    <div class="picker-head">
+                        <div class="picker-title" id="picker-title-prev"></div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary toggle-close-on-selection" disabled style="pointer-events: none;">
+                                <span class="toggle-icon"></span>
+                                <div class="toggle-text">
+                                    <div class="toggle-text-en">Auto-close</div>
+                                    <div class="toggle-text-jp">自動閉じる</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="picker-body">
+                        <div id="picker-list-prev" class="picker-list"></div>
+                    </div>
+                    <div class="picker-actions">
+                        <button class="btn btn-primary" disabled>
+                            <div class="btn-text-en">Done</div>
+                            <div class="btn-text-jp">完了</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Current Card -->
+                <div class="picker-card picker-card-current" id="picker-card-current">
+                    <div class="picker-head">
+                        <div class="picker-title" id="picker-title">レース選択</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary toggle-close-on-selection" id="toggle-close-btn" onclick="tracker.toggleCloseOnSelection()" title="Toggle close on selection">
+                                <span class="toggle-icon"></span>
+                                <div class="toggle-text">
+                                    <div class="toggle-text-en">Auto-close</div>
+                                    <div class="toggle-text-jp">自動閉じる</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="picker-body">
+                        <div id="picker-list" class="picker-list"></div>
+                    </div>
+                    <div class="picker-actions">
+                        <button class="btn btn-primary" onclick="tracker.closePicker()">
+                            <div class="btn-text-en">Done</div>
+                            <div class="btn-text-jp">完了</div>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Next Card -->
+                <div class="picker-card picker-card-next" id="picker-card-next">
+                    <div class="picker-head">
+                        <div class="picker-title" id="picker-title-next"></div>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary toggle-close-on-selection" disabled style="pointer-events: none;">
+                                <span class="toggle-icon"></span>
+                                <div class="toggle-text">
+                                    <div class="toggle-text-en">Auto-close</div>
+                                    <div class="toggle-text-jp">自動閉じる</div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="picker-body">
+                        <div id="picker-list-next" class="picker-list"></div>
+                    </div>
+                    <div class="picker-actions">
+                        <button class="btn btn-primary" disabled>
+                            <div class="btn-text-en">Done</div>
+                            <div class="btn-text-jp">完了</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Swipe Indicator -->
+            <div class="picker-swipe-indicator">
+                <div class="swipe-hint">
+                    <span class="swipe-icon">←</span>
+                    <span class="swipe-text">Swipe</span>
+                    <span class="swipe-icon">→</span>
+                </div>
+                <div class="picker-pagination" id="picker-pagination"></div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Arrows -->
+        <div class="picker-mobile-nav">
+            <button class="picker-mobile-nav-btn picker-mobile-nav-prev" onclick="tracker.navigatePickerWithAnimation(-1)" aria-label="Previous">
+                <span>‹</span>
+                <span class="nav-label">Previous</span>
+            </button>
+            <button class="picker-mobile-close-btn" onclick="tracker.closePicker()" aria-label="Close">
+                ✕
+            </button>
+            <button class="picker-mobile-nav-btn picker-mobile-nav-next" onclick="tracker.navigatePickerWithAnimation(1)" aria-label="Next">
+                <span class="nav-label">Next</span>
+                <span>›</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Save Dialog Modal -->
+    <div id="save-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeSaveDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>💾 Save Progress / 進捗を保存</h3>
+                <button class="close-btn" onclick="tracker.closeSaveDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="save-slots-grid" id="save-slots-grid">
+                    <!-- Dynamically generated save slots -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Dialog Modal -->
+    <div id="load-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeLoadDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>📂 Load Progress / 進捗を読み込み</h3>
+                <button class="close-btn" onclick="tracker.closeLoadDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="load-slots-grid" id="load-slots-grid">
+                    <!-- Dynamically generated load slots -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Dialog Modal -->
+    <div id="share-modal" class="storage-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeShareDialog()"></div>
+        <div class="storage-panel">
+            <div class="storage-header">
+                <h3>🔗 Share Progress / 進捗を共有</h3>
+                <button class="close-btn" onclick="tracker.closeShareDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="share-content">
+                    <p>Share this URL to let others see your race plan:</p>
+                    <p>このURLを共有して、他の人にレース計画を見せましょう：</p>
+                    <div class="share-url-container">
+                        <input type="text" id="share-url-input" readonly />
+                        <button class="btn-copy" onclick="tracker.copyShareURL()">📋 Copy</button>
+                    </div>
+                    <div class="share-stats">
+                        <div>Races Run / 出走: <strong id="share-stat-races">0</strong></div>
+                        <div>Wins / 勝利: <strong id="share-stat-wins">0</strong></div>
+                        <div>Factors / 因子: <strong id="share-stat-factors">0</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Naming Popup Modal -->
+    <div id="name-modal" class="storage-modal naming-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeNameDialog()"></div>
+        <div class="storage-panel naming-panel">
+            <div class="storage-header">
+                <h3>✏️ Name Your Save / 保存に名前をつける</h3>
+                <button class="close-btn" onclick="tracker.closeNameDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="naming-content">
+                    <label class="naming-label">Save Name / 保存名:</label>
+                    <input type="text" id="name-input" class="naming-input" maxlength="50" placeholder="My Epic Run..." />
+                    <div class="naming-actions">
+                        <button class="btn btn-secondary" onclick="tracker.closeNameDialog()">Cancel / キャンセル</button>
+                        <button class="btn btn-primary" onclick="tracker.confirmSaveName()">Save / 保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="storage-modal confirmation-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeDeleteDialog()"></div>
+        <div class="storage-panel confirmation-panel">
+            <div class="storage-header delete-header">
+                <h3>⚠️ Delete Save? / 保存を削除？</h3>
+                <button class="close-btn" onclick="tracker.closeDeleteDialog()">×</button>
+            </div>
+            <div class="storage-body">
+                <div class="confirmation-content">
+                    <p id="delete-message">Are you sure you want to delete this save? This cannot be undone.</p>
+                    <p id="delete-message-jp">この保存を削除してもよろしいですか？ 元に戻せません。</p>
+                    <div class="confirmation-actions">
+                        <button class="btn btn-secondary" onclick="tracker.closeDeleteDialog()">Cancel / キャンセル</button>
+                        <button class="btn btn-danger" onclick="tracker.executeDelete()">Delete / 削除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-content">
+            <span class="footer-heart">♥</span>
+            <span class="footer-text">Made with love by <strong>shader</strong> on Discord • Please do not message him</span>
+        </div>
+    </footer>
+</body>
+</html>
