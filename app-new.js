@@ -271,6 +271,9 @@ class UmaMusumeTracker {
             this.renderRaces();
             this.renderPlannerGrid();
         }
+        
+        // Re-sync height after content changes
+        setTimeout(() => this.syncProgressHeightToPlanner(), 0);
     }
     
     // ========================================================================
@@ -409,12 +412,18 @@ class UmaMusumeTracker {
     // ========================================================================
     syncProgressHeightToPlanner() {
         try {
+            const progressPanel = document.getElementById('progress-panel');
+            if (!progressPanel) return;
+            
             // Skip on mobile/tablet - let natural flow work
-            if (isMobileOrTablet()) return;
+            if (isMobileOrTablet()) {
+                progressPanel.style.maxHeight = '';
+                progressPanel.style.minHeight = '';
+                return;
+            }
             
             const plannerSection = document.getElementById('planner-section');
-        const progressPanel = document.getElementById('progress-panel');
-            if (!plannerSection || !progressPanel) return;
+            if (!plannerSection) return;
             
             const plannerHeight = plannerSection.getBoundingClientRect().height;
             progressPanel.style.maxHeight = `${plannerHeight}px`;

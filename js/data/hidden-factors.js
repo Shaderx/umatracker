@@ -173,7 +173,7 @@ export function loadHiddenFactors() {
             nameEN: 'Two-Sword Style / Dual Wielder',
             conditionJP: '芝とダートの両方のバ場適性をAにする。',
             conditionEN: "Achieve an 'A' rank aptitude for both Turf and Dirt surfaces.",
-            trackable: true,
+            trackable: false,
             check: () => checkDualSurface(),
             getRaces: () => getRacesForDualSurface(state.races)
         },

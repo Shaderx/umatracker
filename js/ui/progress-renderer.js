@@ -33,8 +33,9 @@ function sortFactorsByStatus(results) {
 /**
  * Update progress stats in the UI
  * @param {number} completedCount - Number of completed factors
+ * @param {number} inProgressCount - Number of in-progress factors
  */
-function updateProgressStats(completedCount) {
+function updateProgressStats(completedCount, inProgressCount) {
     const totalRacesEl = document.getElementById('total-races');
     const totalWinsEl = document.getElementById('total-wins');
     const totalLossesEl = document.getElementById('total-losses');
@@ -44,6 +45,17 @@ function updateProgressStats(completedCount) {
     if (totalWinsEl) totalWinsEl.textContent = state.wonRaces.size;
     if (totalLossesEl) totalLossesEl.textContent = state.lostRaces.size;
     if (completedFactorsEl) completedFactorsEl.textContent = completedCount;
+    
+    // Update quick stats
+    const qsRacesEl = document.getElementById('qs-races');
+    const qsWinsEl = document.getElementById('qs-wins');
+    const qsCompletedEl = document.getElementById('qs-completed');
+    const qsProgressEl = document.getElementById('qs-progress');
+    
+    if (qsRacesEl) qsRacesEl.textContent = state.selectedRaces.size;
+    if (qsWinsEl) qsWinsEl.textContent = state.wonRaces.size;
+    if (qsCompletedEl) qsCompletedEl.textContent = completedCount;
+    if (qsProgressEl) qsProgressEl.textContent = inProgressCount;
 }
 
 /**
@@ -76,7 +88,8 @@ export function updateAndRenderProgress(factorsExpanded, setTrackedFactorCallbac
     
     // Update stats
     const completedCount = results.filter(r => r.result.completed).length;
-    updateProgressStats(completedCount);
+    const inProgressCount = results.filter(r => !r.result.completed && r.result.current > 0).length;
+    updateProgressStats(completedCount, inProgressCount);
     
     // Render progress panel
     renderHiddenFactors(
@@ -106,6 +119,13 @@ export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, s
     const isTablet = window.innerWidth > 640 && window.innerWidth <= 900;
     const isCompactView = isMobile || isTablet;
     
+    // Add/remove expanded class for CSS styling
+    if (factorsExpanded) {
+        container.classList.add('factors-expanded');
+    } else {
+        container.classList.remove('factors-expanded');
+    }
+    
     container.innerHTML = results.map((factor, index) => {
         const statusClass = factor.result.completed ? 'completed' : 
                            factor.result.progress > 0 ? 'partial' : '';
@@ -113,8 +133,10 @@ export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, s
         const isTracked = trackedFactorId === factor.id;
         const showTrackButton = factor.trackable !== false && !factor.result.completed;
         
-        // On mobile/tablet, initially show only first 2 factors
-        const shouldCollapseInitially = isCompactView && index >= 2 && !factorsExpanded;
+        // On mobile/tablet, show only completed and in-progress factors (hide not-started)
+        const isCompleted = factor.result.completed;
+        const isInProgress = !factor.result.completed && factor.result.current > 0;
+        const shouldCollapseInitially = isCompactView && !isCompleted && !isInProgress && !factorsExpanded;
         
         return `
             <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''} ${shouldCollapseInitially ? 'hidden-factor-collapsed' : ''}">
@@ -147,19 +169,32 @@ export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, s
         `;
     }).join('');
     
-    // Add show more button on mobile/tablet if there are more than 2 factors
-    if (isCompactView && results.length > 2) {
-        const showMoreBtn = document.createElement('button');
-        showMoreBtn.className = 'show-more-factors' + (factorsExpanded ? ' expanded' : '');
-        showMoreBtn.innerHTML = `
-            <span>${factorsExpanded ? 'Show Less' : `Show More (${results.length - 2} hidden)`}</span>
-            <span class="arrow">▼</span>
-            <br><span style="font-size: 0.8em; opacity: 0.8;">${factorsExpanded ? '表示を減らす' : `さらに表示 (${results.length - 2}件)`}</span>
-        `;
-        showMoreBtn.onclick = () => {
-            if (toggleFactorsExpandedCallback) toggleFactorsExpandedCallback();
-        };
-        container.appendChild(showMoreBtn);
+    // Add show more button on mobile/tablet if there are hidden factors
+    // Remove any existing show more button first
+    const progressPanel = document.getElementById('progress-panel');
+    const existingBtn = progressPanel ? progressPanel.querySelector('.show-more-factors') : null;
+    if (existingBtn) {
+        existingBtn.remove();
+    }
+    
+    if (isCompactView && progressPanel) {
+        // Count how many not-started factors are hidden in compact mode
+        const notStartedCount = results.filter(f => !f.result.completed && f.result.current === 0).length;
+        
+        if (notStartedCount > 0) {
+            const showMoreBtn = document.createElement('button');
+            showMoreBtn.className = 'show-more-factors' + (factorsExpanded ? ' expanded' : '');
+            showMoreBtn.innerHTML = `
+                <span>${factorsExpanded ? 'Show Less' : `Show More (${notStartedCount} hidden)`}</span>
+                <span class="arrow">▼</span>
+                <br><span style="font-size: 0.8em; opacity: 0.8;">${factorsExpanded ? '表示を減らす' : `さらに表示 (${notStartedCount}件)`}</span>
+            `;
+            showMoreBtn.onclick = () => {
+                if (toggleFactorsExpandedCallback) toggleFactorsExpandedCallback();
+            };
+            // Append to progress-panel (after hidden-factors), not inside hidden-factors
+            progressPanel.appendChild(showMoreBtn);
+        }
     }
     
     // Show/hide clear tracking button

@@ -39,12 +39,17 @@ export function contactOnDiscord() {
 
 /**
  * Get the names/IDs from a list
+ * @param {Array} races - Array of race objects
  * @param {Array} nameList - List of race names or IDs
- * @returns {Array} Array of race IDs
+ * @returns {Set} Set of race IDs
  */
 export function getIdsForNames(races, nameList) {
-    return nameList.map(n => {
+    const result = new Set();
+    nameList.forEach(n => {
         const r = races.find(race => race.name === n || race.id === n);
-        return r ? r.id : null;
-    }).filter(id => id !== null);
+        if (r) {
+            result.add(String(r.id));
+        }
+    });
+    return result;
 }

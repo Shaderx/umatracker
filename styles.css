@@ -222,6 +222,8 @@ h1 {
     overflow-y: auto; /* scroll within progress panel */
     overflow-x: hidden;
     align-self: start; /* do not stretch the grid row */
+    display: flex;
+    flex-direction: column;
 }
 
 .section-title {
@@ -972,8 +974,58 @@ h1 {
     opacity: 0.9;
 }
 
+/* Quick Stats Summary */
+.quick-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    background: rgba(102, 126, 234, 0.08);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #4a5568;
+    flex-wrap: wrap;
+}
+
+.quick-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.quick-stat strong {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.quick-stat-separator {
+    color: #cbd5e0;
+    font-weight: 300;
+    user-select: none;
+}
+
 .hidden-factors {
     margin-top: 20px;
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+}
+
+/* When in compact mode (mobile/tablet), make visible factors scrollable */
+@media (max-width: 900px) {
+    .hidden-factors {
+        max-height: 400px; /* Limit height for scrolling - smaller to ensure 2 factors are scrollable */
+        overflow-y: auto; /* Enable scrolling */
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    
+    /* When expanded, allow full height */
+    .hidden-factors.factors-expanded {
+        max-height: none;
+    }
 }
 
 /* Show more button for hidden factors (desktop - hidden by default) */
