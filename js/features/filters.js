@@ -3,6 +3,10 @@
  * Manages race filtering logic and UI interactions
  */
 
+import { state } from '../core/state.js';
+import { getTrackedFactorRaceIds } from './tracking.js';
+import { loadHiddenFactors } from '../data/hidden-factors.js';
+
 /**
  * Filter configuration - defines which filters belong to which groups
  */
@@ -205,3 +209,54 @@ export function clearAll(state, renderPlannerGrid, renderRaces, updateProgress) 
     updateProgress();
     return true;
 }
+
+/**
+ * Check if a race matches the current filters
+ * @param {Object} race - Race object to check
+ * @param {Set} currentFilters - Set of active filter strings
+ * @returns {boolean} True if race matches filters
+ */
+export function raceMatchesFilters(race, currentFilters) {
+    if (currentFilters.size === 0) return true;
+
+    const gradeKeys = ['GI', 'GII', 'GIII', 'Open', 'Pre-OP'];
+    const activeGrades = [...currentFilters].filter(f => gradeKeys.includes(f));
+    const otherFilters = [...currentFilters].filter(f => !gradeKeys.includes(f));
+
+    if (activeGrades.length > 0) {
+        const gradeMatch = activeGrades.some(g => {
+            switch (g) {
+                case 'GI': return race.type === 'GI';
+                case 'GII': return race.type === 'GII';
+                case 'GIII': return race.type === 'GIII';
+                case 'Open': return race.type === 'Open';
+                case 'Pre-OP': return race.type === 'Pre-OP';
+                default: return false;
+            }
+        });
+        if (!gradeMatch) return false;
+    }
+
+    for (const filter of otherFilters) {
+        switch (filter) {
+            case 'short': if (!state.distanceCategories.short(race)) return false; break;
+            case 'mile': if (!state.distanceCategories.mile(race)) return false; break;
+            case 'medium': if (!state.distanceCategories.medium(race)) return false; break;
+            case 'long': if (!state.distanceCategories.long(race)) return false; break;
+            case 'turf': if (race.surface !== 'turf') return false; break;
+            case 'dirt': if (race.surface !== 'dirt') return false; break;
+            case 'junior': if (!race.junior) return false; break;
+            case 'classic': if (!race.classics) return false; break;
+            case 'senior': if (!race.senior) return false; break;
+            case 'selected': if (!state.selectedRaces.has(String(race.id))) return false; break;
+            case 'tracked': {
+                const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
+                if (!trackedIds.has(String(race.id))) return false;
+                break;
+            }
+            default: break;
+        }
+    }
+    return true;
+}
+

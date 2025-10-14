@@ -7,6 +7,7 @@ import { planRaceIntoPlanner } from './planner.js';
 import { lockBodyScroll, unlockBodyScroll } from './scroll-lock.js';
 import { getTrackedFactorRaceIds } from './tracking.js';
 import { loadHiddenFactors } from '../data/hidden-factors.js';
+import { raceMatchesFilters } from './filters.js';
 
 export function openPicker(t, month, half) {
     t.currentPickerSlot = { year: state.plannerYear, month, half };
@@ -120,7 +121,7 @@ export function renderPickerCard(t, position, slot) {
         const selected = String(cellValue) === String(r.id);
         const tracked = trackedIds.has(String(r.id));
         // Only highlight filtered races when filters are actually active (not "All Races")
-        const filtered = state.currentFilters.size > 0 && t.raceMatchesFilters(r);
+        const filtered = state.currentFilters.size > 0 && raceMatchesFilters(r, state.currentFilters);
         const imageUrl = r.image || '';
         return `
             <div class="picker-item ${selected ? 'selected' : ''} ${tracked ? 'picker-item-tracked' : ''} ${filtered ? 'picker-item-filtered' : ''}" data-race-id="${r.id}">

@@ -5,8 +5,7 @@ import {
     checkConsecutiveRuns, 
     checkConsecutiveWins, 
     checkImprovesWithRacing, 
-    checkNeverGiveUp, 
-    checkRebelliousSpirit 
+    checkNeverGiveUp
 } from '../checks/check-special.js';
 
 import { 
@@ -275,15 +274,6 @@ export function loadHiddenFactors() {
             trackable: true,
             check: () => checkSeasonalAwakening('winter'),
             getRaces: () => getRacesForSeasonalAwakening(state.races, 'winter')
-        },
-        {
-            id: 'rebellious_spirit',
-            nameJP: '反骨精神',
-            nameEN: 'Rebellious Spirit',
-            conditionJP: '適性が低いレースで勝利する（簡略化：任意の勝利でカウント）。',
-            conditionEN: 'Win a race with low aptitude (simplified: any win counts).',
-            trackable: false,
-            check: () => checkRebelliousSpirit()
         }
     ];
 }

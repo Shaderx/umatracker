@@ -2,6 +2,93 @@
 // Renders the hidden factors progress panel with progress bars and statistics
 
 import { state } from '../core/state.js';
+import { isMobileOrTablet } from '../core/utils.js';
+import { loadHiddenFactors } from '../data/hidden-factors.js';
+
+/**
+ * Sort hidden factors by completion status
+ * @param {Array} results - Array of factor results
+ * @returns {Array} Sorted results
+ */
+function sortFactorsByStatus(results) {
+    results.sort((a, b) => {
+        const aCompleted = a.result.completed ? 1 : 0;
+        const bCompleted = b.result.completed ? 1 : 0;
+        const aInProgress = (!a.result.completed && a.result.current > 0) ? 1 : 0;
+        const bInProgress = (!b.result.completed && b.result.current > 0) ? 1 : 0;
+        
+        // Completed factors come first (descending)
+        if (aCompleted !== bCompleted) return bCompleted - aCompleted;
+        
+        // Among non-completed, in-progress come before not started (descending)
+        if (aInProgress !== bInProgress) return bInProgress - aInProgress;
+        
+        // Within the same category, maintain original order (by comparing indices)
+        // This preserves the logical grouping from hiddenFactors array
+        return 0;
+    });
+    return results;
+}
+
+/**
+ * Update progress stats in the UI
+ * @param {number} completedCount - Number of completed factors
+ */
+function updateProgressStats(completedCount) {
+    const totalRacesEl = document.getElementById('total-races');
+    const totalWinsEl = document.getElementById('total-wins');
+    const totalLossesEl = document.getElementById('total-losses');
+    const completedFactorsEl = document.getElementById('completed-factors');
+    
+    if (totalRacesEl) totalRacesEl.textContent = state.selectedRaces.size;
+    if (totalWinsEl) totalWinsEl.textContent = state.wonRaces.size;
+    if (totalLossesEl) totalLossesEl.textContent = state.lostRaces.size;
+    if (completedFactorsEl) completedFactorsEl.textContent = completedCount;
+}
+
+/**
+ * Main function to update and render progress panel
+ * @param {boolean} factorsExpanded - Whether factors are expanded on mobile
+ * @param {Function} setTrackedFactorCallback - Callback to set tracked factor
+ * @param {Function} toggleFactorsExpandedCallback - Callback to toggle expansion
+ * @returns {boolean} True if tracking was auto-cleared
+ */
+export function updateAndRenderProgress(factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback) {
+    // Load hidden factors and run checks
+    const hiddenFactors = loadHiddenFactors();
+    const results = hiddenFactors.map(factor => ({
+        ...factor,
+        result: factor.check()
+    }));
+    
+    // Sort results: completed first, in-progress second, not started last
+    sortFactorsByStatus(results);
+    
+    // Auto-clear tracking if the tracked factor is now completed
+    let trackingAutoCleared = false;
+    if (state.trackedFactorId) {
+        const trackedFactor = results.find(r => r.id === state.trackedFactorId);
+        if (trackedFactor && trackedFactor.result.completed) {
+            state.trackedFactorId = null;
+            trackingAutoCleared = true;
+        }
+    }
+    
+    // Update stats
+    const completedCount = results.filter(r => r.result.completed).length;
+    updateProgressStats(completedCount);
+    
+    // Render progress panel
+    renderHiddenFactors(
+        results, 
+        state.trackedFactorId, 
+        factorsExpanded, 
+        setTrackedFactorCallback,
+        toggleFactorsExpandedCallback
+    );
+    
+    return trackingAutoCleared;
+}
 
 /**
  * Renders the hidden factors progress panel
@@ -74,14 +161,6 @@ export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, s
         };
         container.appendChild(showMoreBtn);
     }
-
-    // Ensure only two items visible by default on compact view
-    if (isCompactView && !factorsExpanded) {
-        const children = container.querySelectorAll('.factor-item');
-        children.forEach((el, idx) => {
-            if (idx >= 2) el.classList.add('hidden-factor-collapsed');
-        });
-    }
     
     // Show/hide clear tracking button
     const clearBtn = document.getElementById('clear-tracking-btn');
@@ -106,7 +185,7 @@ export function syncProgressHeightToPlanner() {
     if (!progressPanel || !plannerSection) return;
     
     // Only sync on desktop (> 900px)
-    if (window.innerWidth > 900) {
+    if (!isMobileOrTablet()) {
         const plannerHeight = plannerSection.offsetHeight;
         progressPanel.style.minHeight = `${plannerHeight}px`;
     } else {
