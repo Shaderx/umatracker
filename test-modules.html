@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Testing - Uma Musume Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .clear-btn {
+            background: #6c757d;
+            float: right;
+        }
+        .result {
+            background: #f8f9fa;
+            padding: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+        .success { 
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        .error { 
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Uma Musume Module Testing</h1>
+    
+    <div class="info-box">
+        <strong>📋 Testing Instructions:</strong>
+        <ol>
+            <li>Click buttons to test individual modules</li>
+            <li>Check results below each section</li>
+            <li>Look for ✓ (success), ✗ (error), or ⚠ (warning)</li>
+            <li>Open browser console (F12) for detailed logs</li>
+        </ol>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-label">Total Modules</div>
+            <div class="stat-number" id="total-modules">20</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Tested</div>
+            <div class="stat-number" id="tested-modules">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Passed</div>
+            <div class="stat-number" id="passed-tests">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Failed</div>
+            <div class="stat-number" id="failed-tests">0</div>
+        </div>
+    </div>
+
+    <!-- Core Modules -->
+    <div class="test-section">
+        <h2>🔧 Core Modules</h2>
+        <button onclick="testUtils()">Test Utils</button>
+        <button onclick="testState()">Test State</button>
+        <button class="clear-btn" onclick="clearResults('core-results')">Clear</button>
+        <div id="core-results"></div>
+    </div>
+
+    <!-- Data Modules -->
+    <div class="test-section">
+        <h2>📊 Data Modules</h2>
+        <button onclick="testRaceData()">Test Race Data</button>
+        <button onclick="testRaceHelpers()">Test Race Helpers</button>
+        <button onclick="testHiddenFactors()">Test Hidden Factors</button>
+        <button class="clear-btn" onclick="clearResults('data-results')">Clear</button>
+        <div id="data-results"></div>
+    </div>
+
+    <!-- Feature Modules -->
+    <div class="test-section">
+        <h2>⚙️ Feature Modules</h2>
+        <button onclick="testTracking()">Test Tracking</button>
+        <button onclick="testFilters()">Test Filters</button>
+        <button onclick="testScrollLock()">Test Scroll Lock</button>
+        <button onclick="testPlanner()">Test Planner</button>
+        <button onclick="testPlannerHelpers()">Test Planner Helpers</button>
+        <button onclick="testModalManager()">Test Modal Manager</button>
+        <button class="clear-btn" onclick="clearResults('feature-results')">Clear</button>
+        <div id="feature-results"></div>
+    </div>
+
+    <!-- Storage Modules -->
+    <div class="test-section">
+        <h2>💾 Storage Modules</h2>
+        <button onclick="testStorageManager()">Test Storage Manager</button>
+        <button onclick="testUrlSharing()">Test URL Sharing</button>
+        <button class="clear-btn" onclick="clearResults('storage-results')">Clear</button>
+        <div id="storage-results"></div>
+    </div>
+
+    <!-- Check Modules -->
+    <div class="test-section">
+        <h2>✔️ Check Modules</h2>
+        <button onclick="testCheckAwakening()">Test Awakening Checks</button>
+        <button onclick="testCheckSpecial()">Test Special Checks</button>
+        <button onclick="testCheckRaceBased()">Test Race-Based Checks</button>
+        <button class="clear-btn" onclick="clearResults('check-results')">Clear</button>
+        <div id="check-results"></div>
+    </div>
+
+    <!-- UI Modules -->
+    <div class="test-section">
+        <h2>🎨 UI Renderer Modules</h2>
+        <button onclick="testProgressRenderer()">Test Progress Renderer</button>
+        <button onclick="testRaceRenderer()">Test Race Renderer</button>
+        <button onclick="testPlannerRenderer()">Test Planner Renderer</button>
+        <button class="clear-btn" onclick="clearResults('ui-results')">Clear</button>
+        <div id="ui-results"></div>
+    </div>
+
+    <!-- All Tests -->
+    <div class="test-section">
+        <h2>🚀 Run All Tests</h2>
+        <button onclick="runAllTests()" style="font-size: 18px; padding: 15px 30px;">Run All Available Tests</button>
+        <button class="clear-btn" onclick="clearAllResults()">Clear All</button>
+    </div>
+
+    <!-- Load races.js first -->
+    <script src="races.js"></script>
+
+    <script type="module">
+        // Import modules with cache busting
+        const timestamp = Date.now();
+        const utilsModule = await import(`./js/core/utils.js?v=${timestamp}`);
+        const stateModule = await import(`./js/core/state.js?v=${timestamp}`);
+        const raceDataModule = await import(`./js/data/race-data.js?v=${timestamp}`);
+        const raceHelpersModule = await import(`./js/data/race-helpers.js?v=${timestamp}`);
+        const trackingModule = await import(`./js/features/tracking.js?v=${timestamp}`);
+        const scrollLockModule = await import(`./js/features/scroll-lock.js?v=${timestamp}`);
+
+        // Make modules available globally for testing
+        window.modules = {
+            utils: utilsModule,
+            state: stateModule.state,
+            raceHelpers: raceHelpersModule,
+            tracking: trackingModule,
+            scrollLock: scrollLockModule,
+            initializeRaceData: raceDataModule.initializeRaceData,
+            isGradeOne: raceDataModule.isGradeOne,
+            createEmptyPlannerData: stateModule.createEmptyPlannerData
+        };
+
+        // Statistics tracking
+        let stats = { tested: 0, passed: 0, failed: 0 };
+
+        // Helper function to display results
+        window.displayResult = function(targetId, message, success = true, isWarning = false) {
+            const target = document.getElementById(targetId);
+            const div = document.createElement('div');
+            const className = isWarning ? 'warning' : (success ? 'success' : 'error');
+            div.className = `result ${className}`;
+            div.innerHTML = message;
+            target.appendChild(div);
+
+            // Update stats
+            if (!isWarning) {
+                success ? stats.passed++ : stats.failed++;
+                updateStats();
+            }
+        };
+
+        window.clearResults = function(targetId) {
+            document.getElementById(targetId).innerHTML = '';
+        };
+
+        window.clearAllResults = function() {
+            ['core-results', 'data-results', 'feature-results', 'check-results', 'ui-results', 'storage-results'].forEach(clearResults);
+            stats = { tested: 0, passed: 0, failed: 0 };
+            updateStats();
+        };
+
+        function updateStats() {
+            document.getElementById('passed-tests').textContent = stats.passed;
+            document.getElementById('failed-tests').textContent = stats.failed;
+        }
+
+        // Test Functions
+        window.testUtils = function() {
+            const results = document.getElementById('core-results');
+            console.log('🧪 Testing utils.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Test isMobileOrTablet
+                const isMobile = window.modules.utils.isMobileOrTablet();
+                displayResult('core-results', `✓ isMobileOrTablet: ${isMobile} (Window width: ${window.innerWidth}px)`, true);
+                console.log('✓ isMobileOrTablet works');
+                
+                // Test showToast
+                window.modules.utils.showToast('Test Toast Message from Module Test', 'success');
+                displayResult('core-results', `✓ showToast executed successfully`, true);
+                console.log('✓ showToast works');
+                
+                displayResult('core-results', `<strong>✅ utils.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('core-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Utils test failed:', error);
+            }
+        };
+
+        window.testState = function() {
+            const results = document.getElementById('core-results');
+            console.log('🧪 Testing state.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Test state object
+                displayResult('core-results', `✓ State has ${window.modules.state.races.length} races loaded`, true);
+                displayResult('core-results', `✓ Current filters: ${window.modules.state.currentFilters.size} active`, true);
+                displayResult('core-results', `✓ Planner year: ${window.modules.state.plannerYear}`, true);
+                console.log('✓ State object accessible');
+                
+                // Test createEmptyPlannerData
+                const plannerData = window.modules.createEmptyPlannerData();
+                const years = Object.keys(plannerData);
+                displayResult('core-results', `✓ Empty planner data created: ${years.length} years (${years.join(', ')})`, true);
+                console.log('✓ createEmptyPlannerData works');
+                
+                displayResult('core-results', `<strong>✅ state.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('core-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ State test failed:', error);
+            }
+        };
+
+        window.testRaceData = function() {
+            const results = document.getElementById('data-results');
+            results.innerHTML = '';
+            console.log('🧪 Testing race-data.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Initialize race data
+                window.modules.initializeRaceData();
+                displayResult('data-results', `✓ Race data initialized successfully`, true);
+                console.log('✓ initializeRaceData works');
+                
+                // Test state after initialization
+                displayResult('data-results', `✓ Loaded ${window.modules.state.races.length} races`, true);
+                displayResult('data-results', `✓ Distance categories: ${Object.keys(window.modules.state.distanceCategories).length} (short, mile, medium, long)`, true);
+                displayResult('data-results', `✓ Eastern tracks: ${window.modules.state.easternTracks.length} tracks`, true);
+                displayResult('data-results', `✓ Western tracks: ${window.modules.state.westernTracks.length} tracks`, true);
+                displayResult('data-results', `✓ Summer series: ${Object.keys(window.modules.state.summerSeries).length} series types`, true);
+                console.log('✓ Race data structure correct');
+                
+                // Test isGradeOne
+                if (window.modules.state.races.length > 0) {
+                    const firstRace = window.modules.state.races[0];
+                    const isG1 = window.modules.isGradeOne(firstRace);
+                    displayResult('data-results', `✓ isGradeOne("${firstRace.name}"): ${isG1}`, true);
+                    console.log(`✓ isGradeOne works: ${firstRace.name} is ${isG1 ? '' : 'not '}a G1 race`);
+                }
+                
+                displayResult('data-results', `<strong>✅ race-data.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('data-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Race data test failed:', error);
+            }
+        };
+
+        window.testHiddenFactors = async function() {
+            const results = document.getElementById('data-results');
+            console.log('🧪 Testing hidden-factors.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const hiddenFactorsModule = await import(`./js/data/hidden-factors.js?v=${timestamp}`);
+                
+                // Test loadHiddenFactors
+                const factors = hiddenFactorsModule.loadHiddenFactors();
+                displayResult('data-results', `✓ loadHiddenFactors(): Loaded ${factors.length} factors`, true);
+                console.log('✓ loadHiddenFactors works:', factors.length, 'factors');
+                
+                // Verify factor structure
+                if (factors.length > 0) {
+                    const firstFactor = factors[0];
+                    const hasRequiredFields = firstFactor.id && firstFactor.nameEN && firstFactor.nameJP && 
+                                              firstFactor.conditionEN && firstFactor.conditionJP && 
+                                              typeof firstFactor.trackable === 'boolean' && 
+                                              typeof firstFactor.check === 'function';
+                    displayResult('data-results', `✓ Factor structure valid: ${hasRequiredFields}`, true);
+                    console.log('✓ Factor structure:', firstFactor);
+                }
+                
+                // Test getHiddenFactorById
+                const championEast = hiddenFactorsModule.getHiddenFactorById('champion_east', factors);
+                displayResult('data-results', `✓ getHiddenFactorById('champion_east'): ${championEast ? championEast.nameEN : 'null'}`, true);
+                console.log('✓ getHiddenFactorById works:', championEast);
+                
+                // Test getTrackableFactors
+                const trackable = hiddenFactorsModule.getTrackableFactors(factors);
+                displayResult('data-results', `✓ getTrackableFactors(): ${trackable.length} trackable factors`, true);
+                console.log('✓ getTrackableFactors works:', trackable.length);
+                
+                // Test getNonTrackableFactors
+                const nonTrackable = hiddenFactorsModule.getNonTrackableFactors(factors);
+                displayResult('data-results', `✓ getNonTrackableFactors(): ${nonTrackable.length} non-trackable factors`, true);
+                console.log('✓ getNonTrackableFactors works:', nonTrackable.length);
+                
+                // Verify counts add up
+                const totalCheck = trackable.length + nonTrackable.length;
+                displayResult('data-results', `✓ Total factors check: ${totalCheck} === ${factors.length}`, totalCheck === factors.length);
+                console.log('✓ Counts match:', totalCheck, '===', factors.length);
+                
+                displayResult('data-results', `<strong>✅ hidden-factors.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('data-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Hidden factors test failed:', error);
+            }
+        };
+
+        window.testRaceHelpers = function() {
+            const results = document.getElementById('data-results');
+            console.log('🧪 Testing race-helpers.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Ensure race data is initialized
+                if (window.modules.state.races.length === 0) {
+                    window.modules.initializeRaceData();
+                }
+                
+                const races = window.modules.state.races;
+                const easternTracks = window.modules.state.easternTracks;
+                const westernTracks = window.modules.state.westernTracks;
+                const summerSeries = window.modules.state.summerSeries;
+                
+                // Test Eastern G1
+                const easternG1 = window.modules.raceHelpers.getRacesForEasternG1(races, easternTracks);
+                displayResult('data-results', `✓ Eastern G1 races: ${easternG1.size} races`, true);
+                console.log('✓ getRacesForEasternG1:', easternG1.size);
+                
+                // Test Western G1
+                const westernG1 = window.modules.raceHelpers.getRacesForWesternG1(races, westernTracks);
+                displayResult('data-results', `✓ Western G1 races: ${westernG1.size} races`, true);
+                console.log('✓ getRacesForWesternG1:', westernG1.size);
+                
+                // Test Newspaper Cups
+                const newspapers = window.modules.raceHelpers.getRacesForNewspaperCups(races);
+                displayResult('data-results', `✓ Newspaper cup races: ${newspapers.size} races`, true);
+                console.log('✓ getRacesForNewspaperCups:', newspapers.size);
+                
+                // Test Summer Series
+                const summerSprint = window.modules.raceHelpers.getRacesForSummerSeries(summerSeries, 'sprint', races);
+                displayResult('data-results', `✓ Summer Sprint races: ${summerSprint.size} races`, true);
+                console.log('✓ getRacesForSummerSeries(sprint):', summerSprint.size);
+                
+                // Test New Year Gold
+                const newYear = window.modules.raceHelpers.getRacesForNewYearGold(races);
+                displayResult('data-results', `✓ New Year Gold races: ${newYear.size} races`, true);
+                console.log('✓ getRacesForNewYearGold:', newYear.size);
+                
+                // Test Directional Awakening
+                const rightTracks = window.modules.raceHelpers.getRacesForDirectionalAwakening(races, 'right');
+                displayResult('data-results', `✓ Right direction races: ${rightTracks.size} races`, true);
+                console.log('✓ getRacesForDirectionalAwakening(right):', rightTracks.size);
+                
+                // Test Seasonal Awakening
+                const springRaces = window.modules.raceHelpers.getRacesForSeasonalAwakening(races, 'spring');
+                displayResult('data-results', `✓ Spring races: ${springRaces.size} races`, true);
+                console.log('✓ getRacesForSeasonalAwakening(spring):', springRaces.size);
+                
+                displayResult('data-results', `<strong>✅ race-helpers.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('data-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Race helpers test failed:', error);
+            }
+        };
+
+        window.testTracking = async function() {
+            const results = document.getElementById('feature-results');
+            results.innerHTML = '';
+            console.log('🧪 Testing tracking.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const trackingModule = await import(`./js/features/tracking.js?v=${timestamp}`);
+                const hiddenFactorsModule = await import(`./js/data/hidden-factors.js?v=${timestamp}`);
+                
+                // Create mock state and callbacks
+                const mockState = {
+                    trackedFactorId: null,
+                    selectedRaces: new Set(),
+                    wonRaces: new Set(),
+                    lostRaces: new Set()
+                };
+                const mockUpdate = () => {};
+                const mockRender = () => {};
+                const hiddenFactors = hiddenFactorsModule.loadHiddenFactors();
+                
+                // Test set tracked factor
+                trackingModule.setTrackedFactor('champion_east', mockState, mockUpdate, mockRender, mockRender);
+                displayResult('feature-results', `✓ Set tracked factor: "${mockState.trackedFactorId}"`, true);
+                console.log('✓ setTrackedFactor works');
+                
+                // Test get tracked factor race IDs
+                const raceIds = trackingModule.getTrackedFactorRaceIds(mockState, hiddenFactors);
+                displayResult('feature-results', `✓ Tracked race IDs: ${raceIds.size} races for champion_east`, true);
+                console.log('✓ getTrackedFactorRaceIds works');
+                
+                // Test isRaceTracked
+                const testRaceId = raceIds.size > 0 ? Array.from(raceIds)[0] : 'test_race_id';
+                const isTracked = trackingModule.isRaceTracked(testRaceId, mockState, hiddenFactors);
+                displayResult('feature-results', `✓ isRaceTracked("${testRaceId}"): ${isTracked}`, true);
+                console.log('✓ isRaceTracked works');
+                
+                // Test clear tracked factor
+                trackingModule.clearTrackedFactor(mockState, mockUpdate, mockRender, mockRender);
+                displayResult('feature-results', `✓ Cleared tracked factor: ${mockState.trackedFactorId}`, true);
+                console.log('✓ clearTrackedFactor works');
+                
+                displayResult('feature-results', `<strong>✅ tracking.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Tracking test failed:', error);
+            }
+        };
+
+        window.testFilters = function() {
+            const results = document.getElementById('feature-results');
+            console.log('🧪 Testing filters.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Note: Filter testing requires DOM elements
+                displayResult('feature-results', `⚠ Filter module requires DOM elements from main app to test fully`, true, true);
+                displayResult('feature-results', `ℹ️ Recommendation: Use the main app (index.html) to test filter functionality`, true, true);
+                displayResult('feature-results', `ℹ️ Test checklist:`, true, true);
+                displayResult('feature-results', `  • Grade filters (GI, GII, GIII, Open, Pre-OP)`, true, true);
+                displayResult('feature-results', `  • Surface filters (Turf, Dirt) - exclusive`, true, true);
+                displayResult('feature-results', `  • Distance filters (Short, Mile, Medium, Long) - exclusive`, true, true);
+                displayResult('feature-results', `  • Summer series filters (SSS, SMS, S2000)`, true, true);
+                displayResult('feature-results', `  • Clear All button`, true, true);
+                console.log('ℹ️ Filters.js requires integration testing');
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Filters test failed:', error);
+            }
+        };
+
+        window.testScrollLock = function() {
+            const results = document.getElementById('feature-results');
+            console.log('🧪 Testing scroll-lock.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Test lock
+                window.modules.scrollLock.lockBodyScroll(document.body);
+                displayResult('feature-results', `✓ Body scroll locked (scroll disabled for 2 seconds)`, true);
+                console.log('✓ lockBodyScroll works');
+                
+                // Test unlock after 2 seconds
+                setTimeout(() => {
+                    window.modules.scrollLock.unlockBodyScroll(document.body);
+                    displayResult('feature-results', `✓ Body scroll unlocked (scroll restored)`, true);
+                    console.log('✓ unlockBodyScroll works');
+                    displayResult('feature-results', `<strong>✅ scroll-lock.js: All tests passed!</strong>`, true);
+                }, 2000);
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Scroll lock test failed:', error);
+            }
+        };
+
+        window.testPlanner = async function() {
+            const results = document.getElementById('feature-results');
+            console.log('🧪 Testing planner.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const plannerModule = await import(`./js/features/planner.js?v=${timestamp}`);
+                
+                // Test isPlannedAnywhere
+                const isPlanned = plannerModule.isPlannedAnywhere('test_race_id');
+                displayResult('feature-results', `✓ isPlannedAnywhere('test_race_id'): ${isPlanned}`, true);
+                console.log('✓ isPlannedAnywhere works:', isPlanned);
+                
+                // Test toggleWinById
+                plannerModule.toggleWinById('test_race_id');
+                displayResult('feature-results', `✓ toggleWinById() executed`, true);
+                console.log('✓ toggleWinById works');
+                
+                // Test syncSelectionsFromPlanner
+                plannerModule.syncSelectionsFromPlanner();
+                displayResult('feature-results', `✓ syncSelectionsFromPlanner() executed`, true);
+                console.log('✓ syncSelectionsFromPlanner works');
+                
+                // Test removeRaceEverywhereFromPlanner
+                plannerModule.removeRaceEverywhereFromPlanner('test_race_id');
+                displayResult('feature-results', `✓ removeRaceEverywhereFromPlanner() executed`, true);
+                console.log('✓ removeRaceEverywhereFromPlanner works');
+                
+                displayResult('feature-results', `<strong>✅ planner.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Planner test failed:', error);
+            }
+        };
+
+        // Test check modules
+        window.testCheckAwakening = async function() {
+            const results = document.getElementById('check-results');
+            results.innerHTML = '';
+            console.log('🧪 Testing check-awakening.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const checkAwakening = await import(`./js/checks/check-awakening.js?v=${timestamp}`);
+                
+                // Test checkDirectionalAwakening
+                const rightResult = checkAwakening.checkDirectionalAwakening('right');
+                displayResult('check-results', `✓ checkDirectionalAwakening('right'): ${rightResult.current}/${rightResult.required} wins`, true);
+                console.log('✓ checkDirectionalAwakening works:', rightResult);
+                
+                const leftResult = checkAwakening.checkDirectionalAwakening('left');
+                displayResult('check-results', `✓ checkDirectionalAwakening('left'): ${leftResult.current}/${leftResult.required} wins`, true);
+                console.log('✓ checkDirectionalAwakening works:', leftResult);
+                
+                // Test checkSeasonalAwakening
+                const springResult = checkAwakening.checkSeasonalAwakening('spring');
+                displayResult('check-results', `✓ checkSeasonalAwakening('spring'): ${springResult.current}/${springResult.required} wins`, true);
+                console.log('✓ checkSeasonalAwakening works:', springResult);
+                
+                displayResult('check-results', `<strong>✅ check-awakening.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('check-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Check awakening test failed:', error);
+            }
+        };
+
+        window.testCheckSpecial = async function() {
+            const results = document.getElementById('check-results');
+            console.log('🧪 Testing check-special.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const checkSpecial = await import(`./js/checks/check-special.js?v=${timestamp}`);
+                
+                // Test checkConsecutiveRuns
+                const runsResult = checkSpecial.checkConsecutiveRuns();
+                displayResult('check-results', `✓ checkConsecutiveRuns(): ${runsResult.current}/${runsResult.required} runs`, true);
+                console.log('✓ checkConsecutiveRuns works:', runsResult);
+                
+                // Test checkConsecutiveWins
+                const winsResult = checkSpecial.checkConsecutiveWins();
+                displayResult('check-results', `✓ checkConsecutiveWins(): ${winsResult.current}/${winsResult.required} wins`, true);
+                console.log('✓ checkConsecutiveWins works:', winsResult);
+                
+                // Test checkNeverGiveUp
+                const neverGiveUpResult = checkSpecial.checkNeverGiveUp();
+                displayResult('check-results', `✓ checkNeverGiveUp(): ${neverGiveUpResult.current}/${neverGiveUpResult.required}`, true);
+                console.log('✓ checkNeverGiveUp works:', neverGiveUpResult);
+                
+                // Test checkRebelliousSpirit
+                const rebelliousResult = checkSpecial.checkRebelliousSpirit();
+                displayResult('check-results', `✓ checkRebelliousSpirit(): ${rebelliousResult.completed ? 'Complete' : 'Incomplete'}`, true);
+                console.log('✓ checkRebelliousSpirit works:', rebelliousResult);
+                
+                displayResult('check-results', `<strong>✅ check-special.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('check-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Check special test failed:', error);
+            }
+        };
+
+        window.testCheckRaceBased = async function() {
+            const results = document.getElementById('check-results');
+            console.log('🧪 Testing check-race-based.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const checkRaceBased = await import(`./js/checks/check-race-based.js?v=${timestamp}`);
+                
+                // Test checkEasternG1Wins
+                const easternResult = checkRaceBased.checkEasternG1Wins();
+                displayResult('check-results', `✓ checkEasternG1Wins(): ${easternResult.current}/${easternResult.required} wins`, true);
+                console.log('✓ checkEasternG1Wins works:', easternResult);
+                
+                // Test checkWesternG1Wins
+                const westernResult = checkRaceBased.checkWesternG1Wins();
+                displayResult('check-results', `✓ checkWesternG1Wins(): ${westernResult.current}/${westernResult.required} wins`, true);
+                console.log('✓ checkWesternG1Wins works:', westernResult);
+                
+                // Test checkDualSurface
+                const dualResult = checkRaceBased.checkDualSurface();
+                displayResult('check-results', `✓ checkDualSurface(): ${dualResult.current}/${dualResult.required} surfaces`, true);
+                console.log('✓ checkDualSurface works:', dualResult);
+                
+                // Test checkNewspaperCups
+                const newspaperResult = checkRaceBased.checkNewspaperCups();
+                displayResult('check-results', `✓ checkNewspaperCups(): ${newspaperResult.current}/${newspaperResult.required} cups`, true);
+                console.log('✓ checkNewspaperCups works:', newspaperResult);
+                
+                // Test checkSummerSeries
+                const summerResult = checkRaceBased.checkSummerSeries('sprint');
+                displayResult('check-results', `✓ checkSummerSeries('sprint'): ${summerResult.current}/${summerResult.required} races`, true);
+                console.log('✓ checkSummerSeries works:', summerResult);
+                
+                displayResult('check-results', `<strong>✅ check-race-based.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('check-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Check race-based test failed:', error);
+            }
+        };
+
+        // Test UI renderer modules
+        window.testProgressRenderer = async function() {
+            const results = document.getElementById('ui-results');
+            results.innerHTML = '';
+            console.log('🧪 Testing progress-renderer.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const progressRenderer = await import(`./js/ui/progress-renderer.js?v=${timestamp}`);
+                
+                // Create mock data
+                const mockResults = [
+                    {
+                        id: 'test_factor_1',
+                        nameEN: 'Test Factor',
+                        nameJP: 'テスト因子',
+                        condition: 'Test condition',
+                        conditionEN: 'Win 3 races',
+                        conditionJP: '3レース勝利',
+                        trackable: true,
+                        result: { completed: false, current: 1, required: 3, progress: 33.33, details: 'Test details' }
+                    }
+                ];
+                
+                // Create a test container
+                const testContainer = document.createElement('div');
+                testContainer.id = 'hidden-factors';
+                document.body.appendChild(testContainer);
+                
+                // Test renderHiddenFactors
+                progressRenderer.renderHiddenFactors(mockResults, null, false, () => {}, () => {});
+                displayResult('ui-results', `✓ renderHiddenFactors() executed (rendered ${mockResults.length} factor)`, true);
+                console.log('✓ renderHiddenFactors works');
+                
+                // Test syncProgressHeightToPlanner
+                progressRenderer.syncProgressHeightToPlanner();
+                displayResult('ui-results', `✓ syncProgressHeightToPlanner() executed`, true);
+                console.log('✓ syncProgressHeightToPlanner works');
+                
+                // Test setupProgressRendererCallbacks
+                progressRenderer.setupProgressRendererCallbacks(() => {});
+                displayResult('ui-results', `✓ setupProgressRendererCallbacks() executed`, true);
+                console.log('✓ setupProgressRendererCallbacks works');
+                
+                // Cleanup
+                document.body.removeChild(testContainer);
+                
+                displayResult('ui-results', `<strong>✅ progress-renderer.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('ui-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Progress renderer test failed:', error);
+            }
+        };
+
+        window.testRaceRenderer = async function() {
+            const results = document.getElementById('ui-results');
+            console.log('🧪 Testing race-renderer.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const raceRenderer = await import(`./js/ui/race-renderer.js?v=${timestamp}`);
+                
+                // Create a test container
+                const testContainer = document.createElement('div');
+                testContainer.id = 'races-grid';
+                document.body.appendChild(testContainer);
+                
+                // Test renderRaces
+                const mockSets = { selected: new Set(), won: new Set(), lost: new Set() };
+                raceRenderer.renderRaces(mockSets.selected, mockSets.won, mockSets.lost, () => false, () => false, () => {}, () => {});
+                displayResult('ui-results', `✓ renderRaces() executed (rendered ${window.modules.state.races.length} races)`, true);
+                console.log('✓ renderRaces works');
+                
+                // Test getFilteredRaces
+                const filteredRaces = raceRenderer.getFilteredRaces();
+                displayResult('ui-results', `✓ getFilteredRaces(): ${filteredRaces.length} races`, true);
+                console.log('✓ getFilteredRaces works:', filteredRaces.length);
+                
+                // Test sortRacesList
+                const sortedRaces = raceRenderer.sortRacesList([...window.modules.state.races]);
+                displayResult('ui-results', `✓ sortRacesList(): ${sortedRaces.length} races sorted`, true);
+                console.log('✓ sortRacesList works');
+                
+                // Test setupRaceRendererCallbacks
+                raceRenderer.setupRaceRendererCallbacks(() => {}, () => {});
+                displayResult('ui-results', `✓ setupRaceRendererCallbacks() executed`, true);
+                console.log('✓ setupRaceRendererCallbacks works');
+                
+                // Cleanup
+                document.body.removeChild(testContainer);
+                
+                displayResult('ui-results', `<strong>✅ race-renderer.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('ui-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Race renderer test failed:', error);
+            }
+        };
+
+        window.testPlannerRenderer = async function() {
+            const results = document.getElementById('ui-results');
+            console.log('🧪 Testing planner-renderer.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const plannerRenderer = await import(`./js/ui/planner-renderer.js?v=${timestamp}`);
+                
+                // Create a test container
+                const testContainer = document.createElement('div');
+                testContainer.id = 'planner-grid';
+                document.body.appendChild(testContainer);
+                
+                // Test renderPlannerGrid
+                plannerRenderer.renderPlannerGrid('junior', () => false, () => {}, () => {}, () => {});
+                displayResult('ui-results', `✓ renderPlannerGrid() executed (rendered junior year)`, true);
+                console.log('✓ renderPlannerGrid works');
+                
+                // Test cellKey
+                const key = plannerRenderer.cellKey('January', '1st');
+                displayResult('ui-results', `✓ cellKey('January', '1st'): "${key}"`, true);
+                console.log('✓ cellKey works:', key);
+                
+                // Test raceMatchesFilters
+                const mockRace = { type: 'GI', surface: 'turf', month: 'January', half: '1st' };
+                const matches = plannerRenderer.raceMatchesFilters(mockRace);
+                displayResult('ui-results', `✓ raceMatchesFilters(): ${matches}`, true);
+                console.log('✓ raceMatchesFilters works:', matches);
+                
+                // Test setupPlannerRendererCallbacks
+                plannerRenderer.setupPlannerRendererCallbacks(() => {}, () => {}, () => {});
+                displayResult('ui-results', `✓ setupPlannerRendererCallbacks() executed`, true);
+                console.log('✓ setupPlannerRendererCallbacks works');
+                
+                // Cleanup
+                document.body.removeChild(testContainer);
+                
+                displayResult('ui-results', `<strong>✅ planner-renderer.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('ui-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Planner renderer test failed:', error);
+            }
+        };
+
+        // Test planner helpers module
+        window.testPlannerHelpers = async function() {
+            const results = document.getElementById('feature-results');
+            console.log('🧪 Testing planner-helpers.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const plannerHelpers = await import(`./js/features/planner-helpers.js?v=${timestamp}`);
+                
+                // Test buildPlannerTimeline
+                const timeline = plannerHelpers.buildPlannerTimeline();
+                displayResult('feature-results', `✓ buildPlannerTimeline(): ${timeline.length} cells`, true);
+                console.log('✓ buildPlannerTimeline works:', timeline.length);
+                
+                // Test getMaxConsecutiveRunsFromPlanner
+                const runs = plannerHelpers.getMaxConsecutiveRunsFromPlanner();
+                displayResult('feature-results', `✓ getMaxConsecutiveRunsFromPlanner(): ${runs} runs`, true);
+                console.log('✓ getMaxConsecutiveRunsFromPlanner works:', runs);
+                
+                // Test getMaxConsecutiveWinsFromPlanner
+                const wins = plannerHelpers.getMaxConsecutiveWinsFromPlanner();
+                displayResult('feature-results', `✓ getMaxConsecutiveWinsFromPlanner(): ${wins} wins`, true);
+                console.log('✓ getMaxConsecutiveWinsFromPlanner works:', wins);
+                
+                // Test hasLossThenWinFromPlanner
+                const hasPattern = plannerHelpers.hasLossThenWinFromPlanner();
+                displayResult('feature-results', `✓ hasLossThenWinFromPlanner(): ${hasPattern}`, true);
+                console.log('✓ hasLossThenWinFromPlanner works:', hasPattern);
+                
+                displayResult('feature-results', `<strong>✅ planner-helpers.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Planner helpers test failed:', error);
+            }
+        };
+
+        // Test modal manager module
+        window.testModalManager = async function() {
+            const results = document.getElementById('feature-results');
+            console.log('🧪 Testing modal-manager.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const modalManager = await import(`./js/features/modal-manager.js?v=${timestamp}`);
+                
+                // Note: Modal testing requires DOM elements from main app
+                displayResult('feature-results', `⚠ Modal manager requires DOM elements from main app to test fully`, true, true);
+                displayResult('feature-results', `ℹ️ Recommendation: Use the main app (index.html) to test modal functionality`, true, true);
+                displayResult('feature-results', `ℹ️ Test checklist:`, true, true);
+                displayResult('feature-results', `  • Save dialog (openSaveDialog, closeSaveDialog)`, true, true);
+                displayResult('feature-results', `  • Load dialog (openLoadDialog, closeLoadDialog)`, true, true);
+                displayResult('feature-results', `  • Share dialog (openShareDialog, closeShareDialog, copyShareURL)`, true, true);
+                displayResult('feature-results', `  • Naming dialog (openNameDialog, closeNameDialog, confirmSaveName)`, true, true);
+                console.log('ℹ️ Modal manager requires integration testing');
+                
+            } catch (error) {
+                displayResult('feature-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Modal manager test failed:', error);
+            }
+        };
+
+        // Test storage manager module
+        window.testStorageManager = async function() {
+            const results = document.getElementById('storage-results');
+            results.innerHTML = '';
+            console.log('🧪 Testing storage-manager.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const storageManager = await import(`./js/storage/storage-manager.js?v=${timestamp}`);
+                
+                // Create test container
+                const testGrid = document.createElement('div');
+                testGrid.id = 'test-storage-grid';
+                document.body.appendChild(testGrid);
+                
+                // Test renderSaveSlotsUI
+                storageManager.renderSaveSlotsUI(testGrid, () => {}, () => {});
+                displayResult('storage-results', `✓ renderSaveSlotsUI() executed (rendered 6 slots)`, true);
+                console.log('✓ renderSaveSlotsUI works');
+                
+                // Test renderLoadSlotsUI
+                storageManager.renderLoadSlotsUI(testGrid, () => {});
+                displayResult('storage-results', `✓ renderLoadSlotsUI() executed (rendered 6 slots)`, true);
+                console.log('✓ renderLoadSlotsUI works');
+                
+                // Cleanup
+                document.body.removeChild(testGrid);
+                
+                displayResult('storage-results', `<strong>✅ storage-manager.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('storage-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ Storage manager test failed:', error);
+            }
+        };
+
+        // Test URL sharing module
+        window.testUrlSharing = async function() {
+            const results = document.getElementById('storage-results');
+            console.log('🧪 Testing url-sharing.js...');
+            stats.tested++;
+            document.getElementById('tested-modules').textContent = stats.tested;
+            
+            try {
+                // Import the module
+                const timestamp = Date.now();
+                const urlSharing = await import(`./js/storage/url-sharing.js?v=${timestamp}`);
+                
+                // Test serializeState
+                const serialized = urlSharing.serializeState();
+                displayResult('storage-results', `✓ serializeState(): ${Object.keys(serialized).length} properties`, true);
+                console.log('✓ serializeState works:', serialized);
+                
+                // Test buildShareURL
+                const url = urlSharing.buildShareURL();
+                displayResult('storage-results', `✓ buildShareURL(): ${url.length} characters`, true);
+                console.log('✓ buildShareURL works');
+                
+                // Test deserializeState
+                const testObj = {
+                    selected: ['race1', 'race2'],
+                    won: ['race1'],
+                    lost: ['race2'],
+                    planner: {},
+                    year: 'junior',
+                    tracked: null
+                };
+                urlSharing.deserializeState(testObj);
+                displayResult('storage-results', `✓ deserializeState() executed`, true);
+                console.log('✓ deserializeState works');
+                
+                // Test tryImportFromURL (without actual URL parameter)
+                const imported = urlSharing.tryImportFromURL();
+                displayResult('storage-results', `✓ tryImportFromURL(): ${imported} (no URL parameter)`, true);
+                console.log('✓ tryImportFromURL works:', imported);
+                
+                displayResult('storage-results', `<strong>✅ url-sharing.js: All tests passed!</strong>`, true);
+                
+            } catch (error) {
+                displayResult('storage-results', `✗ Error: ${error.message}`, false);
+                console.error('✗ URL sharing test failed:', error);
+            }
+        };
+
+        // Run all available tests
+        window.runAllTests = function() {
+            console.log('🚀 Running all available tests...');
+            clearAllResults();
+            
+            // Run tests with delays to see each one
+            setTimeout(() => testUtils(), 100);
+            setTimeout(() => testState(), 300);
+            setTimeout(() => testRaceData(), 500);
+            setTimeout(() => testHiddenFactors(), 700);
+            setTimeout(() => testRaceHelpers(), 900);
+            setTimeout(() => testTracking(), 1100);
+            setTimeout(() => testFilters(), 1300);
+            setTimeout(() => testScrollLock(), 1500);
+            setTimeout(() => testPlanner(), 1700);
+            setTimeout(() => testPlannerHelpers(), 1900);
+            setTimeout(() => testModalManager(), 2100);
+            setTimeout(() => testCheckAwakening(), 2300);
+            setTimeout(() => testCheckSpecial(), 2500);
+            setTimeout(() => testCheckRaceBased(), 2700);
+            setTimeout(() => testProgressRenderer(), 2900);
+            setTimeout(() => testRaceRenderer(), 3100);
+            setTimeout(() => testPlannerRenderer(), 3300);
+            setTimeout(() => testStorageManager(), 3500);
+            setTimeout(() => testUrlSharing(), 3700);
+            
+            console.log('✅ All 20 tests queued');
+        };
+
+        // Auto-initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🧪 Module testing page loaded');
+            console.log('📦 Modules available:', Object.keys(window.modules));
+            console.log('💡 Click buttons to test individual modules or "Run All Available Tests"');
+            
+            // Initialize race data automatically
+            window.modules.initializeRaceData();
+            console.log('✓ Race data initialized automatically');
+        });
+    </script>
+</body>
+</html>

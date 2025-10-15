@@ -122,6 +122,137 @@ header:hover .app-logo {
     transition: color 0.3s ease;
 }
 
+/* ========================================
+   Changelog Section
+   ======================================== */
+.changelog-section {
+    margin-top: 60px;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    border-top: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.changelog-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.changelog-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.changelog-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.changelog-entry {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.changelog-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.changelog-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.changelog-changes {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.changelog-category {
+    margin-left: 8px;
+}
+
+.changelog-category-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.changelog-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 20px;
+}
+
+.changelog-items li {
+    font-size: 0.9rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.changelog-items li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #6366f1;
+    font-weight: bold;
+}
+
+.changelog-items li:last-child {
+    margin-bottom: 0;
+}
+
+.changelog-empty {
+    text-align: center;
+    color: #718096;
+    font-style: italic;
+    padding: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .changelog-section {
+        margin-top: 40px;
+        padding: 30px 15px;
+    }
+    
+    .changelog-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .changelog-entry {
+        padding: 20px;
+    }
+    
+    .changelog-date {
+        font-size: 1rem;
+    }
+    
+    .changelog-items li {
+        font-size: 0.85rem;
+    }
+}
+
 .app-footer {
     margin-top: 40px;
     padding: 20px 20px;
@@ -222,6 +353,8 @@ h1 {
     overflow-y: auto; /* scroll within progress panel */
     overflow-x: hidden;
     align-self: start; /* do not stretch the grid row */
+    display: flex;
+    flex-direction: column;
 }
 
 .section-title {
@@ -347,9 +480,7 @@ h1 {
     flex: 0 0 auto;
     padding: 8px 14px;
     border-radius: 18px;
-    border: 2px solid #38a169;
-    background: #f0fff4;
-    color: #2f855a;
+    border: 2px solid transparent;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -358,11 +489,46 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.year-tab.active,
-.year-tab:hover {
-    background: #38a169;
-    color: #fff;
+
+/* Junior tab - Pastel mint green */
+.year-tab[data-year="junior"] {
+    background: #E8F5F0;
+    color: #2d5f4d;
+    border-color: #B8E6D5;
+}
+.year-tab[data-year="junior"].active,
+.year-tab[data-year="junior"]:hover {
+    background: #B8E6D5;
+    color: #1a4032;
+    border-color: #8fd4bd;
+}
+
+/* Classics tab - Pastel pink */
+.year-tab[data-year="classics"] {
+    background: #FFF0F5;
+    color: #6b2d45;
+    border-color: #FFD4E5;
+}
+.year-tab[data-year="classics"].active,
+.year-tab[data-year="classics"]:hover {
+    background: #FFD4E5;
+    color: #4a1f31;
+    border-color: #ffb3d1;
+}
+
+/* Senior tab - Pastel blue */
+.year-tab[data-year="senior"] {
+    background: #EEF3FF;
+    color: #2d4a6b;
+    border-color: #D4E5FF;
+}
+.year-tab[data-year="senior"].active,
+.year-tab[data-year="senior"]:hover {
+    background: #D4E5FF;
+    color: #1a2f4a;
+    border-color: #b3d1ff;
 }
 .planner-grid {
     display: grid;
@@ -376,18 +542,6 @@ h1 {
     overflow: hidden;
 }
 .planner-slot.disabled { opacity: 0.55; filter: grayscale(1); }
-.planner-slot.summer {
-    background: #fef5e7;
-    border-color: #f6ad55;
-}
-.planner-slot.summer .planner-slot-head {
-    background: #fed7aa;
-    color: #9c4221;
-    border-bottom-color: #fbbf24;
-}
-.planner-slot.summer .planner-slot-head .en {
-    color: #92400e;
-}
 .planner-slot-head {
     background: #e6fffa;
     color: #2c7a7b;
@@ -400,13 +554,92 @@ h1 {
     justify-content: space-between;
 }
 .planner-slot-head .en { font-size: 0.65rem; color: #4a5568; font-weight: 600; }
+
+/* Year-specific colors for planner headers - using inactive filter colors */
+.planner-slot.year-junior .planner-slot-head {
+    background: #E8F5F0; /* Light mint green (inactive) */
+    color: #2d5f4d;
+    border-bottom-color: #B8E6D5;
+}
+
+.planner-slot.year-classics .planner-slot-head {
+    background: #FFF0F5; /* Light pink (inactive) */
+    color: #6b2d45;
+    border-bottom-color: #FFD4E5;
+}
+
+.planner-slot.year-senior .planner-slot-head {
+    background: #EEF3FF; /* Light blue (inactive) */
+    color: #2d4a6b;
+    border-bottom-color: #D4E5FF;
+}
+
+/* Year-specific colors for slot titles (race names) - using inactive filter colors */
+.slot-title.year-junior .en,
+.slot-title.year-junior .jp {
+    color: #E8F5F0; /* Light mint green (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+.slot-title.year-classics .en,
+.slot-title.year-classics .jp {
+    color: #FFF0F5; /* Light pink (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+.slot-title.year-senior .en,
+.slot-title.year-senior .jp {
+    color: #EEF3FF; /* Light blue (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+/* Summer colors take precedence over year colors */
+.planner-slot.summer {
+    background: #fef5e7;
+    border-color: #f6ad55;
+}
+.planner-slot.summer .planner-slot-head {
+    background: #fed7aa;
+    color: #9c4221;
+    border-bottom-color: #fbbf24;
+}
+.planner-slot.summer .planner-slot-head .en {
+    color: #92400e;
+}
+
+/* Summer colors for slot titles (race names) - override year colors */
+.planner-slot.summer .slot-title .en,
+.planner-slot.summer .slot-title .jp {
+    color: #fff; /* White text for summer slots */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
 .planner-slot-body {
     padding: 6px;
-    min-height: 100px;
+    height: 98px; /* Fixed height: 80px button + 12px padding + 6px gap */
+    min-height: 98px;
+    max-height: 98px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 6px;
     align-items: stretch;
+    overflow: hidden; /* Prevent content overflow */
 }
 .planner-plus {
     border: 2px dashed #a0aec0;
@@ -428,8 +661,9 @@ h1 {
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    height: 110px;
-    min-height: 110px;
+    height: 80px;
+    min-height: 80px;
+    max-height: 80px; /* Prevent expansion */
     width: 100%;
     display: block;
     background: #edf2f7 center/cover no-repeat;
@@ -441,17 +675,54 @@ h1 {
 .slot-gradient {
     position: absolute;
     left: 0; right: 0; bottom: 0; top: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.18) 45%, rgba(0,0,0,0));
+    background: 
+        /* Scanlines */
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15) 0px,
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 3px
+        ),
+        /* Dark gradient overlay */
+        linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.18) 45%, rgba(0,0,0,0));
     pointer-events: none;
 }
 .slot-title {
     position: absolute;
-    left: 8px; right: 8px; bottom: 6px;
+    left: 0; 
+    right: 0; 
+    bottom: 0;
     color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.6), 0 0 6px rgba(0,0,0,0.4);
+    z-index: 5;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.6) 50%, transparent);
+    padding: 8px 10px 6px 10px;
+    border-radius: 0 0 10px 10px; /* Match button border radius at bottom */
 }
-.slot-title .en { font-weight: 800; font-size: 0.95rem; -webkit-text-stroke: 0.6px rgba(0,0,0,0.8); }
-.slot-title .jp { font-size: 0.8rem; opacity: 0.95; -webkit-text-stroke: 0.4px rgba(0,0,0,0.8); }
+.slot-title .en { 
+    font-weight: 800; 
+    font-size: 0.9rem; 
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1); 
+    letter-spacing: 0.3px;
+    text-shadow: 
+        0 2px 4px rgba(0,0,0,1), 
+        0 1px 2px rgba(0,0,0,1), 
+        0 0 4px rgba(0,0,0,0.8);
+    line-height: 1.2;
+    display: block;
+}
+.slot-title .jp { 
+    font-size: 0.85rem; 
+    font-weight: 700;
+    -webkit-text-stroke: 0.7px rgba(0,0,0,1);
+    text-shadow: 
+        0 2px 4px rgba(0,0,0,1), 
+        0 1px 2px rgba(0,0,0,1), 
+        0 0 4px rgba(0,0,0,0.8);
+    line-height: 1.2;
+    display: block;
+    margin-top: 2px;
+}
 .slot-remove { position: absolute; top: 6px; right: 6px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); color: #2d3748; border-radius: 6px; padding: 2px 6px; cursor: pointer; z-index: 4; }
 /* Improve planner overlay legibility for the toggle button */
 .slot-wrapper .loss-toggle-btn { background: rgba(0,0,0,0.55); color: #fff; border-color: rgba(255,255,255,0.7); box-shadow: 0 2px 6px rgba(0,0,0,0.35); -webkit-text-stroke: 0.6px rgba(0,0,0,0.6); padding: 2px 6px; font-size: 0.85rem; border-radius: 6px; }
@@ -471,7 +742,7 @@ h1 {
 .picker-panel {
     position: relative;
     background: #fff;
-    width: min(900px, 92vw);
+    width: min(1200px, 92vw);
     max-height: 80vh;
     height: 80vh; /* Set explicit height to constrain carousel */
     border-radius: 12px;
@@ -485,13 +756,17 @@ h1 {
 .picker-carousel {
     display: flex;
     width: 300%; /* 3 cards side by side */
-    height: 100%;
+    flex: 1; /* Take remaining space between header and footer */
     transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform: translateX(-33.333%); /* Start at center card */
+    transform: translate3d(-33.333%, 0, 0); /* Start at center card */
+    will-change: transform;
+    backface-visibility: hidden;
+    overflow: hidden;
 }
 
 .picker-carousel.no-transition {
     transition: none;
+    will-change: auto;
 }
 
 /* Individual Cards */
@@ -514,8 +789,8 @@ h1 {
 }
 .picker-nav { position: fixed; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.4); color:#fff; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; width: 56px; height: 56px; font-size: 28px; display:flex; align-items:center; justify-content:center; cursor: pointer; z-index: 1002; }
 .picker-nav:hover { background: rgba(0,0,0,0.6); }
-.picker-nav-left { left: auto; }
-.picker-nav-right { right: auto; }
+.picker-nav-left { left: 16px; }
+.picker-nav-right { right: 16px; }
 .picker-head { 
     padding: 12px 16px; 
     background: #38a169; 
@@ -526,16 +801,40 @@ h1 {
     flex-shrink: 0;
     min-height: 60px;
 }
+
 .picker-title { 
     font-weight: 800;
     line-height: 1.3;
+    transition: opacity 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.picker-title.fading {
+    opacity: 0;
+}
+
+.picker-title-en {
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.picker-title-jp {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.95;
+    line-height: 1.2;
 }
 .picker-body { 
     padding: 12px 16px; 
+    padding-bottom: 72px; /* Space for pagination dots on desktop */
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
     min-height: 0;
+    height: 100%; /* Fill the card height */
 }
 .picker-actions { 
     padding: 10px 16px; 
@@ -572,21 +871,60 @@ h1 {
 }
 .btn-primary { background: #38a169; color: #fff; border-color: #38a169; }
 .btn-secondary { background: #edf2f7; color: #2d3748; border-color: #cbd5e0; }
-.picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
-.picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; gap: 10px; background: #fff; cursor: pointer; padding: 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+.picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px; }
+.picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; background: #fff; cursor: pointer; padding: 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .picker-item:hover { background: #f7fafc; }
 .picker-item.selected { outline: 3px solid #38a169; }
 .picker-item.picker-item-tracked { background: #e6f7ff; border-color: #1890ff; }
 .picker-item.picker-item-tracked h4::before { content: "📍 "; }
-.picker-item img { width: 96px; height: 54px; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; }
-.picker-item h4 { font-size: 0.95rem; color: #2d3748; margin-bottom: 2px; }
-.picker-item .sub { font-size: 0.8rem; color: #4a5568; }
+.picker-item.picker-item-filtered { background: #f0f9ff; border-color: #0ea5e9; position: relative; }
+.picker-item.picker-item-filtered::after {
+    content: "📅";
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #0ea5e9;
+}
+.picker-item img { max-width: 50%; height: 100%; flex-shrink: 0; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; align-self: stretch; }
+.picker-item h4 { font-size: 0.8rem; font-weight: bold; color: #2d3748; margin-bottom: 2px; }
+.picker-item .sub { font-size: 0.65rem; font-weight: 600; color: #4a5568; }
+
+/* Match race database styling in modal picker */
+.picker-item-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-left: 12px;
+}
+.picker-item-header {
+    margin-bottom: 6px;
+}
+.picker-item-info {
+    flex: 1;
+}
+.picker-item .race-name {
+    flex: 1;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.picker-item .race-details {
+    font-size: 0.65rem;
+    color: #718096;
+    margin-bottom: 2px;
+    text-align: right;
+}
 
 /* Swipe Indicator */
 .picker-swipe-indicator {
-    display: none; /* Hidden on desktop */
+    display: flex; /* Show on all devices */
     position: absolute;
-    bottom: 0;
+    bottom: 60px; /* Position above the picker-actions (60px min-height) */
     left: 0;
     right: 0;
     padding: 10px 16px;
@@ -597,11 +935,11 @@ h1 {
     align-items: center;
     gap: 8px;
     z-index: 10;
-    min-height: 80px;
+    min-height: 60px; /* Reduced for desktop */
 }
 
 .swipe-hint {
-    display: flex;
+    display: none; /* Hidden on desktop, show on mobile */
     align-items: center;
     gap: 8px;
     font-size: 0.85rem;
@@ -628,6 +966,39 @@ h1 {
 /* Pagination Dots */
 .picker-pagination {
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.pagination-year-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #2d3748;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.year-indicator-en {
+    font-size: 0.75rem;
+}
+
+.year-indicator-jp {
+    font-size: 0.65rem;
+    opacity: 0.8;
+}
+
+.pagination-dots-wrapper {
+    display: flex;
     gap: 6px;
     align-items: center;
     justify-content: center;
@@ -638,18 +1009,116 @@ h1 {
     height: 8px;
     border-radius: 50%;
     background: #cbd5e0;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     cursor: pointer;
-}
-
-.pagination-dot.active {
-    background: #667eea;
-    width: 24px;
-    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
 }
 
 .pagination-dot:hover {
     background: #a0aec0;
+    transform: scale(1.2);
+}
+
+.pagination-dot:active {
+    transform: scale(0.9);
+}
+
+.pagination-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    animation: dotPulse 0.3s ease-out;
+}
+
+.pagination-dot.active:hover {
+    transform: scale(1);
+}
+
+@keyframes dotPulse {
+    0% {
+        transform: scale(0.8);
+        box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Year transition animations */
+.picker-pagination.year-transition-forward .pagination-dots-wrapper {
+    animation: slideDotsReset 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.picker-pagination.year-transition-backward .pagination-dots-wrapper {
+    animation: slideDotsResetBackward 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.picker-pagination.year-transition-forward .pagination-year-indicator,
+.picker-pagination.year-transition-backward .pagination-year-indicator {
+    animation: yearBadgeFade 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideDotsReset {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    45% {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    46% {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDotsResetBackward {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    45% {
+        transform: translateX(-120%);
+        opacity: 0;
+    }
+    46% {
+        transform: translateX(120%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes yearBadgeFade {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    45% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    55% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Mobile Navigation Arrows */
@@ -786,6 +1255,9 @@ h1 {
 
 .race-name {
     margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .race-name-en {
@@ -806,9 +1278,10 @@ h1 {
     font-size: 0.65rem;
     color: #718096;
     margin-bottom: 2px;
+    text-align: right;
 }
 /* Calendar-specific compact text */
-#calendar-section .race-details { font-size: 0.62rem; }
+#calendar-section .race-details { font-size: 0.62rem; text-align: right; }
 /* Details are already compact (two rows rendered). Do not hide them by nth-of-type. */
 
 .race-grade {
@@ -957,8 +1430,58 @@ h1 {
     opacity: 0.9;
 }
 
+/* Quick Stats Summary */
+.quick-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    background: rgba(102, 126, 234, 0.08);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #4a5568;
+    flex-wrap: wrap;
+}
+
+.quick-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.quick-stat strong {
+    color: #2d3748;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.quick-stat-separator {
+    color: #cbd5e0;
+    font-weight: 300;
+    user-select: none;
+}
+
 .hidden-factors {
     margin-top: 20px;
+    flex-shrink: 0; /* Prevent shrinking in flex container */
+}
+
+/* When in compact mode (mobile/tablet), make visible factors scrollable */
+@media (max-width: 900px) {
+    .hidden-factors {
+        max-height: 400px; /* Limit height for scrolling - smaller to ensure 2 factors are scrollable */
+        overflow-y: auto; /* Enable scrolling */
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+    
+    /* When expanded, allow full height */
+    .hidden-factors.factors-expanded {
+        max-height: none;
+    }
 }
 
 /* Show more button for hidden factors (desktop - hidden by default) */
@@ -1243,13 +1766,13 @@ h1 {
 }
 
 .planner-slot.filter-match .planner-slot-head::after {
-    content: " 🔎";
+    content: " 📅";
     font-size: 0.9rem;
 }
 
 /* When both tracked and filter match, prioritize tracked style but add filter indicator */
 .planner-slot.slot-tracked.filter-match .planner-slot-head::after {
-    content: " 📍🔎";
+    content: " 📍📅";
     font-size: 0.9rem;
 }
 
@@ -1677,29 +2200,32 @@ h1 {
 /* Toast Notification */
 .toast-notification {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     background: #48bb78;
     color: white;
-    padding: 12px 20px;
+    padding: 20px 32px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     z-index: 3000;
-    animation: slideInUp 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+    animation: slideInDown 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
     pointer-events: none;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 .toast-notification.error {
     background: #fc8181;
 }
 
-@keyframes slideInUp {
+@keyframes slideInDown {
     from {
-        transform: translateY(100px);
+        transform: translateX(-50%) translateY(-100px);
         opacity: 0;
     }
     to {
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
         opacity: 1;
     }
 }
@@ -1707,7 +2233,7 @@ h1 {
 @keyframes fadeOut {
     to {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateX(-50%) translateY(20px);
     }
 }
 
@@ -1800,8 +2326,11 @@ h1 {
 
     .planner-slot-body {
         padding: 3px;
-        min-height: 60px;
+        height: 66px; /* Fixed: 60px button + 6px padding */
+        min-height: 66px;
+        max-height: 66px;
         gap: 3px;
+        overflow: hidden;
     }
 
     .planner-plus {
@@ -1813,13 +2342,16 @@ h1 {
     .slot-button {
         height: 60px;
         min-height: 60px;
+        max-height: 60px;
         border-radius: 6px;
     }
 
     .slot-title {
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 4px 6px 3px 6px;
+        border-radius: 0 0 6px 6px; /* Match mobile button border radius */
     }
 
     .slot-title .en {
@@ -1828,8 +2360,10 @@ h1 {
     }
 
     .slot-title .jp {
-        font-size: 0.55rem;
+        font-size: 0.62rem;
         line-height: 1.1;
+        font-weight: 700;
+        margin-top: 1px;
     }
 
     .slot-remove {
@@ -1993,7 +2527,7 @@ h1 {
     }
 
     .race-name-en {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
     }
 
     .race-name-jp {
@@ -2002,6 +2536,7 @@ h1 {
 
     .race-details {
         font-size: 0.6rem;
+        text-align: right;
     }
 
     #calendar-section .race-details {
@@ -2017,7 +2552,7 @@ h1 {
     
     /* Add padding to picker body to account for fixed swipe indicator */
     .picker-card-current .picker-body {
-        padding-bottom: 90px; /* Space for swipe indicator */
+        padding-bottom: 100px; /* Space for swipe indicator + pagination */
     }
 
     .picker-list {
@@ -2027,12 +2562,43 @@ h1 {
 
     .picker-item {
         padding: 6px;
-        gap: 8px;
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+    }
+    
+    .picker-item img {
+        flex: 0 0 45%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+        background:#edf2f7;
+        border:1px solid #e2e8f0;
+        align-self: stretch;
+    }
+    
+    .picker-item-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-left: 12px;
     }
 
-    .picker-item img {
-        width: 80px;
-        height: 45px;
+    .picker-item-header {
+        margin-bottom: 4px;
+    }
+    
+    .picker-item-info {
+        flex: 1;
+    }
+
+    .picker-item .race-name {
+        margin-bottom: 0;
+    }
+
+    .picker-item .race-details {
+        font-size: 0.6rem;
+        text-align: right;
     }
 
     /* Hide side navigation arrows on mobile */
@@ -2042,6 +2608,13 @@ h1 {
 
     /* Show swipe indicator on mobile */
     .picker-swipe-indicator {
+        display: flex !important;
+        min-height: 80px; /* Taller on mobile */
+        bottom: 0; /* Back to bottom on mobile since nav is outside panel */
+    }
+
+    /* Show swipe hint on mobile */
+    .swipe-hint {
         display: flex !important;
     }
 
@@ -2130,13 +2703,17 @@ h1 {
 
     .planner-slot-body {
         padding: 5px;
-        min-height: 85px;
+        height: 95px; /* Fixed: 85px button + 10px padding */
+        min-height: 95px;
+        max-height: 95px;
         gap: 5px;
+        overflow: hidden;
     }
 
     .slot-button {
         height: 85px;
         min-height: 85px;
+        max-height: 85px;
     }
 
     .slot-title .en {
@@ -2144,7 +2721,8 @@ h1 {
     }
 
     .slot-title .jp {
-        font-size: 0.75rem;
+        font-size: 0.78rem;
+        font-weight: 700;
     }
 
     /* Header adjustments on tablet */
@@ -2246,7 +2824,7 @@ h1 {
     
     /* Add padding to picker body to account for fixed swipe indicator */
     .picker-card-current .picker-body {
-        padding-bottom: 90px; /* Space for swipe indicator */
+        padding-bottom: 100px; /* Space for swipe indicator + pagination */
     }
 
     /* Hide side navigation arrows on tablet */
@@ -2256,6 +2834,13 @@ h1 {
 
     /* Show swipe indicator on tablet */
     .picker-swipe-indicator {
+        display: flex !important;
+        min-height: 80px; /* Taller on tablet */
+        bottom: 0; /* Back to bottom on tablet since nav is outside panel */
+    }
+
+    /* Show swipe hint on tablet */
+    .swipe-hint {
         display: flex !important;
     }
 
