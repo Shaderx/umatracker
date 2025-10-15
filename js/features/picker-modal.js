@@ -49,14 +49,12 @@ export function closePicker(t) {
 }
 
 export function navigatePicker(t, direction, skipAnimation = false, skipTitleFade = false) {
-    console.log('[Picker Debug] navigatePicker called, direction:', direction, 'skipAnimation:', skipAnimation, 'skipTitleFade:', skipTitleFade);
     const previousYear = t.currentPickerSlot?.year;
     const nextSlot = getAdjacentSlot(t, direction === 'prev' ? -1 : 1);
     if (!nextSlot) return;
 
     const yearChanged = previousYear !== nextSlot.year;
-    console.log('[Picker Debug] Year changed:', yearChanged, 'from', previousYear, 'to', nextSlot.year);
-    
+
     t.currentPickerSlot = nextSlot;
     
     // Update global planner year if year changed
@@ -75,11 +73,15 @@ export function navigatePicker(t, direction, skipAnimation = false, skipTitleFad
         if (!skipAnimation) {
             animateYearTransition(direction === 'prev' ? -1 : 1);
         }
+        
+        // Re-render the main planner grid to show the new year
+        if (t.renderPlannerGrid) {
+            t.renderPlannerGrid();
+        }
     }
     
     // Only do title fade if not handled by navigatePickerWithAnimation
     if (!skipTitleFade) {
-        console.log('[Picker Debug] Starting title fade');
         const title = document.getElementById('picker-title');
         if (title) {
             title.classList.add('fading');
@@ -107,7 +109,6 @@ export function navigatePickerWithAnimation(t, direction) {
     }
     
     // Start title fade BEFORE the card animation starts
-    console.log('[Picker Debug] Starting title fade BEFORE animation');
     const title = document.getElementById('picker-title');
     if (title && nextSlot) {
         title.classList.add('fading');
@@ -115,7 +116,6 @@ export function navigatePickerWithAnimation(t, direction) {
         setTimeout(() => {
             updatePickerTitle(nextSlot.month, nextSlot.half);
             title.classList.remove('fading');
-            console.log('[Picker Debug] Title fade complete');
         }, 280); // Slightly after 270ms card animation completes
     }
     
@@ -128,15 +128,10 @@ export function navigatePickerWithAnimation(t, direction) {
         const delta = direction < 0 ? '0%' : '-66.666%';
         carousel.style.transform = `translate3d(${delta}, 0, 0)`;
         setTimeout(() => {
-            console.log('[Picker Debug] Animation complete, starting card swap');
-            console.log('[Picker Debug] Current transform:', carousel.style.transform);
-            
             // Disable transitions first
             carousel.classList.add('no-transition');
             carousel.style.transition = 'none';
-            
-            console.log('[Picker Debug] Re-rendering cards WHILE still at offset position');
-            
+
             // Hide carousel during DOM update to prevent any visible flicker
             carousel.style.opacity = '0';
             
@@ -158,9 +153,13 @@ export function navigatePickerWithAnimation(t, direction) {
                             tab.classList.remove('active');
                         }
                     });
+                    
+                    // Re-render the main planner grid to show the new year
+                    if (t.renderPlannerGrid) {
+                        t.renderPlannerGrid();
+                    }
                 }
-                
-                console.log('[Picker Debug] Rendering new card content');
+
                 renderPickerCarousel(t);
             }
             
@@ -168,14 +167,12 @@ export function navigatePickerWithAnimation(t, direction) {
             requestAnimationFrame(() => {
                 // Force a reflow to ensure DOM is fully updated before position reset
                 void carousel.offsetHeight;
-                console.log('[Picker Debug] Cards rendered, now resetting position to center');
                 carousel.style.transform = 'translate3d(-33.333%, 0, 0)';
-                
+
                 // Restore opacity immediately after position reset
                 carousel.style.opacity = '1';
-                
+
                 requestAnimationFrame(() => {
-                    console.log('[Picker Debug] Re-enabling transitions');
                     carousel.classList.remove('no-transition');
                 });
             });
@@ -216,10 +213,8 @@ export function getAdjacentSlot(t, step) {
 }
 
 export function renderPickerCarousel(t) {
-    console.log('[Picker Debug] renderPickerCarousel called');
     if (!t.currentPickerSlot) return;
     const { year, month, half } = t.currentPickerSlot;
-    console.log('[Picker Debug] Rendering cards for:', year, month, half);
     renderPickerCard(t, 'current', { year, month, half });
     renderPickerCard(t, 'prev', getAdjacentSlot(t, -1));
     renderPickerCard(t, 'next', getAdjacentSlot(t, 1));
@@ -227,7 +222,6 @@ export function renderPickerCarousel(t) {
     attachPickerSwipeHandlers(t);
     positionPickerNavs(t);
     updatePaginationDots(t);
-    console.log('[Picker Debug] renderPickerCarousel complete');
 }
 
 export function updatePickerToggleCloseButton(t) {
@@ -243,20 +237,16 @@ export function updateAllPickerToggleButtons(t) {
 }
 
 export function renderPickerCard(t, position, slot) {
-    console.log(`[Picker Debug] renderPickerCard called for position: ${position}`);
     const suffix = position === 'current' ? '' : `-${position}`;
     const listEl = document.getElementById(`picker-list${suffix}`);
     if (!listEl || !slot) return;
     const { year, month, half } = slot;
     const tmap = state.translations;
 
-    console.log(`[Picker Debug] Filtering races for ${position}: ${year} ${month} ${half}`);
     const available = state.races.filter(r => r.month === month && r.half === half && r[year || state.plannerYear]);
     const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
     const yearToUse = year || state.plannerYear;
     const cellValue = state.plannerData[yearToUse][cellKey(month, half)];
-    console.log(`[Picker Debug] Setting innerHTML for ${position} (${available.length} races)`);
-    const startTime = performance.now();
     listEl.innerHTML = available.map(r => {
         const selected = String(cellValue) === String(r.id);
         const tracked = trackedIds.has(String(r.id));
@@ -296,8 +286,6 @@ export function renderPickerCard(t, position, slot) {
             </div>
         `;
     }).join('');
-    const endTime = performance.now();
-    console.log(`[Picker Debug] innerHTML set for ${position} took ${(endTime - startTime).toFixed(2)}ms`);
 
     if (position === 'current') {
         listEl.onclick = (e) => {
@@ -368,7 +356,6 @@ export function attachPickerSwipeHandlers(t) {
             const nextSlot = getAdjacentSlot(t, direction);
             
             // Start title fade during swipe animation
-            console.log('[Picker Debug] Swipe: Starting title fade');
             const title = document.getElementById('picker-title');
             if (title && nextSlot) {
                 title.classList.add('fading');
@@ -376,19 +363,15 @@ export function attachPickerSwipeHandlers(t) {
                 setTimeout(() => {
                     updatePickerTitle(nextSlot.month, nextSlot.half);
                     title.classList.remove('fading');
-                    console.log('[Picker Debug] Swipe: Title fade complete');
                 }, 220); // Slightly after 210ms swipe animation completes
             }
             
             const target = direction < 0 ? '0%' : '-66.666%';
             carousel.style.transform = `translate3d(${target}, 0, 0)`;
             setTimeout(() => {
-                console.log('[Picker Debug] Swipe animation complete');
                 carousel.classList.add('no-transition');
                 carousel.style.transition = 'none';
-                
-                console.log('[Picker Debug] Swipe: Re-rendering cards WHILE still at offset');
-                
+
                 // Hide carousel during DOM update
                 carousel.style.opacity = '0';
                 
@@ -396,7 +379,6 @@ export function attachPickerSwipeHandlers(t) {
                 const nextSlot = getAdjacentSlot(t, direction);
                 if (nextSlot) {
                     t.currentPickerSlot = nextSlot;
-                    console.log('[Picker Debug] Swipe: Rendering new card content');
                     renderPickerCarousel(t);
                 }
                 
@@ -404,14 +386,12 @@ export function attachPickerSwipeHandlers(t) {
                 requestAnimationFrame(() => {
                     // Force a reflow to ensure DOM is fully updated before position reset
                     void carousel.offsetHeight;
-                    console.log('[Picker Debug] Swipe: Resetting position to center');
                     carousel.style.transform = 'translate3d(-33.333%, 0, 0)';
-                    
+
                     // Restore opacity
                     carousel.style.opacity = '1';
-                    
+
                     requestAnimationFrame(() => {
-                        console.log('[Picker Debug] Swipe: Re-enabling transitions');
                         carousel.classList.remove('no-transition');
                     });
                 });
