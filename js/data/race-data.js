@@ -25,7 +25,7 @@ export const distanceCategories = {
  * Eastern Japan tracks
  */
 export const easternTracks = [
-    'Tokyo', 'Nakayama (Chiba)', 'Niigata', 'Fukushima', 
+    'Tokyo', 'Nakayama', 'Niigata', 'Fukushima', 
     'Kawasaki', 'Ooi', 'Funabashi', 'Morioka'
 ];
 
@@ -33,8 +33,8 @@ export const easternTracks = [
  * Western Japan tracks
  */
 export const westernTracks = [
-    'Kyoto', 'Hanshin (Takarazuka)', 'Chukyou (Nagoya)', 
-    'Kokura (Kitakyushu)', 'Sapporo', 'Hakodate'
+    'Kyoto', 'Hanshin', 'Chukyou', 
+    'Kokura', 'Sapporo', 'Hakodate'
 ];
 
 /**
@@ -69,11 +69,11 @@ export const summerSeries = {
 export const translations = {
     tracks: {
         'Tokyo': '東京',
-        'Nakayama (Chiba)': '中山',
+        'Nakayama': '中山',
         'Kyoto': '京都',
-        'Hanshin (Takarazuka)': '阪神',
-        'Chukyou (Nagoya)': '中京',
-        'Kokura (Kitakyushu)': '小倉',
+        'Hanshin': '阪神',
+        'Chukyou': '中京',
+        'Kokura': '小倉',
         'Sapporo': '札幌',
         'Hakodate': '函館',
         'Niigata': '新潟',
