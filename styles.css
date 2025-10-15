@@ -122,6 +122,137 @@ header:hover .app-logo {
     transition: color 0.3s ease;
 }
 
+/* ========================================
+   Changelog Section
+   ======================================== */
+.changelog-section {
+    margin-top: 60px;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+    border-top: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.changelog-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.changelog-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.changelog-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.changelog-entry {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.changelog-entry:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.changelog-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #6366f1;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+}
+
+.changelog-changes {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.changelog-category {
+    margin-left: 8px;
+}
+
+.changelog-category-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.changelog-items {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 20px;
+}
+
+.changelog-items li {
+    font-size: 0.9rem;
+    color: #4a5568;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.changelog-items li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #6366f1;
+    font-weight: bold;
+}
+
+.changelog-items li:last-child {
+    margin-bottom: 0;
+}
+
+.changelog-empty {
+    text-align: center;
+    color: #718096;
+    font-style: italic;
+    padding: 40px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .changelog-section {
+        margin-top: 40px;
+        padding: 30px 15px;
+    }
+    
+    .changelog-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+    
+    .changelog-entry {
+        padding: 20px;
+    }
+    
+    .changelog-date {
+        font-size: 1rem;
+    }
+    
+    .changelog-items li {
+        font-size: 0.85rem;
+    }
+}
+
 .app-footer {
     margin-top: 40px;
     padding: 20px 20px;

@@ -72,6 +72,7 @@ import { renderSaveSlotsUI, renderLoadSlotsUI } from './js/storage/storage-manag
 import { updateAndRenderProgress, setupProgressRendererCallbacks } from './js/ui/progress-renderer.js';
 import { renderRaces, setupRaceRendererCallbacks } from './js/ui/race-renderer.js';
 import { renderPlannerGrid, cellKey, setupPlannerRendererCallbacks } from './js/ui/planner-renderer.js';
+import { initChangelog } from './js/ui/changelog-renderer.js';
 
 // ============================================================================
 // Discord Contact Function (preserved from original)
@@ -445,6 +446,8 @@ class UmaMusumeTracker {
 // ============================================================================
 document.addEventListener('DOMContentLoaded', () => {
     window.tracker = new UmaMusumeTracker();
+    // Initialize changelog display
+    initChangelog();
 });
 
 // ============================================================================
