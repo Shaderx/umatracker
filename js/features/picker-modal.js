@@ -9,7 +9,7 @@ import { getTrackedFactorRaceIds } from './tracking.js';
 import { loadHiddenFactors } from '../data/hidden-factors.js';
 import { raceMatchesFilters } from './filters.js';
 
-export function openPicker(t, month, half) {
+export function pickerOpen(t, month, half) {
     t.currentPickerSlot = { year: state.plannerYear, month, half };
     updatePickerTitle(month, half);
     renderPickerCarousel(t);
@@ -40,7 +40,7 @@ export function updatePickerTitle(month, half) {
     }
 }
 
-export function closePicker(t) {
+export function pickerClose(t) {
     const modal = document.getElementById('picker-modal');
     if (modal) modal.classList.add('hidden');
     t.currentPickerSlot = null;
@@ -48,7 +48,7 @@ export function closePicker(t) {
     unlockBodyScroll(plannerSection);
 }
 
-export function navigatePicker(t, direction, skipAnimation = false, skipTitleFade = false) {
+export function pickerNavigate(t, direction, skipAnimation = false, skipTitleFade = false) {
     const previousYear = t.currentPickerSlot?.year;
     const nextSlot = getAdjacentSlot(t, direction === 'prev' ? -1 : 1);
     if (!nextSlot) return;
@@ -95,7 +95,7 @@ export function navigatePicker(t, direction, skipAnimation = false, skipTitleFad
     renderPickerCarousel(t);
 }
 
-export function navigatePickerWithAnimation(t, direction) {
+export function pickerNavigateAnim(t, direction) {
     const carousel = document.getElementById('picker-carousel');
     if (!carousel) return;
 
@@ -304,12 +304,12 @@ export function renderPickerCard(t, position, slot) {
             t.renderPlannerGrid();
             t.renderRaces();
             t.updateProgress();
-            if (t.closeOnSelection) closePicker(t); else renderPickerCarousel(t);
+            if (t.closeOnSelection) pickerClose(t); else renderPickerCarousel(t);
         };
     }
 }
 
-export function toggleCloseOnSelection(t) {
+export function pickerToggleClose(t) {
     t.closeOnSelection = !t.closeOnSelection;
     updateAllPickerToggleButtons(t);
 }

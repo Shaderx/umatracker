@@ -52,7 +52,7 @@ import {
     toggleParticipationById,
     toggleWinById
 } from './js/features/planner.js';
-import { openPicker as pickerOpen, closePicker as pickerClose, navigatePicker as pickerNavigate, navigatePickerWithAnimation as pickerNavigateAnim, toggleCloseOnSelection as pickerToggleClose } from './js/features/picker-modal.js';
+import { pickerOpen, pickerClose, pickerNavigate, pickerNavigateAnim, pickerToggleClose } from './js/features/picker-modal.js';
 import { 
     openSaveDialog,
     closeSaveDialog,
