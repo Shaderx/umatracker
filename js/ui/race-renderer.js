@@ -35,10 +35,10 @@ export function renderRaces(selectedRaces, wonRaces, lostRaces, isRaceTrackedFn,
             ${race.image ? `<div class="race-thumb"><img class="race-thumb-img" src="${race.image}" alt="${(race.name || '').replace(/"/g, '&quot;')}" loading="lazy"></div>` : ''}
             <div class="race-name">
                 <div class="race-name-en">${race.name}</div>
-                <div class="race-name-jp">${race.nameJP}</div>
-            </div>
-            <div class="race-details">
                 <span class="race-grade grade-${race.type}">${race.type}</span>
+            </div>
+            <div class="race-name-jp">${race.nameJP}</div>
+            <div class="race-details">
                 ${race.length} • ${race.surface}/${state.translations.surfaces[race.surface] || race.surface}
             </div>
             <div class="race-details">

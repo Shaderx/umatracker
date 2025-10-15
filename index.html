@@ -130,81 +130,50 @@
         <button class="picker-nav picker-nav-left" onclick="tracker.navigatePickerWithAnimation(-1)" aria-label="Previous">‹</button>
         <button class="picker-nav picker-nav-right" onclick="tracker.navigatePickerWithAnimation(1)" aria-label="Next">›</button>
         <div class="picker-panel" id="picker-panel">
+            <!-- Fixed Header -->
+            <div class="picker-head">
+                <div class="picker-title" id="picker-title">レース選択</div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-secondary toggle-close-on-selection" id="toggle-close-btn" onclick="tracker.toggleCloseOnSelection()" title="Toggle close on selection">
+                        <span class="toggle-icon"></span>
+                        <div class="toggle-text">
+                            <div class="toggle-text-en">Auto-close</div>
+                            <div class="toggle-text-jp">自動閉じる</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Swipeable Content Area -->
             <div class="picker-carousel" id="picker-carousel">
                 <!-- Previous Card -->
                 <div class="picker-card picker-card-prev" id="picker-card-prev">
-                    <div class="picker-head">
-                        <div class="picker-title" id="picker-title-prev"></div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary toggle-close-on-selection" disabled style="pointer-events: none;">
-                                <span class="toggle-icon"></span>
-                                <div class="toggle-text">
-                                    <div class="toggle-text-en">Auto-close</div>
-                                    <div class="toggle-text-jp">自動閉じる</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
                     <div class="picker-body">
                         <div id="picker-list-prev" class="picker-list"></div>
-                    </div>
-                    <div class="picker-actions">
-                        <button class="btn btn-primary" disabled>
-                            <div class="btn-text-en">Done</div>
-                            <div class="btn-text-jp">完了</div>
-                        </button>
                     </div>
                 </div>
                 
                 <!-- Current Card -->
                 <div class="picker-card picker-card-current" id="picker-card-current">
-                    <div class="picker-head">
-                        <div class="picker-title" id="picker-title">レース選択</div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary toggle-close-on-selection" id="toggle-close-btn" onclick="tracker.toggleCloseOnSelection()" title="Toggle close on selection">
-                                <span class="toggle-icon"></span>
-                                <div class="toggle-text">
-                                    <div class="toggle-text-en">Auto-close</div>
-                                    <div class="toggle-text-jp">自動閉じる</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
                     <div class="picker-body">
                         <div id="picker-list" class="picker-list"></div>
-                    </div>
-                    <div class="picker-actions">
-                        <button class="btn btn-primary" onclick="tracker.closePicker()">
-                            <div class="btn-text-en">Done</div>
-                            <div class="btn-text-jp">完了</div>
-                        </button>
                     </div>
                 </div>
                 
                 <!-- Next Card -->
                 <div class="picker-card picker-card-next" id="picker-card-next">
-                    <div class="picker-head">
-                        <div class="picker-title" id="picker-title-next"></div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary toggle-close-on-selection" disabled style="pointer-events: none;">
-                                <span class="toggle-icon"></span>
-                                <div class="toggle-text">
-                                    <div class="toggle-text-en">Auto-close</div>
-                                    <div class="toggle-text-jp">自動閉じる</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
                     <div class="picker-body">
                         <div id="picker-list-next" class="picker-list"></div>
                     </div>
-                    <div class="picker-actions">
-                        <button class="btn btn-primary" disabled>
-                            <div class="btn-text-en">Done</div>
-                            <div class="btn-text-jp">完了</div>
-                        </button>
-                    </div>
                 </div>
+            </div>
+            
+            <!-- Fixed Footer -->
+            <div class="picker-actions">
+                <button class="btn btn-primary" onclick="tracker.closePicker()">
+                    <div class="btn-text-en">Done</div>
+                    <div class="btn-text-jp">完了</div>
+                </button>
             </div>
             
             <!-- Swipe Indicator -->
@@ -319,3 +288,4 @@
     <script type="module" src="app.js?v=20251005181500"></script>
 </body>
 </html>
+

@@ -68,7 +68,7 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             const isEmptySlot = !selectedId && !hasAnyForSlot;
             slots.push(`
                 <div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTrackedValue ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''}\">
-                    <div class=\"planner-slot-head\"><span>${monthLabel(month)} ${halfLabel(half)} / <span class=\\"en\\">${enShort[month] || month} ${half}</span></span></div>
+                    <div class=\"planner-slot-head\"><span>${enShort[month] || month} ${half} / ${monthLabel(month)} ${halfLabel(half)}</span></div>
                     <div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"window.openPickerFromPlanner('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
                 </div>
             `);
