@@ -1,58 +1,70 @@
 /**
  * Changelog Renderer Module
- * Handles display of changelog data in the UI
+ * Handles display of changelog data in the UI (preview section only)
  */
 
 import { state } from '../core/state.js';
 
 /**
- * Render changelog section
+ * Render changelog section - shows only latest entry
  */
 export function renderChangelog() {
     const container = document.getElementById('changelog-container');
     if (!container) return;
 
     // Check if we have changelog data
-    if (!window.changelogData || !Array.isArray(window.changelogData)) {
+    if (!window.changelogData || !Array.isArray(window.changelogData) || window.changelogData.length === 0) {
         container.innerHTML = '<p class="changelog-empty">No changelog available</p>';
         return;
     }
 
     const changelogData = window.changelogData;
-    
-    // Limit to most recent entries (e.g., last 10 dates)
-    const recentEntries = changelogData.slice(0, 10);
+    const latestEntry = changelogData[0]; // Only show the most recent entry
     
     let html = '<div class="changelog-wrapper">';
     html += '<h2 class="changelog-title">📜 Changelog</h2>';
-    html += '<div class="changelog-entries">';
-    
-    for (const entry of recentEntries) {
-        html += `<div class="changelog-entry">`;
-        html += `<div class="changelog-date">${formatDate(entry.date)}</div>`;
-        html += `<div class="changelog-changes">`;
-        
-        for (const changeGroup of entry.changes) {
-            html += `<div class="changelog-category">`;
-            html += `<div class="changelog-category-title">${changeGroup.category}</div>`;
-            html += `<ul class="changelog-items">`;
-            
-            for (const item of changeGroup.items) {
-                html += `<li>${escapeHtml(item)}</li>`;
-            }
-            
-            html += `</ul>`;
-            html += `</div>`;
-        }
-        
-        html += `</div>`;
-        html += `</div>`;
+    html += '<div class="changelog-preview">';
+
+    // Render only the latest entry
+    html += renderChangelogEntry(latestEntry);
+
+    // Add fade overlay and "Show More" button if there are more entries
+    if (changelogData.length > 1) {
+        html += '<div class="changelog-fade-overlay"></div>';
+        html += '<button class="changelog-show-more" onclick="tracker.openChangelogModal()">Show Full History</button>';
     }
-    
+
     html += '</div>';
     html += '</div>';
     
     container.innerHTML = html;
+}
+
+/**
+ * Render a single changelog entry
+ */
+function renderChangelogEntry(entry) {
+    let html = `<div class="changelog-entry">`;
+    html += `<div class="changelog-date">${formatDate(entry.date)}</div>`;
+    html += `<div class="changelog-changes">`;
+    
+    for (const changeGroup of entry.changes) {
+        html += `<div class="changelog-category">`;
+        html += `<div class="changelog-category-title">${changeGroup.category}</div>`;
+        html += `<ul class="changelog-items">`;
+        
+        for (const item of changeGroup.items) {
+            html += `<li>${escapeHtml(item)}</li>`;
+        }
+        
+        html += `</ul>`;
+        html += `</div>`;
+    }
+    
+    html += `</div>`;
+    html += `</div>`;
+    
+    return html;
 }
 
 /**
@@ -91,4 +103,5 @@ export function initChangelog() {
         renderChangelog();
     }
 }
+
 

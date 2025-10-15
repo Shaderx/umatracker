@@ -284,6 +284,26 @@
         </div>
     </div>
 
+    <!-- Changelog Modal -->
+    <div id="changelog-modal" class="storage-modal changelog-modal hidden">
+        <div class="storage-backdrop" onclick="tracker.closeChangelogModal()"></div>
+        <div class="storage-panel changelog-modal-panel">
+            <div class="storage-header">
+                <h3>📜 Full Changelog History</h3>
+                <button class="close-btn" onclick="tracker.closeChangelogModal()">×</button>
+            </div>
+            <div class="changelog-filter-bar">
+                <label for="changelog-date-filter">Filter by Date:</label>
+                <select id="changelog-date-filter" class="changelog-date-select" onchange="tracker.filterChangelog(this.value)">
+                    <option value="all">All Dates</option>
+                </select>
+            </div>
+            <div class="storage-body changelog-modal-body" id="changelog-modal-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <!-- LZ-String for URL compression -->
     <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>

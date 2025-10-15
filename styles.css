@@ -135,6 +135,7 @@ header:hover .app-logo {
 .changelog-wrapper {
     max-width: 900px;
     margin: 0 auto;
+    position: relative;
 }
 
 .changelog-title {
@@ -146,7 +147,12 @@ header:hover .app-logo {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.changelog-entries {
+.changelog-preview {
+    position: relative;
+}
+
+.changelog-entries,
+.changelog-entries-full {
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -228,6 +234,113 @@ header:hover .app-logo {
     padding: 40px;
 }
 
+/* Fade Overlay and Show More Button */
+.changelog-fade-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 20%,
+        rgba(255, 255, 255, 0.6) 40%,
+        rgba(255, 255, 255, 0.85) 60%,
+        rgba(247, 250, 252, 0.95) 80%,
+        rgba(247, 250, 252, 1) 100%
+    );
+    pointer-events: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 1;
+}
+
+.changelog-show-more {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    z-index: 2;
+}
+
+.changelog-show-more:hover {
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+    background: linear-gradient(135deg, #5558e3 0%, #7c4ee8 100%);
+}
+
+.changelog-show-more:active {
+    transform: translateX(-50%) translateY(0);
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Changelog Modal */
+.changelog-modal-panel {
+    max-width: 900px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.changelog-filter-bar {
+    padding: 16px 24px;
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.changelog-filter-bar label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.changelog-date-select {
+    padding: 8px 32px 8px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #2d3748;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234a5568' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.changelog-date-select:hover {
+    border-color: #6366f1;
+}
+
+.changelog-date-select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.changelog-modal-body {
+    overflow-y: auto;
+    max-height: calc(85vh - 180px);
+}
+
+.changelog-modal-body .changelog-entries-full {
+    gap: 24px;
+    padding: 8px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .changelog-section {
@@ -250,6 +363,26 @@ header:hover .app-logo {
     
     .changelog-items li {
         font-size: 0.85rem;
+    }
+    
+    .changelog-show-more {
+        font-size: 0.9rem;
+        padding: 10px 24px;
+    }
+    
+    .changelog-modal-panel {
+        max-width: 95%;
+        max-height: 90vh;
+    }
+    
+    .changelog-filter-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .changelog-date-select {
+        width: 100%;
     }
 }
 

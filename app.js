@@ -73,6 +73,7 @@ import { updateAndRenderProgress, setupProgressRendererCallbacks } from './js/ui
 import { renderRaces, setupRaceRendererCallbacks } from './js/ui/race-renderer.js';
 import { renderPlannerGrid, cellKey, setupPlannerRendererCallbacks } from './js/ui/planner-renderer.js';
 import { initChangelog } from './js/ui/changelog-renderer.js';
+import { openChangelogModal, closeChangelogModal, filterChangelog } from './js/ui/changelog-modal.js';
 
 // ============================================================================
 // Discord Contact Function (preserved from original)
@@ -408,6 +409,21 @@ class UmaMusumeTracker {
                 () => showToast('Saved')
             );
         });
+    }
+
+    // ========================================================================
+    // Changelog Modal Methods
+    // ========================================================================
+    openChangelogModal() {
+        openChangelogModal();
+    }
+
+    closeChangelogModal() {
+        closeChangelogModal();
+    }
+
+    filterChangelog(monthYear) {
+        filterChangelog(monthYear);
     }
     
     // ========================================================================

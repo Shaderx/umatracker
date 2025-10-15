@@ -1,8 +1,9 @@
 // Auto-generated changelog
-// Generated on: 2025-10-15 18:23:33
+// Generated on: 2025-10-15 21:05:18
 // Do not edit manually - run debug/tools/generate_changelog.py to regenerate
 
-const changelogData = [
+// Expose to window for global access
+window.changelogData = [
   {
     "date": "2025-10-15",
     "changes": [
@@ -19,6 +20,13 @@ const changelogData = [
         "items": [
           "Remove debug logs from picker modal flicker fix",
           "Remove debug console.log statements from picker-modal.js"
+        ]
+      },
+      {
+        "category": "\u267b\ufe0f Refactor",
+        "items": [
+          "Merge refactor branch into main",
+          "Finalize refactor changes before main merge"
         ]
       },
       {
@@ -238,7 +246,7 @@ const changelogData = [
   }
 ];
 
-// Export for use in the application
+// Also export for module support
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = changelogData;
+    module.exports = window.changelogData;
 }
