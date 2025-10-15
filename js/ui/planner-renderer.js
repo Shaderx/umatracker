@@ -49,10 +49,10 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
                 const bgStyle = hasImage ? `background-image: url('${r.image}')` : '';
                 const badgeClass = state.lostRaces.has(selectedId) ? 'badge-lost' : (state.wonRaces.has(selectedId) ? 'badge-won' : '');
                 slotBody = `
-                    <div class=\"slot-wrapper\"> 
-                        <button class=\"slot-button ${badgeClass}\" data-race-id=\"${selectedId}\" style=\"${bgStyle}\" onclick=\"window.openPickerFromPlanner('${month}','${half}')\"> 
+                    <div class=\"slot-wrapper\">
+                        <button class=\"slot-button ${badgeClass}\" data-race-id=\"${selectedId}\" style=\"${bgStyle}\" onclick=\"window.openPickerFromPlanner('${month}','${half}')\">
                             <div class=\"slot-gradient\"></div>
-                            <div class=\"slot-title\"> 
+                            <div class=\"slot-title year-${plannerYear}\">
                                 <div class=\"en\">${r ? r.name : ''}</div>
                                 <div class=\"jp\">${r && r.nameJP ? r.nameJP : ''}</div>
                             </div>
@@ -67,7 +67,7 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             const isSummer = (month === 'July' || month === 'August');
             const isEmptySlot = !selectedId && !hasAnyForSlot;
             slots.push(`
-                <div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTrackedValue ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''}\">
+                <div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTrackedValue ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''} year-${plannerYear}\">
                     <div class=\"planner-slot-head\"><span>${enShort[month] || month} ${half} / ${monthLabel(month)} ${halfLabel(half)}</span></div>
                     <div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"window.openPickerFromPlanner('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
                 </div>

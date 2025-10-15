@@ -411,18 +411,6 @@ h1 {
     overflow: hidden;
 }
 .planner-slot.disabled { opacity: 0.55; filter: grayscale(1); }
-.planner-slot.summer {
-    background: #fef5e7;
-    border-color: #f6ad55;
-}
-.planner-slot.summer .planner-slot-head {
-    background: #fed7aa;
-    color: #9c4221;
-    border-bottom-color: #fbbf24;
-}
-.planner-slot.summer .planner-slot-head .en {
-    color: #92400e;
-}
 .planner-slot-head {
     background: #e6fffa;
     color: #2c7a7b;
@@ -435,6 +423,82 @@ h1 {
     justify-content: space-between;
 }
 .planner-slot-head .en { font-size: 0.65rem; color: #4a5568; font-weight: 600; }
+
+/* Year-specific colors for planner headers - using inactive filter colors */
+.planner-slot.year-junior .planner-slot-head {
+    background: #E8F5F0; /* Light mint green (inactive) */
+    color: #2d5f4d;
+    border-bottom-color: #B8E6D5;
+}
+
+.planner-slot.year-classics .planner-slot-head {
+    background: #FFF0F5; /* Light pink (inactive) */
+    color: #6b2d45;
+    border-bottom-color: #FFD4E5;
+}
+
+.planner-slot.year-senior .planner-slot-head {
+    background: #EEF3FF; /* Light blue (inactive) */
+    color: #2d4a6b;
+    border-bottom-color: #D4E5FF;
+}
+
+/* Year-specific colors for slot titles (race names) - using inactive filter colors */
+.slot-title.year-junior .en,
+.slot-title.year-junior .jp {
+    color: #E8F5F0; /* Light mint green (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+.slot-title.year-classics .en,
+.slot-title.year-classics .jp {
+    color: #FFF0F5; /* Light pink (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+.slot-title.year-senior .en,
+.slot-title.year-senior .jp {
+    color: #EEF3FF; /* Light blue (inactive) */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
+/* Summer colors take precedence over year colors */
+.planner-slot.summer {
+    background: #fef5e7;
+    border-color: #f6ad55;
+}
+.planner-slot.summer .planner-slot-head {
+    background: #fed7aa;
+    color: #9c4221;
+    border-bottom-color: #fbbf24;
+}
+.planner-slot.summer .planner-slot-head .en {
+    color: #92400e;
+}
+
+/* Summer colors for slot titles (race names) - override year colors */
+.planner-slot.summer .slot-title .en,
+.planner-slot.summer .slot-title .jp {
+    color: #fff; /* White text for summer slots */
+    -webkit-text-stroke: 0.8px rgba(0,0,0,1);
+    text-shadow:
+        0 2px 4px rgba(0,0,0,1),
+        0 1px 2px rgba(0,0,0,1),
+        0 0 4px rgba(0,0,0,0.8);
+}
+
 .planner-slot-body {
     padding: 6px;
     height: 98px; /* Fixed height: 80px button + 12px padding + 6px gap */

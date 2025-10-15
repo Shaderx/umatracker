@@ -266,11 +266,13 @@ export function renderPickerCard(t, position, slot) {
                     </div>
                     <div class="picker-item-info">
                         <div class="race-details">
-                            ${r.length} • ${r.surface}/${tmap.surfaces[r.surface] || r.surface}
+                            ${tmap.months[r.month] || r.month} ${tmap.halves[r.half] || r.half} / ${r.month} ${r.half}
                         </div>
                         <div class="race-details">
                             ${r.racetrack}/${tmap.tracks[r.racetrack] || r.racetrack}
-                            • ${tmap.months[r.month] || r.month} ${tmap.halves[r.half] || r.half} / ${r.month} ${r.half}
+                        </div>
+                        <div class="race-details">
+                            ${r.length} • ${r.surface}/${tmap.surfaces[r.surface] || r.surface}
                             ${r.direction ? `• ${tmap.directions[r.direction]} / ${r.direction}` : ''}
                             ${(() => {
                                 const years = [];

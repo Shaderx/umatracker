@@ -39,11 +39,13 @@ export function renderRaces(selectedRaces, wonRaces, lostRaces, isRaceTrackedFn,
             </div>
             <div class="race-name-jp">${race.nameJP}</div>
             <div class="race-details">
-                ${race.length} • ${race.surface}/${state.translations.surfaces[race.surface] || race.surface}
+                ${state.translations.months[race.month] || race.month} ${state.translations.halves[race.half] || race.half} / ${race.month} ${race.half}
             </div>
             <div class="race-details">
                 ${race.racetrack}/${state.translations.tracks[race.racetrack] || race.racetrack}
-                • ${state.translations.months[race.month] || race.month} ${state.translations.halves[race.half] || race.half} / ${race.month} ${race.half}
+            </div>
+            <div class="race-details">
+                ${race.length} • ${race.surface}/${state.translations.surfaces[race.surface] || race.surface}
                 ${race.direction ? `• ${state.translations.directions[race.direction]} / ${race.direction}` : ''}
                 ${(() => {
                     const years = [];
