@@ -49,14 +49,11 @@ export function closePicker(t) {
 }
 
 export function navigatePicker(t, direction, skipAnimation = false) {
-    console.log('🔵 navigatePicker called:', { direction, skipAnimation });
-    
     const previousYear = t.currentPickerSlot?.year;
     const nextSlot = getAdjacentSlot(t, direction === 'prev' ? -1 : 1);
     if (!nextSlot) return;
-    
+
     const yearChanged = previousYear !== nextSlot.year;
-    console.log('🔍 Year check:', { previousYear, nextYear: nextSlot.year, yearChanged });
     
     t.currentPickerSlot = nextSlot;
     
@@ -74,10 +71,7 @@ export function navigatePicker(t, direction, skipAnimation = false) {
         
         // Only trigger animation if not already triggered by navigatePickerWithAnimation
         if (!skipAnimation) {
-            console.log('🎬 navigatePicker triggering animation');
             animateYearTransition(direction === 'prev' ? -1 : 1);
-        } else {
-            console.log('⏭️ navigatePicker SKIPPING animation (already triggered)');
         }
     }
     
@@ -95,24 +89,15 @@ export function navigatePicker(t, direction, skipAnimation = false) {
 }
 
 export function navigatePickerWithAnimation(t, direction) {
-    console.log('🟢 navigatePickerWithAnimation called:', { direction });
-    
     const carousel = document.getElementById('picker-carousel');
     if (!carousel) return;
-    
+
     // Check if year will change BEFORE navigation
     const nextSlot = getAdjacentSlot(t, direction);
     const willChangeYear = nextSlot && t.currentPickerSlot && nextSlot.year !== t.currentPickerSlot.year;
-    
-    console.log('🔍 Pre-check:', { 
-        currentYear: t.currentPickerSlot?.year, 
-        nextYear: nextSlot?.year, 
-        willChangeYear 
-    });
-    
+
     // Start pagination animation immediately if year will change
     if (willChangeYear) {
-        console.log('🎬 navigatePickerWithAnimation triggering animation EARLY');
         animateYearTransition(direction);
     }
     
@@ -129,7 +114,6 @@ export function navigatePickerWithAnimation(t, direction) {
             carousel.style.transition = 'none';
             carousel.style.transform = 'translate3d(-33.333%, 0, 0)';
             requestAnimationFrame(() => {
-                console.log('🔄 Calling navigatePicker with skipAnimation =', willChangeYear);
                 // Pass skipAnimation=true since we already triggered it above
                 navigatePicker(t, direction < 0 ? 'prev' : 'next', willChangeYear);
                 requestAnimationFrame(() => carousel.classList.remove('no-transition'));
@@ -336,8 +320,6 @@ export function attachPickerSwipeHandlers(t) {
 }
 
 export function updatePaginationDots(t) {
-    console.log('📍 updatePaginationDots called');
-    
     const paginationEl = document.getElementById('picker-pagination');
     if (!paginationEl || !t.currentPickerSlot) return;
 
@@ -347,8 +329,6 @@ export function updatePaginationDots(t) {
 
     const { year, month, half } = t.currentPickerSlot;
     const currentIndex = months.indexOf(month) * halves.length + halves.indexOf(half);
-    
-    console.log('📍 Updating dots for:', { year, month, half, currentIndex });
 
     // Year color mapping - pastel colors
     const yearColors = {
@@ -366,7 +346,6 @@ export function updatePaginationDots(t) {
     // Check if animation is currently running
     const hasForwardAnim = paginationEl.classList.contains('year-transition-forward');
     const hasBackwardAnim = paginationEl.classList.contains('year-transition-backward');
-    console.log('💾 Animation state check:', { hasForwardAnim, hasBackwardAnim });
 
     // Generate year indicator and dots
     const yearColor = yearColors[year] || '#cbd5e0';
@@ -378,12 +357,10 @@ export function updatePaginationDots(t) {
     
     // Update year indicator
     if (yearIndicator) {
-        console.log('🔄 Updating existing year indicator');
         yearIndicator.style.background = yearColor;
         yearIndicator.querySelector('.year-indicator-en').textContent = yearLabel.en;
         yearIndicator.querySelector('.year-indicator-jp').textContent = yearLabel.jp;
     } else {
-        console.log('➕ Creating new year indicator');
         yearIndicator = document.createElement('div');
         yearIndicator.className = 'pagination-year-indicator';
         yearIndicator.style.background = yearColor;
@@ -393,26 +370,24 @@ export function updatePaginationDots(t) {
         `;
         paginationEl.insertBefore(yearIndicator, paginationEl.firstChild);
     }
-    
+
     // Update dots wrapper
     if (dotsWrapper) {
-        console.log('🔄 Updating existing dots wrapper');
         dotsWrapper.innerHTML = Array.from({ length: totalSlots }, (_, i) => {
             const isActive = i === currentIndex;
             const monthIdx = Math.floor(i / halves.length);
             const halfIdx = i % halves.length;
             const targetMonth = months[monthIdx];
             const targetHalf = halves[halfIdx];
-            return `<div class="pagination-dot ${isActive ? 'active' : ''}" 
-                         data-index="${i}" 
-                         data-month="${targetMonth}" 
+            return `<div class="pagination-dot ${isActive ? 'active' : ''}"
+                         data-index="${i}"
+                         data-month="${targetMonth}"
                          data-half="${targetHalf}"
                          style="background: ${isActive ? yearColor : '#cbd5e0'};"
                          title="${state.translations.months[targetMonth] || targetMonth} ${state.translations.halves[targetHalf] || targetHalf}">
                     </div>`;
         }).join('');
     } else {
-        console.log('➕ Creating new dots wrapper');
         dotsWrapper = document.createElement('div');
         dotsWrapper.className = 'pagination-dots-wrapper';
         dotsWrapper.innerHTML = Array.from({ length: totalSlots }, (_, i) => {
@@ -421,9 +396,9 @@ export function updatePaginationDots(t) {
             const halfIdx = i % halves.length;
             const targetMonth = months[monthIdx];
             const targetHalf = halves[halfIdx];
-            return `<div class="pagination-dot ${isActive ? 'active' : ''}" 
-                         data-index="${i}" 
-                         data-month="${targetMonth}" 
+            return `<div class="pagination-dot ${isActive ? 'active' : ''}"
+                         data-index="${i}"
+                         data-month="${targetMonth}"
                          data-half="${targetHalf}"
                          style="background: ${isActive ? yearColor : '#cbd5e0'};"
                          title="${state.translations.months[targetMonth] || targetMonth} ${state.translations.halves[targetHalf] || targetHalf}">
@@ -447,23 +422,16 @@ export function updatePaginationDots(t) {
 
 // Animation for year transition
 export function animateYearTransition(direction) {
-    console.log('🎬 animateYearTransition called:', { direction });
-    
     const paginationEl = document.getElementById('picker-pagination');
-    if (!paginationEl) {
-        console.log('❌ No pagination element found');
-        return;
-    }
-    
+    if (!paginationEl) return;
+
     const animClass = direction > 0 ? 'year-transition-forward' : 'year-transition-backward';
-    console.log('➕ Adding animation class:', animClass);
-    
+
     // Add animation class based on direction
     paginationEl.classList.add(animClass);
-    
+
     // Remove animation class after animation completes (550ms to match card timing better)
     setTimeout(() => {
-        console.log('➖ Removing animation classes');
         paginationEl.classList.remove('year-transition-forward', 'year-transition-backward');
     }, 550);
 }
