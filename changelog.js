@@ -1,9 +1,36 @@
 // Auto-generated changelog
-// Generated on: 2025-10-15 21:05:18
+// Generated on: 2026-03-13 17:21:35
 // Do not edit manually - run debug/tools/generate_changelog.py to regenerate
 
 // Expose to window for global access
 window.changelogData = [
+  {
+    "date": "2026-03-14",
+    "changes": [
+      {
+        "category": "\ud83d\udc1b Fixes",
+        "items": [
+          "Fix summer filter (SSS/SMS/S2000) highlighting all planner slots orange instead of only matching races",
+          "Fix trophy and remove buttons hidden behind race name overlay in planner slots (z-index)"
+        ]
+      },
+      {
+        "category": "\u2728 Features",
+        "items": [
+          "Add consecutive race counter badges on planner slots with color-coded fatigue penalties (green/yellow/orange/red)",
+          "Add race planner legend showing win/loss icons and consecutive race penalty thresholds",
+          "Add Overview modal to view all 3 years of race plans in a compact grid (mobile-friendly)",
+          "Add Japanese confirmation dialog for planner reset button"
+        ]
+      },
+      {
+        "category": "\ud83d\udc84 Style",
+        "items": [
+          "Move Selected and Clear All Selection buttons to a separate row in race database filters"
+        ]
+      }
+    ]
+  },
   {
     "date": "2025-10-15",
     "changes": [
@@ -38,6 +65,7 @@ window.changelogData = [
       {
         "category": "\ud83d\udce6 Other",
         "items": [
+          "Modify data generators to output to root directory",
           "Standardize picker function naming to eliminate import aliases",
           "Remove location info from track names - simplify Nakayama, Hanshin, Chukyou, Kokura",
           "Switch to modular app architecture",

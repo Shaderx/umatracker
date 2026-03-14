@@ -217,24 +217,6 @@ window.RACES = [
   },
   {
     "id": 13,
-    "name": "Sazanka Television Cup",
-    "nameJP": "さざんかテレビ杯",
-    "type": "GII",
-    "length": "1800",
-    "surface": "dirt",
-    "racetrack": "Funabashi",
-    "junior": true,
-    "classics": false,
-    "senior": false,
-    "month": "September",
-    "half": "2nd",
-    "direction": "left",
-    "season": "autumn",
-    "image": "race_images/i_race389.png",
-    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race389.png"
-  },
-  {
-    "id": 14,
     "name": "Fuyo Stakes",
     "nameJP": "芙蓉ステークス",
     "type": "Open",
@@ -252,7 +234,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race13.png"
   },
   {
-    "id": 15,
+    "id": 14,
     "name": "Kikyo Stakes",
     "nameJP": "ききょうステークス",
     "type": "Open",
@@ -270,7 +252,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race14.png"
   },
   {
-    "id": 16,
+    "id": 15,
     "name": "Kanna Stakes",
     "nameJP": "カンナステークス",
     "type": "Open",
@@ -288,7 +270,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race15.png"
   },
   {
-    "id": 17,
+    "id": 16,
     "name": "Saffron Sho",
     "nameJP": "サフラン賞",
     "type": "Pre-OP",
@@ -306,7 +288,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race16.png"
   },
   {
-    "id": 18,
+    "id": 17,
     "name": "Shigiku Sho",
     "nameJP": "紫菊賞",
     "type": "Pre-OP",
@@ -324,7 +306,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race17.png"
   },
   {
-    "id": 19,
+    "id": 18,
     "name": "Saudi Arabia Royal Cup",
     "nameJP": "サウジアラビアロイヤルカップ",
     "type": "GIII",
@@ -342,7 +324,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race18.png"
   },
   {
-    "id": 20,
+    "id": 19,
     "name": "Momiji Stakes",
     "nameJP": "もみじステークス",
     "type": "Open",
@@ -360,7 +342,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race19.png"
   },
   {
-    "id": 21,
+    "id": 20,
     "name": "Rindo Sho",
     "nameJP": "りんどう賞",
     "type": "Pre-OP",
@@ -378,7 +360,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race20.png"
   },
   {
-    "id": 22,
+    "id": 21,
     "name": "Platanus Sho",
     "nameJP": "プラタナス賞",
     "type": "Pre-OP",
@@ -396,7 +378,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race21.png"
   },
   {
-    "id": 23,
+    "id": 22,
     "name": "Hagi Stakes",
     "nameJP": "萩ステークス",
     "type": "Open",
@@ -414,7 +396,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race22.png"
   },
   {
-    "id": 24,
+    "id": 23,
     "name": "Artemis Stakes",
     "nameJP": "アルテミスステークス",
     "type": "GIII",
@@ -432,7 +414,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race23.png"
   },
   {
-    "id": 25,
+    "id": 24,
     "name": "Ivy Stakes",
     "nameJP": "アイビーステークス",
     "type": "Open",
@@ -450,7 +432,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race24.png"
   },
   {
-    "id": 26,
+    "id": 25,
     "name": "Nadeshiko Sho",
     "nameJP": "なでしこ賞",
     "type": "Pre-OP",
@@ -468,7 +450,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race25.png"
   },
   {
-    "id": 27,
+    "id": 26,
     "name": "Kigiku Sho",
     "nameJP": "黄菊賞",
     "type": "Pre-OP",
@@ -486,7 +468,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race26.png"
   },
   {
-    "id": 28,
+    "id": 27,
     "name": "Keio Hai Junior Stakes",
     "nameJP": "京王杯ジュニアステークス",
     "type": "GII",
@@ -504,7 +486,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race27.png"
   },
   {
-    "id": 29,
+    "id": 28,
     "name": "Daily Hai Junior Stakes",
     "nameJP": "デイリー杯ジュニアステークス",
     "type": "GII",
@@ -522,7 +504,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race28.png"
   },
   {
-    "id": 30,
+    "id": 29,
     "name": "Fantasy Stakes",
     "nameJP": "ファンタジーステークス",
     "type": "GIII",
@@ -540,7 +522,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race29.png"
   },
   {
-    "id": 31,
+    "id": 30,
     "name": "Fukushima Junior Stakes",
     "nameJP": "福島ジュニアステークス",
     "type": "Open",
@@ -558,7 +540,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race30.png"
   },
   {
-    "id": 32,
+    "id": 31,
     "name": "Zinnia Tokubetsu",
     "nameJP": "百日草特別",
     "type": "Pre-OP",
@@ -576,7 +558,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race31.png"
   },
   {
-    "id": 33,
+    "id": 32,
     "name": "Amanita Tokubetsu",
     "nameJP": "きんもくせい特別",
     "type": "Pre-OP",
@@ -594,7 +576,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race32.png"
   },
   {
-    "id": 34,
+    "id": 33,
     "name": "Oxalis Sho",
     "nameJP": "オキザリス賞",
     "type": "Pre-OP",
@@ -612,7 +594,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race33.png"
   },
   {
-    "id": 35,
+    "id": 34,
     "name": "Koyamaki Sho",
     "nameJP": "こうやまき賞",
     "type": "Pre-OP",
@@ -630,7 +612,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race34.png"
   },
   {
-    "id": 36,
+    "id": 35,
     "name": "Tokyo Sports Cup Junior Stakes",
     "nameJP": "東京スポーツ杯ジュニアステークス",
     "type": "GIII",
@@ -648,7 +630,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race35.png"
   },
   {
-    "id": 37,
+    "id": 36,
     "name": "Kyoto Junior Stakes",
     "nameJP": "京都ジュニアステークス",
     "type": "GIII",
@@ -666,7 +648,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race36.png"
   },
   {
-    "id": 38,
+    "id": 37,
     "name": "Mochinoki Sho",
     "nameJP": "もちの木賞",
     "type": "Pre-OP",
@@ -684,7 +666,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race37.png"
   },
   {
-    "id": 39,
+    "id": 38,
     "name": "Akamatsu Sho",
     "nameJP": "赤松賞",
     "type": "Pre-OP",
@@ -702,7 +684,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race38.png"
   },
   {
-    "id": 40,
+    "id": 39,
     "name": "Shumeigiku Sho",
     "nameJP": "秋明菊賞",
     "type": "Pre-OP",
@@ -720,7 +702,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race39.png"
   },
   {
-    "id": 41,
+    "id": 40,
     "name": "Cattleya Sho",
     "nameJP": "カトレア賞",
     "type": "Pre-OP",
@@ -738,7 +720,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race40.png"
   },
   {
-    "id": 42,
+    "id": 41,
     "name": "Begonia Sho",
     "nameJP": "ベゴニア賞",
     "type": "Pre-OP",
@@ -756,7 +738,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race41.png"
   },
   {
-    "id": 43,
+    "id": 42,
     "name": "Shiragiku Sho",
     "nameJP": "白菊賞",
     "type": "Pre-OP",
@@ -774,7 +756,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race42.png"
   },
   {
-    "id": 44,
+    "id": 43,
     "name": "Habotan Sho",
     "nameJP": "葉牡丹賞",
     "type": "Pre-OP",
@@ -792,7 +774,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race43.png"
   },
   {
-    "id": 45,
+    "id": 44,
     "name": "Hiiragi Sho",
     "nameJP": "ひいらぎ賞",
     "type": "Pre-OP",
@@ -810,7 +792,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race44.png"
   },
   {
-    "id": 46,
+    "id": 45,
     "name": "Manryo Sho",
     "nameJP": "万両賞",
     "type": "Pre-OP",
@@ -828,7 +810,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race45.png"
   },
   {
-    "id": 47,
+    "id": 46,
     "name": "Kuromatsu Sho",
     "nameJP": "黒松賞",
     "type": "Pre-OP",
@@ -846,7 +828,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race46.png"
   },
   {
-    "id": 48,
+    "id": 47,
     "name": "Erika Sho",
     "nameJP": "エリカ賞",
     "type": "Pre-OP",
@@ -864,7 +846,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race47.png"
   },
   {
-    "id": 49,
+    "id": 48,
     "name": "Tsuwabuki Sho",
     "nameJP": "つわぶき賞",
     "type": "Pre-OP",
@@ -882,7 +864,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race48.png"
   },
   {
-    "id": 50,
+    "id": 49,
     "name": "Sazanka Sho",
     "nameJP": "さざんか賞",
     "type": "Pre-OP",
@@ -900,7 +882,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race49.png"
   },
   {
-    "id": 51,
+    "id": 50,
     "name": "Kantsubaki Sho",
     "nameJP": "寒椿賞",
     "type": "Pre-OP",
@@ -918,7 +900,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race50.png"
   },
   {
-    "id": 52,
+    "id": 51,
     "name": "Hanshin Juvenile Fillies",
     "nameJP": "阪神ジュベナイルフィリーズ",
     "type": "GI",
@@ -936,7 +918,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race51.png"
   },
   {
-    "id": 53,
+    "id": 52,
     "name": "Asahi Hai Futurity Stakes",
     "nameJP": "朝日杯フューチュリティステークス",
     "type": "GI",
@@ -954,7 +936,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race52.png"
   },
   {
-    "id": 54,
+    "id": 53,
     "name": "All Japan Junior Yushun",
     "nameJP": "全日本ジュニア優駿",
     "type": "GI",
@@ -972,7 +954,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race381.png"
   },
   {
-    "id": 55,
+    "id": 54,
     "name": "Senryo Sho",
     "nameJP": "千両賞",
     "type": "Pre-OP",
@@ -990,7 +972,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race53.png"
   },
   {
-    "id": 56,
+    "id": 55,
     "name": "Christmas Rose Stakes",
     "nameJP": "クリスマスローズステークス",
     "type": "Open",
@@ -1008,7 +990,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race54.png"
   },
   {
-    "id": 57,
+    "id": 56,
     "name": "Hopeful Stakes",
     "nameJP": "ホープフルステークス",
     "type": "GI",
@@ -1026,7 +1008,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race55.png"
   },
   {
-    "id": 58,
+    "id": 57,
     "name": "Fairy Stakes",
     "nameJP": "フェアリーステークス",
     "type": "GIII",
@@ -1044,7 +1026,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race56.png"
   },
   {
-    "id": 59,
+    "id": 58,
     "name": "Junior Cup",
     "nameJP": "ジュニアカップ",
     "type": "Open",
@@ -1062,7 +1044,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race57.png"
   },
   {
-    "id": 60,
+    "id": 59,
     "name": "Koubai Stakes",
     "nameJP": "紅梅ステークス",
     "type": "Open",
@@ -1080,7 +1062,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race58.png"
   },
   {
-    "id": 61,
+    "id": 60,
     "name": "Shinzan Kinen",
     "nameJP": "シンザン記念",
     "type": "GIII",
@@ -1098,7 +1080,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race59.png"
   },
   {
-    "id": 62,
+    "id": 61,
     "name": "Keisei Hai",
     "nameJP": "京成杯",
     "type": "GIII",
@@ -1116,7 +1098,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race60.png"
   },
   {
-    "id": 63,
+    "id": 62,
     "name": "Wakakoma Stakes",
     "nameJP": "若駒ステークス",
     "type": "Open",
@@ -1134,7 +1116,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race61.png"
   },
   {
-    "id": 64,
+    "id": 63,
     "name": "Crocus Stakes",
     "nameJP": "クロッカスステークス",
     "type": "Open",
@@ -1152,7 +1134,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race62.png"
   },
   {
-    "id": 65,
+    "id": 64,
     "name": "Queen Cup",
     "nameJP": "クイーンカップ",
     "type": "GIII",
@@ -1170,7 +1152,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race63.png"
   },
   {
-    "id": 66,
+    "id": 65,
     "name": "Elfin Stakes",
     "nameJP": "エルフィンステークス",
     "type": "Open",
@@ -1188,7 +1170,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race64.png"
   },
   {
-    "id": 67,
+    "id": 66,
     "name": "Kisaragi Sho",
     "nameJP": "きさらぎ賞",
     "type": "GIII",
@@ -1206,7 +1188,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race65.png"
   },
   {
-    "id": 68,
+    "id": 67,
     "name": "Kyodo News Hai",
     "nameJP": "共同通信杯",
     "type": "GIII",
@@ -1224,7 +1206,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race66.png"
   },
   {
-    "id": 69,
+    "id": 68,
     "name": "Hyacinth Stakes",
     "nameJP": "ヒヤシンスステークス",
     "type": "Open",
@@ -1242,7 +1224,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race67.png"
   },
   {
-    "id": 70,
+    "id": 69,
     "name": "Sumire Stakes",
     "nameJP": "すみれステークス",
     "type": "Open",
@@ -1260,7 +1242,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race68.png"
   },
   {
-    "id": 71,
+    "id": 70,
     "name": "Margaret Stakes",
     "nameJP": "マーガレットステークス",
     "type": "Open",
@@ -1278,7 +1260,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race69.png"
   },
   {
-    "id": 72,
+    "id": 71,
     "name": "Anemone Stakes",
     "nameJP": "アネモネステークス",
     "type": "Open",
@@ -1296,7 +1278,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race70.png"
   },
   {
-    "id": 73,
+    "id": 72,
     "name": "Shoryu Stakes",
     "nameJP": "昇竜ステークス",
     "type": "Open",
@@ -1314,7 +1296,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race71.png"
   },
   {
-    "id": 74,
+    "id": 73,
     "name": "Yayoi Sho",
     "nameJP": "弥生賞",
     "type": "GII",
@@ -1332,7 +1314,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race72.png"
   },
   {
-    "id": 75,
+    "id": 74,
     "name": "Fillies Review",
     "nameJP": "フィリーズレビュー",
     "type": "GII",
@@ -1350,7 +1332,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race73.png"
   },
   {
-    "id": 76,
+    "id": 75,
     "name": "Tulip Sho",
     "nameJP": "チューリップ賞",
     "type": "GII",
@@ -1368,7 +1350,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race74.png"
   },
   {
-    "id": 77,
+    "id": 76,
     "name": "Flower Cup",
     "nameJP": "フラワーカップ",
     "type": "GIII",
@@ -1386,7 +1368,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race75.png"
   },
   {
-    "id": 78,
+    "id": 77,
     "name": "Wakaba Stakes",
     "nameJP": "若葉ステークス",
     "type": "Open",
@@ -1404,7 +1386,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race76.png"
   },
   {
-    "id": 79,
+    "id": 78,
     "name": "Spring Stakes",
     "nameJP": "スプリングステークス",
     "type": "GII",
@@ -1422,7 +1404,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race77.png"
   },
   {
-    "id": 80,
+    "id": 79,
     "name": "Falcon Stakes",
     "nameJP": "ファルコンステークス",
     "type": "GIII",
@@ -1440,7 +1422,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race78.png"
   },
   {
-    "id": 81,
+    "id": 80,
     "name": "Mainichi Hai",
     "nameJP": "毎日杯",
     "type": "GIII",
@@ -1458,7 +1440,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race79.png"
   },
   {
-    "id": 82,
+    "id": 81,
     "name": "Fukuryu Stakes",
     "nameJP": "伏竜ステークス",
     "type": "Open",
@@ -1476,7 +1458,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race80.png"
   },
   {
-    "id": 83,
+    "id": 82,
     "name": "Wasurenagusa Sho",
     "nameJP": "忘れな草賞",
     "type": "Open",
@@ -1494,7 +1476,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race81.png"
   },
   {
-    "id": 84,
+    "id": 83,
     "name": "Oka Sho",
     "nameJP": "桜花賞",
     "type": "GI",
@@ -1512,7 +1494,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race82.png"
   },
   {
-    "id": 85,
+    "id": 84,
     "name": "Satsuki Sho",
     "nameJP": "皐月賞",
     "type": "GI",
@@ -1530,7 +1512,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race83.png"
   },
   {
-    "id": 86,
+    "id": 85,
     "name": "New Zealand Trophy",
     "nameJP": "ニュージーランドトロフィー",
     "type": "GII",
@@ -1548,7 +1530,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race84.png"
   },
   {
-    "id": 87,
+    "id": 86,
     "name": "Marine Cup",
     "nameJP": "マリーンカップ",
     "type": "GIII",
@@ -1566,7 +1548,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race393.png"
   },
   {
-    "id": 88,
+    "id": 87,
     "name": "Arlington Cup",
     "nameJP": "アーリントンカップ",
     "type": "GIII",
@@ -1584,7 +1566,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race85.png"
   },
   {
-    "id": 89,
+    "id": 88,
     "name": "Tachibana Stakes",
     "nameJP": "橘ステークス",
     "type": "Open",
@@ -1602,7 +1584,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race86.png"
   },
   {
-    "id": 90,
+    "id": 89,
     "name": "Tango Stakes",
     "nameJP": "端午ステークス",
     "type": "Open",
@@ -1620,7 +1602,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race87.png"
   },
   {
-    "id": 91,
+    "id": 90,
     "name": "Sweet Pea Stakes",
     "nameJP": "スイートピーステークス",
     "type": "Open",
@@ -1638,7 +1620,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race88.png"
   },
   {
-    "id": 92,
+    "id": 91,
     "name": "Flora Stakes",
     "nameJP": "フローラステークス",
     "type": "GII",
@@ -1656,7 +1638,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race89.png"
   },
   {
-    "id": 93,
+    "id": 92,
     "name": "Aoba Sho",
     "nameJP": "青葉賞",
     "type": "GII",
@@ -1674,7 +1656,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race90.png"
   },
   {
-    "id": 94,
+    "id": 93,
     "name": "Principal Stakes",
     "nameJP": "プリンシパルステークス",
     "type": "Open",
@@ -1692,7 +1674,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race91.png"
   },
   {
-    "id": 95,
+    "id": 94,
     "name": "Seiryu Stakes",
     "nameJP": "青竜ステークス",
     "type": "Open",
@@ -1710,7 +1692,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race92.png"
   },
   {
-    "id": 96,
+    "id": 95,
     "name": "NHK Mile Cup",
     "nameJP": "NHKマイルカップ",
     "type": "GI",
@@ -1728,7 +1710,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race93.png"
   },
   {
-    "id": 97,
+    "id": 96,
     "name": "Kyoto Shimbun Hai",
     "nameJP": "京都新聞杯",
     "type": "GII",
@@ -1746,7 +1728,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race94.png"
   },
   {
-    "id": 98,
+    "id": 97,
     "name": "Hosu Stakes",
     "nameJP": "鳳雛ステークス",
     "type": "Open",
@@ -1764,7 +1746,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race95.png"
   },
   {
-    "id": 99,
+    "id": 98,
     "name": "Shirayuri Stakes",
     "nameJP": "白百合ステークス",
     "type": "Open",
@@ -1782,7 +1764,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race96.png"
   },
   {
-    "id": 100,
+    "id": 99,
     "name": "Oaks",
     "nameJP": "オークス",
     "type": "GI",
@@ -1800,7 +1782,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race97.png"
   },
   {
-    "id": 101,
+    "id": 100,
     "name": "Japan Derby",
     "nameJP": "日本ダービー",
     "type": "GI",
@@ -1818,7 +1800,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race98.png"
   },
   {
-    "id": 102,
+    "id": 101,
     "name": "Aoi Stakes",
     "nameJP": "葵ステークス",
     "type": "GIII",
@@ -1836,7 +1818,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race99.png"
   },
   {
-    "id": 103,
+    "id": 102,
     "name": "Tempozan Stakes",
     "nameJP": "天保山ステークス",
     "type": "Open",
@@ -1854,7 +1836,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race100.png"
   },
   {
-    "id": 104,
+    "id": 103,
     "name": "Sleipnir Stakes",
     "nameJP": "スレイプニルステークス",
     "type": "Open",
@@ -1872,7 +1854,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race101.png"
   },
   {
-    "id": 105,
+    "id": 104,
     "name": "Yasuda Kinen",
     "nameJP": "安田記念",
     "type": "GI",
@@ -1890,7 +1872,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race102.png"
   },
   {
-    "id": 106,
+    "id": 105,
     "name": "Naruo Kinen",
     "nameJP": "鳴尾記念",
     "type": "GIII",
@@ -1908,7 +1890,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race103.png"
   },
   {
-    "id": 107,
+    "id": 106,
     "name": "Mermaid Stakes",
     "nameJP": "マーメイドステークス",
     "type": "GIII",
@@ -1926,7 +1908,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race104.png"
   },
   {
-    "id": 108,
+    "id": 107,
     "name": "Epsom Cup",
     "nameJP": "エプソムカップ",
     "type": "GIII",
@@ -1944,7 +1926,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race105.png"
   },
   {
-    "id": 109,
+    "id": 108,
     "name": "Unicorn Stakes",
     "nameJP": "ユニコーンステークス",
     "type": "GIII",
@@ -1962,7 +1944,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race106.png"
   },
   {
-    "id": 110,
+    "id": 109,
     "name": "Akhal-Teke Stakes",
     "nameJP": "アハルテケステークス",
     "type": "Open",
@@ -1980,7 +1962,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race107.png"
   },
   {
-    "id": 111,
+    "id": 110,
     "name": "Yonago Stakes",
     "nameJP": "米子ステークス",
     "type": "Open",
@@ -1998,7 +1980,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race108.png"
   },
   {
-    "id": 112,
+    "id": 111,
     "name": "Onuma Stakes",
     "nameJP": "大沼ステークス",
     "type": "Open",
@@ -2016,7 +1998,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race109.png"
   },
   {
-    "id": 113,
+    "id": 112,
     "name": "Paradise Stakes",
     "nameJP": "パラダイスステークス",
     "type": "Open",
@@ -2034,7 +2016,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race110.png"
   },
   {
-    "id": 114,
+    "id": 113,
     "name": "Sannomiya Stakes",
     "nameJP": "三宮ステークス",
     "type": "Open",
@@ -2052,7 +2034,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race111.png"
   },
   {
-    "id": 115,
+    "id": 114,
     "name": "Takarazuka Kinen",
     "nameJP": "宝塚記念",
     "type": "GI",
@@ -2070,7 +2052,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race112.png"
   },
   {
-    "id": 116,
+    "id": 115,
     "name": "Kanto Oaks",
     "nameJP": "関東オークス",
     "type": "GII",
@@ -2088,7 +2070,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race387.png"
   },
   {
-    "id": 117,
+    "id": 116,
     "name": "Sparking Lady Cup",
     "nameJP": "スパーキングレディーカップ",
     "type": "GIII",
@@ -2106,7 +2088,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race392.png"
   },
   {
-    "id": 118,
+    "id": 117,
     "name": "Hakodate Sprint Stakes",
     "nameJP": "函館スプリントステークス",
     "type": "GIII",
@@ -2124,7 +2106,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race113.png"
   },
   {
-    "id": 119,
+    "id": 118,
     "name": "CBC Sho",
     "nameJP": "CBC賞",
     "type": "GIII",
@@ -2142,7 +2124,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race114.png"
   },
   {
-    "id": 120,
+    "id": 119,
     "name": "Procyon Stakes",
     "nameJP": "プロキオンステークス",
     "type": "GIII",
@@ -2160,7 +2142,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race115.png"
   },
   {
-    "id": 121,
+    "id": 120,
     "name": "Tanabata Sho",
     "nameJP": "七夕賞",
     "type": "GIII",
@@ -2178,7 +2160,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race116.png"
   },
   {
-    "id": 122,
+    "id": 121,
     "name": "Hakodate Kinen",
     "nameJP": "函館記念",
     "type": "GIII",
@@ -2196,7 +2178,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race117.png"
   },
   {
-    "id": 123,
+    "id": 122,
     "name": "Radio Nikkei Sho",
     "nameJP": "ラジオNIKKEI賞",
     "type": "GIII",
@@ -2214,7 +2196,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race118.png"
   },
   {
-    "id": 124,
+    "id": 123,
     "name": "Tomoe Sho",
     "nameJP": "巴賞",
     "type": "Open",
@@ -2232,7 +2214,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race119.png"
   },
   {
-    "id": 125,
+    "id": 124,
     "name": "Marine Stakes",
     "nameJP": "マリーンステークス",
     "type": "Open",
@@ -2250,7 +2232,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race120.png"
   },
   {
-    "id": 126,
+    "id": 125,
     "name": "Meitetsu Hai",
     "nameJP": "名鉄杯",
     "type": "Open",
@@ -2268,7 +2250,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race121.png"
   },
   {
-    "id": 127,
+    "id": 126,
     "name": "Japan Dirt Derby",
     "nameJP": "ジャパンダートダービー",
     "type": "GI",
@@ -2286,7 +2268,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race122.png"
   },
   {
-    "id": 128,
+    "id": 127,
     "name": "Mercury Cup",
     "nameJP": "マーキュリーカップ",
     "type": "GIII",
@@ -2304,7 +2286,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race395.png"
   },
   {
-    "id": 129,
+    "id": 128,
     "name": "Chukyo Kinen",
     "nameJP": "中京記念",
     "type": "GIII",
@@ -2322,7 +2304,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race123.png"
   },
   {
-    "id": 130,
+    "id": 129,
     "name": "Ibis Summer Dash",
     "nameJP": "アイビスサマーダッシュ",
     "type": "GIII",
@@ -2340,7 +2322,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race124.png"
   },
   {
-    "id": 131,
+    "id": 130,
     "name": "Queen Stakes",
     "nameJP": "クイーンステークス",
     "type": "GIII",
@@ -2358,7 +2340,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race125.png"
   },
   {
-    "id": 132,
+    "id": 131,
     "name": "Fukushima Television Open",
     "nameJP": "福島テレビオープン",
     "type": "Open",
@@ -2376,7 +2358,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race126.png"
   },
   {
-    "id": 133,
+    "id": 132,
     "name": "Kokura Kinen",
     "nameJP": "小倉記念",
     "type": "GIII",
@@ -2394,7 +2376,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race127.png"
   },
   {
-    "id": 134,
+    "id": 133,
     "name": "Sekiya Kinen",
     "nameJP": "関屋記念",
     "type": "GIII",
@@ -2412,7 +2394,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race128.png"
   },
   {
-    "id": 135,
+    "id": 134,
     "name": "Elm Stakes",
     "nameJP": "エルムステークス",
     "type": "GIII",
@@ -2430,7 +2412,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race129.png"
   },
   {
-    "id": 136,
+    "id": 135,
     "name": "Leopard Stakes",
     "nameJP": "レパードステークス",
     "type": "GIII",
@@ -2448,7 +2430,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race130.png"
   },
   {
-    "id": 137,
+    "id": 136,
     "name": "Sapporo Nikkei Open",
     "nameJP": "札幌日経オープン",
     "type": "Open",
@@ -2466,7 +2448,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race131.png"
   },
   {
-    "id": 138,
+    "id": 137,
     "name": "UHB Sho",
     "nameJP": "UHB賞",
     "type": "Open",
@@ -2484,7 +2466,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race132.png"
   },
   {
-    "id": 139,
+    "id": 138,
     "name": "Aso Stakes",
     "nameJP": "阿蘇ステークス",
     "type": "Open",
@@ -2502,7 +2484,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race133.png"
   },
   {
-    "id": 140,
+    "id": 139,
     "name": "Kan'etsu Stakes",
     "nameJP": "関越ステークス",
     "type": "Open",
@@ -2520,7 +2502,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race134.png"
   },
   {
-    "id": 141,
+    "id": 140,
     "name": "Sapporo Kinen",
     "nameJP": "札幌記念",
     "type": "GII",
@@ -2538,7 +2520,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race135.png"
   },
   {
-    "id": 142,
+    "id": 141,
     "name": "Kitakyushu Kinen",
     "nameJP": "北九州記念",
     "type": "GIII",
@@ -2556,7 +2538,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race136.png"
   },
   {
-    "id": 143,
+    "id": 142,
     "name": "Keeneland Cup",
     "nameJP": "キーンランドカップ",
     "type": "GIII",
@@ -2572,6 +2554,24 @@ window.RACES = [
     "season": "summer",
     "image": "race_images/i_race137.png",
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race137.png"
+  },
+  {
+    "id": 143,
+    "name": "クラスターカップ",
+    "nameJP": "クラスターカップ",
+    "type": "",
+    "length": "",
+    "surface": "",
+    "racetrack": "",
+    "junior": false,
+    "classics": false,
+    "senior": false,
+    "month": "January",
+    "half": "1st",
+    "direction": "",
+    "season": "winter",
+    "image": "race_images/i_race396.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race396.png"
   },
   {
     "id": 144,
@@ -2845,6 +2845,24 @@ window.RACES = [
   },
   {
     "id": 159,
+    "name": "Sazanka Television Cup",
+    "nameJP": "さざんかテレビ杯",
+    "type": "GII",
+    "length": "1800",
+    "surface": "dirt",
+    "racetrack": "Funabashi",
+    "junior": false,
+    "classics": true,
+    "senior": false,
+    "month": "September",
+    "half": "2nd",
+    "direction": "left",
+    "season": "autumn",
+    "image": "race_images/i_race389.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race389.png"
+  },
+  {
+    "id": 160,
     "name": "Sirius Stakes",
     "nameJP": "シリウスステークス",
     "type": "GIII",
@@ -2862,7 +2880,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race153.png"
   },
   {
-    "id": 160,
+    "id": 161,
     "name": "Port Island Stakes",
     "nameJP": "ポートアイランドステークス",
     "type": "Open",
@@ -2880,7 +2898,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race154.png"
   },
   {
-    "id": 161,
+    "id": 162,
     "name": "Nagatsuki Stakes",
     "nameJP": "ながつきステークス",
     "type": "Open",
@@ -2898,7 +2916,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race155.png"
   },
   {
-    "id": 162,
+    "id": 163,
     "name": "Sprinters Stakes",
     "nameJP": "スプリンターズステークス",
     "type": "GI",
@@ -2916,7 +2934,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race156.png"
   },
   {
-    "id": 163,
+    "id": 164,
     "name": "Mile Championship Nanbu Hai",
     "nameJP": "マイルチャンピオンシップ南部杯",
     "type": "GI",
@@ -2934,7 +2952,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race383.png"
   },
   {
-    "id": 164,
+    "id": 165,
     "name": "Ladies' Prelude",
     "nameJP": "レディスプレリュード",
     "type": "GII",
@@ -2952,7 +2970,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race384.png"
   },
   {
-    "id": 165,
+    "id": 166,
     "name": "Tokyo Hai",
     "nameJP": "東京盃",
     "type": "GII",
@@ -2970,7 +2988,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race385.png"
   },
   {
-    "id": 166,
+    "id": 167,
     "name": "Mainichi Okan",
     "nameJP": "毎日王冠",
     "type": "GII",
@@ -2988,7 +3006,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race157.png"
   },
   {
-    "id": 167,
+    "id": 168,
     "name": "Kyoto University Shoten",
     "nameJP": "京都大賞典",
     "type": "GII",
@@ -3006,7 +3024,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race158.png"
   },
   {
-    "id": 168,
+    "id": 169,
     "name": "Fuchu Umamusume Stakes",
     "nameJP": "府中ウマ娘ステークス",
     "type": "GII",
@@ -3024,7 +3042,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race159.png"
   },
   {
-    "id": 169,
+    "id": 170,
     "name": "Opal Stakes",
     "nameJP": "オパールステークス",
     "type": "Open",
@@ -3042,7 +3060,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race160.png"
   },
   {
-    "id": 170,
+    "id": 171,
     "name": "Green Channel Cup",
     "nameJP": "グリーンチャンネルカップ",
     "type": "Open",
@@ -3060,7 +3078,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race161.png"
   },
   {
-    "id": 171,
+    "id": 172,
     "name": "October Stakes",
     "nameJP": "オクトーバーステークス",
     "type": "Open",
@@ -3078,7 +3096,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race162.png"
   },
   {
-    "id": 172,
+    "id": 173,
     "name": "Shinetsu Stakes",
     "nameJP": "信越ステークス",
     "type": "Open",
@@ -3096,7 +3114,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race163.png"
   },
   {
-    "id": 173,
+    "id": 174,
     "name": "Uzumasa Stakes",
     "nameJP": "太秦ステークス",
     "type": "Open",
@@ -3114,7 +3132,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race164.png"
   },
   {
-    "id": 174,
+    "id": 175,
     "name": "Swan Stakes",
     "nameJP": "スワンステークス",
     "type": "GII",
@@ -3132,7 +3150,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race165.png"
   },
   {
-    "id": 175,
+    "id": 176,
     "name": "Fuji Stakes",
     "nameJP": "富士ステークス",
     "type": "GII",
@@ -3150,7 +3168,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race166.png"
   },
   {
-    "id": 176,
+    "id": 177,
     "name": "Muromachi Stakes",
     "nameJP": "室町ステークス",
     "type": "Open",
@@ -3168,7 +3186,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race167.png"
   },
   {
-    "id": 177,
+    "id": 178,
     "name": "Brazil Cup",
     "nameJP": "ブラジルカップ",
     "type": "Open",
@@ -3186,7 +3204,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race168.png"
   },
   {
-    "id": 178,
+    "id": 179,
     "name": "Cassiopeia Stakes",
     "nameJP": "カシオペアステークス",
     "type": "Open",
@@ -3204,7 +3222,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race169.png"
   },
   {
-    "id": 179,
+    "id": 180,
     "name": "Lumiere Autumn Dash",
     "nameJP": "ルミエールオータムダッシュ",
     "type": "Open",
@@ -3222,7 +3240,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race170.png"
   },
   {
-    "id": 180,
+    "id": 181,
     "name": "Tenno Sho (Autumn)",
     "nameJP": "天皇賞（秋）",
     "type": "GI",
@@ -3240,7 +3258,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race171.png"
   },
   {
-    "id": 181,
+    "id": 182,
     "name": "Akika Sho",
     "nameJP": "秋華賞",
     "type": "GI",
@@ -3258,7 +3276,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race172.png"
   },
   {
-    "id": 182,
+    "id": 183,
     "name": "Kikka Sho",
     "nameJP": "菊花賞",
     "type": "GI",
@@ -3276,7 +3294,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race173.png"
   },
   {
-    "id": 183,
+    "id": 184,
     "name": "Argentina Republic Cup",
     "nameJP": "アルゼンチン共和国杯",
     "type": "GII",
@@ -3294,7 +3312,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race174.png"
   },
   {
-    "id": 184,
+    "id": 185,
     "name": "Miyako Stakes",
     "nameJP": "みやこステークス",
     "type": "GIII",
@@ -3312,7 +3330,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race175.png"
   },
   {
-    "id": 185,
+    "id": 186,
     "name": "Musashino Stakes",
     "nameJP": "武蔵野ステークス",
     "type": "GIII",
@@ -3330,7 +3348,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race176.png"
   },
   {
-    "id": 186,
+    "id": 187,
     "name": "Fukushima Kinen",
     "nameJP": "福島記念",
     "type": "GIII",
@@ -3348,7 +3366,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race177.png"
   },
   {
-    "id": 187,
+    "id": 188,
     "name": "Oro Cup",
     "nameJP": "オーロカップ",
     "type": "Open",
@@ -3366,7 +3384,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race178.png"
   },
   {
-    "id": 188,
+    "id": 189,
     "name": "Queen Elizabeth II Cup",
     "nameJP": "エリザベス女王杯",
     "type": "GI",
@@ -3384,7 +3402,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race179.png"
   },
   {
-    "id": 189,
+    "id": 190,
     "name": "JBC Ladies Classic",
     "nameJP": "JBCレディスクラシック",
     "type": "GI",
@@ -3402,7 +3420,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race180.png"
   },
   {
-    "id": 190,
+    "id": 191,
     "name": "JBC Sprint",
     "nameJP": "JBCスプリント",
     "type": "GI",
@@ -3420,7 +3438,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race181.png"
   },
   {
-    "id": 191,
+    "id": 192,
     "name": "JBC Classic",
     "nameJP": "JBCクラシック",
     "type": "GI",
@@ -3438,7 +3456,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race182.png"
   },
   {
-    "id": 192,
+    "id": 193,
     "name": "Keihan Cup",
     "nameJP": "京阪杯",
     "type": "GIII",
@@ -3456,7 +3474,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race183.png"
   },
   {
-    "id": 193,
+    "id": 194,
     "name": "Andromeda Stakes",
     "nameJP": "アンドロメダステークス",
     "type": "Open",
@@ -3474,7 +3492,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race184.png"
   },
   {
-    "id": 194,
+    "id": 195,
     "name": "Shimotsuki Stakes",
     "nameJP": "霜月ステークス",
     "type": "Open",
@@ -3492,7 +3510,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race185.png"
   },
   {
-    "id": 195,
+    "id": 196,
     "name": "Fukushima Minyu Cup",
     "nameJP": "福島民友カップ",
     "type": "Open",
@@ -3510,7 +3528,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race186.png"
   },
   {
-    "id": 196,
+    "id": 197,
     "name": "Capital Stakes",
     "nameJP": "キャピタルステークス",
     "type": "Open",
@@ -3528,7 +3546,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race187.png"
   },
   {
-    "id": 197,
+    "id": 198,
     "name": "Autumn Leaf Stakes",
     "nameJP": "オータムリーフステークス",
     "type": "Open",
@@ -3546,7 +3564,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race188.png"
   },
   {
-    "id": 198,
+    "id": 199,
     "name": "Mile Championship",
     "nameJP": "マイルチャンピオンシップ",
     "type": "GI",
@@ -3564,7 +3582,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race189.png"
   },
   {
-    "id": 199,
+    "id": 200,
     "name": "Japan Cup",
     "nameJP": "ジャパンカップ",
     "type": "GI",
@@ -3582,7 +3600,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race190.png"
   },
   {
-    "id": 200,
+    "id": 201,
     "name": "Stayers' Stakes",
     "nameJP": "ステイヤーズステークス",
     "type": "GII",
@@ -3600,7 +3618,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race191.png"
   },
   {
-    "id": 201,
+    "id": 202,
     "name": "Queen Sho",
     "nameJP": "クイーン賞",
     "type": "GIII",
@@ -3618,7 +3636,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race394.png"
   },
   {
-    "id": 202,
+    "id": 203,
     "name": "Challenge Cup",
     "nameJP": "チャレンジカップ",
     "type": "GIII",
@@ -3636,7 +3654,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race192.png"
   },
   {
-    "id": 203,
+    "id": 204,
     "name": "Chunichi Shimbun Hai",
     "nameJP": "中日新聞杯",
     "type": "GIII",
@@ -3654,7 +3672,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race193.png"
   },
   {
-    "id": 204,
+    "id": 205,
     "name": "Capella Stakes",
     "nameJP": "カペラステークス",
     "type": "GIII",
@@ -3672,7 +3690,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race194.png"
   },
   {
-    "id": 205,
+    "id": 206,
     "name": "Turquoise Stakes",
     "nameJP": "ターコイズステークス",
     "type": "GIII",
@@ -3690,7 +3708,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race195.png"
   },
   {
-    "id": 206,
+    "id": 207,
     "name": "Lapis Lazuli Stakes",
     "nameJP": "ラピスラズリステークス",
     "type": "Open",
@@ -3708,7 +3726,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race196.png"
   },
   {
-    "id": 207,
+    "id": 208,
     "name": "Shiwasu Stakes",
     "nameJP": "師走ステークス",
     "type": "Open",
@@ -3726,7 +3744,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race197.png"
   },
   {
-    "id": 208,
+    "id": 209,
     "name": "Rigel Stakes",
     "nameJP": "リゲルステークス",
     "type": "Open",
@@ -3744,7 +3762,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race198.png"
   },
   {
-    "id": 209,
+    "id": 210,
     "name": "Tanzanite Stakes",
     "nameJP": "タンザナイトステークス",
     "type": "Open",
@@ -3762,7 +3780,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race199.png"
   },
   {
-    "id": 210,
+    "id": 211,
     "name": "December Stakes",
     "nameJP": "ディセンバーステークス",
     "type": "Open",
@@ -3780,7 +3798,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race200.png"
   },
   {
-    "id": 211,
+    "id": 212,
     "name": "Champions Cup",
     "nameJP": "チャンピオンズカップ",
     "type": "GI",
@@ -3798,7 +3816,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race201.png"
   },
   {
-    "id": 212,
+    "id": 213,
     "name": "Hanshin Cup",
     "nameJP": "阪神カップ",
     "type": "GII",
@@ -3816,7 +3834,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race202.png"
   },
   {
-    "id": 213,
+    "id": 214,
     "name": "Galaxy Stakes",
     "nameJP": "ギャラクシーステークス",
     "type": "Open",
@@ -3834,7 +3852,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race203.png"
   },
   {
-    "id": 214,
+    "id": 215,
     "name": "Betelgeuse Stakes",
     "nameJP": "ベテルギウスステークス",
     "type": "Open",
@@ -3852,7 +3870,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race204.png"
   },
   {
-    "id": 215,
+    "id": 216,
     "name": "Arima Kinen",
     "nameJP": "有馬記念",
     "type": "GI",
@@ -3870,7 +3888,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race205.png"
   },
   {
-    "id": 216,
+    "id": 217,
     "name": "Tokyo Dai Stakes",
     "nameJP": "東京大賞典",
     "type": "GI",
@@ -3888,7 +3906,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race206.png"
   },
   {
-    "id": 217,
+    "id": 218,
     "name": "Nikkei New Year Cup",
     "nameJP": "日経新春杯",
     "type": "GII",
@@ -3906,7 +3924,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race207.png"
   },
   {
-    "id": 218,
+    "id": 219,
     "name": "TCK Queen's Cup",
     "nameJP": "TCK女王盃",
     "type": "GIII",
@@ -3924,7 +3942,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race390.png"
   },
   {
-    "id": 219,
+    "id": 220,
     "name": "Kyoto Kinen",
     "nameJP": "京都金杯",
     "type": "GIII",
@@ -3942,7 +3960,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race208.png"
   },
   {
-    "id": 220,
+    "id": 221,
     "name": "Nakayama Kinen",
     "nameJP": "中山金杯",
     "type": "GIII",
@@ -3960,7 +3978,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race209.png"
   },
   {
-    "id": 221,
+    "id": 222,
     "name": "Aichi Cup",
     "nameJP": "愛知杯",
     "type": "GIII",
@@ -3978,7 +3996,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race210.png"
   },
   {
-    "id": 222,
+    "id": 223,
     "name": "Man'yo Stakes",
     "nameJP": "万葉ステークス",
     "type": "Open",
@@ -3996,7 +4014,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race211.png"
   },
   {
-    "id": 223,
+    "id": 224,
     "name": "Yodo Stakes",
     "nameJP": "淀短距離ステークス",
     "type": "Open",
@@ -4014,7 +4032,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race212.png"
   },
   {
-    "id": 224,
+    "id": 225,
     "name": "Pollux Stakes",
     "nameJP": "ポルックスステークス",
     "type": "Open",
@@ -4032,7 +4050,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race213.png"
   },
   {
-    "id": 225,
+    "id": 226,
     "name": "January Stakes",
     "nameJP": "ジャニュアリーステークス",
     "type": "Open",
@@ -4050,7 +4068,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race214.png"
   },
   {
-    "id": 226,
+    "id": 227,
     "name": "New Year Stakes",
     "nameJP": "ニューイヤーステークス",
     "type": "Open",
@@ -4068,7 +4086,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race215.png"
   },
   {
-    "id": 227,
+    "id": 228,
     "name": "Carbuncle Stakes",
     "nameJP": "カーバンクルステークス",
     "type": "Open",
@@ -4086,7 +4104,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race216.png"
   },
   {
-    "id": 228,
+    "id": 229,
     "name": "Tokai Stakes",
     "nameJP": "東海ステークス",
     "type": "GII",
@@ -4104,7 +4122,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race217.png"
   },
   {
-    "id": 229,
+    "id": 230,
     "name": "American JCC",
     "nameJP": "アメリカJCC",
     "type": "GII",
@@ -4122,7 +4140,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race218.png"
   },
   {
-    "id": 230,
+    "id": 231,
     "name": "Silk Road Stakes",
     "nameJP": "シルクロードステークス",
     "type": "GIII",
@@ -4140,7 +4158,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race219.png"
   },
   {
-    "id": 231,
+    "id": 232,
     "name": "Negishi Stakes",
     "nameJP": "根岸ステークス",
     "type": "GIII",
@@ -4158,7 +4176,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race220.png"
   },
   {
-    "id": 232,
+    "id": 233,
     "name": "Subaru Stakes",
     "nameJP": "すばるステークス",
     "type": "Open",
@@ -4176,7 +4194,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race221.png"
   },
   {
-    "id": 233,
+    "id": 234,
     "name": "Shirafuji Stakes",
     "nameJP": "白富士ステークス",
     "type": "Open",
@@ -4194,7 +4212,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race222.png"
   },
   {
-    "id": 234,
+    "id": 235,
     "name": "Kawasaki Kinen",
     "nameJP": "川崎記念",
     "type": "GI",
@@ -4212,7 +4230,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race380.png"
   },
   {
-    "id": 235,
+    "id": 236,
     "name": "Kyoto Kinen",
     "nameJP": "京都記念",
     "type": "GII",
@@ -4230,7 +4248,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race223.png"
   },
   {
-    "id": 236,
+    "id": 237,
     "name": "Tokyo Shimbun Hai",
     "nameJP": "東京新聞杯",
     "type": "GIII",
@@ -4248,7 +4266,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race224.png"
   },
   {
-    "id": 237,
+    "id": 238,
     "name": "Yamato Stakes",
     "nameJP": "大和ステークス",
     "type": "Open",
@@ -4266,7 +4284,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race225.png"
   },
   {
-    "id": 238,
+    "id": 239,
     "name": "Rakuyo Stakes",
     "nameJP": "洛陽ステークス",
     "type": "Open",
@@ -4284,7 +4302,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race226.png"
   },
   {
-    "id": 239,
+    "id": 240,
     "name": "Aldebaran Stakes",
     "nameJP": "アルデバランステークス",
     "type": "Open",
@@ -4302,7 +4320,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race227.png"
   },
   {
-    "id": 240,
+    "id": 241,
     "name": "Valentine Stakes",
     "nameJP": "バレンタインステークス",
     "type": "Open",
@@ -4320,7 +4338,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race228.png"
   },
   {
-    "id": 241,
+    "id": 242,
     "name": "Nakayama Kinen",
     "nameJP": "中山記念",
     "type": "GII",
@@ -4338,7 +4356,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race229.png"
   },
   {
-    "id": 242,
+    "id": 243,
     "name": "Kyoto Umamusume Stakes",
     "nameJP": "京都ウマ娘ステークス",
     "type": "GIII",
@@ -4356,7 +4374,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race230.png"
   },
   {
-    "id": 243,
+    "id": 244,
     "name": "Diamond Stakes",
     "nameJP": "ダイヤモンドステークス",
     "type": "GIII",
@@ -4374,7 +4392,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race231.png"
   },
   {
-    "id": 244,
+    "id": 245,
     "name": "Ogura Dai Stakes",
     "nameJP": "小倉大賞典",
     "type": "GIII",
@@ -4392,7 +4410,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race232.png"
   },
   {
-    "id": 245,
+    "id": 246,
     "name": "Hankyu Hai",
     "nameJP": "阪急杯",
     "type": "GIII",
@@ -4410,7 +4428,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race233.png"
   },
   {
-    "id": 246,
+    "id": 247,
     "name": "Soubu Stakes",
     "nameJP": "総武ステークス",
     "type": "Open",
@@ -4428,7 +4446,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race234.png"
   },
   {
-    "id": 247,
+    "id": 248,
     "name": "Kitakyushu Stakes",
     "nameJP": "北九州短距離ステークス",
     "type": "Open",
@@ -4446,7 +4464,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race235.png"
   },
   {
-    "id": 248,
+    "id": 249,
     "name": "February Stakes",
     "nameJP": "フェブラリーステークス",
     "type": "GI",
@@ -4464,7 +4482,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race236.png"
   },
   {
-    "id": 249,
+    "id": 250,
     "name": "Kinshachi Sho",
     "nameJP": "金鯱賞",
     "type": "GII",
@@ -4482,7 +4500,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race237.png"
   },
   {
-    "id": 250,
+    "id": 251,
     "name": "Ocean Stakes",
     "nameJP": "オーシャンステークス",
     "type": "GIII",
@@ -4500,7 +4518,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race238.png"
   },
   {
-    "id": 251,
+    "id": 252,
     "name": "Nakayama Umamusume Stakes",
     "nameJP": "中山ウマ娘ステークス",
     "type": "GIII",
@@ -4518,7 +4536,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race239.png"
   },
   {
-    "id": 252,
+    "id": 253,
     "name": "Osaka Castle Stakes",
     "nameJP": "大阪城ステークス",
     "type": "Open",
@@ -4536,7 +4554,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race240.png"
   },
   {
-    "id": 253,
+    "id": 254,
     "name": "Polaris Stakes",
     "nameJP": "ポラリスステークス",
     "type": "Open",
@@ -4554,7 +4572,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race241.png"
   },
   {
-    "id": 254,
+    "id": 255,
     "name": "Incheon Stakes",
     "nameJP": "仁川ステークス",
     "type": "Open",
@@ -4572,7 +4590,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race242.png"
   },
   {
-    "id": 255,
+    "id": 256,
     "name": "Tohoku Stakes",
     "nameJP": "東風ステークス",
     "type": "Open",
@@ -4590,7 +4608,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race243.png"
   },
   {
-    "id": 256,
+    "id": 257,
     "name": "Empress Cup",
     "nameJP": "エンプレス杯",
     "type": "GII",
@@ -4608,7 +4626,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race386.png"
   },
   {
-    "id": 257,
+    "id": 258,
     "name": "Diolight Kinen",
     "nameJP": "ダイオライト記念",
     "type": "GII",
@@ -4626,7 +4644,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race388.png"
   },
   {
-    "id": 258,
+    "id": 259,
     "name": "Hanshin Dai Shoten",
     "nameJP": "阪神大賞典",
     "type": "GII",
@@ -4644,7 +4662,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race244.png"
   },
   {
-    "id": 259,
+    "id": 260,
     "name": "Nikkei Sho",
     "nameJP": "日経賞",
     "type": "GII",
@@ -4662,7 +4680,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race245.png"
   },
   {
-    "id": 260,
+    "id": 261,
     "name": "March Stakes",
     "nameJP": "マーチステークス",
     "type": "GIII",
@@ -4680,7 +4698,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race246.png"
   },
   {
-    "id": 261,
+    "id": 262,
     "name": "Chiba Stakes",
     "nameJP": "千葉ステークス",
     "type": "Open",
@@ -4698,7 +4716,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race247.png"
   },
   {
-    "id": 262,
+    "id": 263,
     "name": "Rokko Stakes",
     "nameJP": "六甲ステークス",
     "type": "Open",
@@ -4716,7 +4734,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race248.png"
   },
   {
-    "id": 263,
+    "id": 264,
     "name": "Takamatsunomiya Kinen",
     "nameJP": "高松宮記念",
     "type": "GI",
@@ -4734,7 +4752,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race249.png"
   },
   {
-    "id": 264,
+    "id": 265,
     "name": "Osaka Hai",
     "nameJP": "大阪杯",
     "type": "GI",
@@ -4752,7 +4770,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race250.png"
   },
   {
-    "id": 265,
+    "id": 266,
     "name": "Hanshin Umamusume Stakes",
     "nameJP": "阪神ウマ娘ステークス",
     "type": "GII",
@@ -4770,7 +4788,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race251.png"
   },
   {
-    "id": 266,
+    "id": 267,
+    "name": "Marine Cup",
+    "nameJP": "マリーンカップ",
+    "type": "GIII",
+    "length": "1600",
+    "surface": "dirt",
+    "racetrack": "Funabashi",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "April",
+    "half": "1st",
+    "direction": "left",
+    "season": "spring",
+    "image": "race_images/i_race393.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race393.png"
+  },
+  {
+    "id": 268,
     "name": "Lord Derby Challenge Trophy",
     "nameJP": "ダービー卿チャレンジトロフィー",
     "type": "GIII",
@@ -4788,7 +4824,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race252.png"
   },
   {
-    "id": 267,
+    "id": 269,
     "name": "Antares Stakes",
     "nameJP": "アンタレスステークス",
     "type": "GIII",
@@ -4806,7 +4842,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race253.png"
   },
   {
-    "id": 268,
+    "id": 270,
     "name": "Coral Stakes",
     "nameJP": "コーラルステークス",
     "type": "Open",
@@ -4824,7 +4860,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race254.png"
   },
   {
-    "id": 269,
+    "id": 271,
     "name": "Keiyo Stakes",
     "nameJP": "京葉ステークス",
     "type": "Open",
@@ -4842,7 +4878,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race255.png"
   },
   {
-    "id": 270,
+    "id": 272,
     "name": "Shunrai Stakes",
     "nameJP": "春雷ステークス",
     "type": "Open",
@@ -4860,7 +4896,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race256.png"
   },
   {
-    "id": 271,
+    "id": 273,
     "name": "Fukushima Minpo Cup",
     "nameJP": "福島民報杯",
     "type": "Open",
@@ -4878,7 +4914,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race257.png"
   },
   {
-    "id": 272,
+    "id": 274,
     "name": "Azuma Kofuji Stakes",
     "nameJP": "吾妻小富士ステークス",
     "type": "Open",
@@ -4896,7 +4932,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race258.png"
   },
   {
-    "id": 273,
+    "id": 275,
     "name": "Miler Cup",
     "nameJP": "マイラーズカップ",
     "type": "GII",
@@ -4914,7 +4950,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race259.png"
   },
   {
-    "id": 274,
+    "id": 276,
     "name": "Tokyo Sprint",
     "nameJP": "東京スプリント",
     "type": "GIII",
@@ -4932,7 +4968,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race391.png"
   },
   {
-    "id": 275,
+    "id": 277,
     "name": "Fukushima Umamusume Stakes",
     "nameJP": "福島ウマ娘ステークス",
     "type": "GIII",
@@ -4950,7 +4986,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race260.png"
   },
   {
-    "id": 276,
+    "id": 278,
     "name": "Oasis Stakes",
     "nameJP": "オアシスステークス",
     "type": "Open",
@@ -4968,7 +5004,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race261.png"
   },
   {
-    "id": 277,
+    "id": 279,
     "name": "Tennozan Stakes",
     "nameJP": "天王山ステークス",
     "type": "Open",
@@ -4986,7 +5022,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race262.png"
   },
   {
-    "id": 278,
+    "id": 280,
     "name": "Tenno Sho (Spring)",
     "nameJP": "天皇賞（春）",
     "type": "GI",
@@ -5004,7 +5040,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race263.png"
   },
   {
-    "id": 279,
+    "id": 281,
     "name": "Kashiwa Kinen",
     "nameJP": "かしわ記念",
     "type": "GI",
@@ -5022,7 +5058,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race382.png"
   },
   {
-    "id": 280,
+    "id": 282,
     "name": "Keio Hai Spring Cup",
     "nameJP": "京王杯スプリングカップ",
     "type": "GII",
@@ -5040,7 +5076,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race264.png"
   },
   {
-    "id": 281,
+    "id": 283,
     "name": "Niigata Dai Shoten",
     "nameJP": "新潟大賞典",
     "type": "GIII",
@@ -5058,7 +5094,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race265.png"
   },
   {
-    "id": 282,
+    "id": 284,
     "name": "Tanigawadake Stakes",
     "nameJP": "谷川岳ステークス",
     "type": "Open",
@@ -5076,7 +5112,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race266.png"
   },
   {
-    "id": 283,
+    "id": 285,
     "name": "Metropolitan Stakes",
     "nameJP": "メトロポリタンステークス",
     "type": "Open",
@@ -5094,7 +5130,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race267.png"
   },
   {
-    "id": 284,
+    "id": 286,
     "name": "Kurama Stakes",
     "nameJP": "鞍馬ステークス",
     "type": "Open",
@@ -5112,7 +5148,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race268.png"
   },
   {
-    "id": 285,
+    "id": 287,
     "name": "Brilliant Stakes",
     "nameJP": "ブリリアントステークス",
     "type": "Open",
@@ -5130,7 +5166,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race269.png"
   },
   {
-    "id": 286,
+    "id": 288,
     "name": "Miyakooji Stakes",
     "nameJP": "都大路ステークス",
     "type": "Open",
@@ -5148,7 +5184,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race270.png"
   },
   {
-    "id": 287,
+    "id": 289,
     "name": "Ritto Stakes",
     "nameJP": "栗東ステークス",
     "type": "Open",
@@ -5166,7 +5202,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race271.png"
   },
   {
-    "id": 288,
+    "id": 290,
     "name": "Victoria Mile",
     "nameJP": "ヴィクトリアマイル",
     "type": "GI",
@@ -5184,7 +5220,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race272.png"
   },
   {
-    "id": 289,
+    "id": 291,
     "name": "Meguro Kinen",
     "nameJP": "目黒記念",
     "type": "GII",
@@ -5202,7 +5238,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race273.png"
   },
   {
-    "id": 290,
+    "id": 292,
     "name": "Heian Stakes",
     "nameJP": "平安ステークス",
     "type": "GIII",
@@ -5220,7 +5256,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race274.png"
   },
   {
-    "id": 291,
+    "id": 293,
     "name": "Mei Stakes",
     "nameJP": "メイステークス",
     "type": "Open",
@@ -5238,7 +5274,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race275.png"
   },
   {
-    "id": 292,
+    "id": 294,
     "name": "Idaten Stakes",
     "nameJP": "韋駄天ステークス",
     "type": "Open",
@@ -5256,7 +5292,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race276.png"
   },
   {
-    "id": 293,
+    "id": 295,
     "name": "Keyaki Stakes",
     "nameJP": "欅ステークス",
     "type": "Open",
@@ -5274,7 +5310,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race277.png"
   },
   {
-    "id": 294,
+    "id": 296,
     "name": "Azuchi Castle Stakes",
     "nameJP": "安土城ステークス",
     "type": "Open",
@@ -5292,7 +5328,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race278.png"
   },
   {
-    "id": 295,
+    "id": 297,
     "name": "Tempozan Stakes",
     "nameJP": "天保山ステークス",
     "type": "Open",
@@ -5310,7 +5346,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race279.png"
   },
   {
-    "id": 296,
+    "id": 298,
     "name": "Sleipnir Stakes",
     "nameJP": "スレイプニルステークス",
     "type": "Open",
@@ -5328,7 +5364,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race280.png"
   },
   {
-    "id": 297,
+    "id": 299,
     "name": "Yasuda Kinen",
     "nameJP": "安田記念",
     "type": "GI",
@@ -5346,7 +5382,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race281.png"
   },
   {
-    "id": 298,
+    "id": 300,
     "name": "Naruo Kinen",
     "nameJP": "鳴尾記念",
     "type": "GIII",
@@ -5364,7 +5400,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race282.png"
   },
   {
-    "id": 299,
+    "id": 301,
     "name": "Mermaid Stakes",
     "nameJP": "マーメイドステークス",
     "type": "GIII",
@@ -5382,7 +5418,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race283.png"
   },
   {
-    "id": 300,
+    "id": 302,
     "name": "Epsom Cup",
     "nameJP": "エプソムカップ",
     "type": "GIII",
@@ -5400,7 +5436,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race284.png"
   },
   {
-    "id": 301,
+    "id": 303,
     "name": "Teioh Sho",
     "nameJP": "帝王賞",
     "type": "GI",
@@ -5418,7 +5454,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race285.png"
   },
   {
-    "id": 302,
+    "id": 304,
     "name": "Akhal-Teke Stakes",
     "nameJP": "アハルテケステークス",
     "type": "Open",
@@ -5436,7 +5472,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race286.png"
   },
   {
-    "id": 303,
+    "id": 305,
     "name": "Yonago Stakes",
     "nameJP": "米子ステークス",
     "type": "Open",
@@ -5454,7 +5490,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race287.png"
   },
   {
-    "id": 304,
+    "id": 306,
     "name": "Onuma Stakes",
     "nameJP": "大沼ステークス",
     "type": "Open",
@@ -5472,7 +5508,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race288.png"
   },
   {
-    "id": 305,
+    "id": 307,
     "name": "Paradise Stakes",
     "nameJP": "パラダイスステークス",
     "type": "Open",
@@ -5490,7 +5526,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race289.png"
   },
   {
-    "id": 306,
+    "id": 308,
     "name": "Sannomiya Stakes",
     "nameJP": "三宮ステークス",
     "type": "Open",
@@ -5508,7 +5544,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race290.png"
   },
   {
-    "id": 307,
+    "id": 309,
     "name": "Takarazuka Kinen",
     "nameJP": "宝塚記念",
     "type": "GI",
@@ -5526,7 +5562,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race291.png"
   },
   {
-    "id": 308,
+    "id": 310,
     "name": "Hakodate Sprint Stakes",
     "nameJP": "函館スプリントステークス",
     "type": "GIII",
@@ -5544,7 +5580,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race292.png"
   },
   {
-    "id": 309,
+    "id": 311,
+    "name": "Sparking Lady Cup",
+    "nameJP": "スパーキングレディーカップ",
+    "type": "GIII",
+    "length": "1600",
+    "surface": "dirt",
+    "racetrack": "Kawasaki",
+    "junior": false,
+    "classics": true,
+    "senior": false,
+    "month": "July",
+    "half": "1st",
+    "direction": "left",
+    "season": "summer",
+    "image": "race_images/i_race392.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race392.png"
+  },
+  {
+    "id": 312,
     "name": "CBC Sho",
     "nameJP": "CBC賞",
     "type": "GIII",
@@ -5562,7 +5616,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race293.png"
   },
   {
-    "id": 310,
+    "id": 313,
     "name": "Procyon Stakes",
     "nameJP": "プロキオンステークス",
     "type": "GIII",
@@ -5580,7 +5634,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race294.png"
   },
   {
-    "id": 311,
+    "id": 314,
     "name": "Tanabata Sho",
     "nameJP": "七夕賞",
     "type": "GIII",
@@ -5598,7 +5652,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race295.png"
   },
   {
-    "id": 312,
+    "id": 315,
     "name": "Hakodate Kinen",
     "nameJP": "函館記念",
     "type": "GIII",
@@ -5616,7 +5670,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race296.png"
   },
   {
-    "id": 313,
+    "id": 316,
     "name": "Tomoe Sho",
     "nameJP": "巴賞",
     "type": "Open",
@@ -5634,7 +5688,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race297.png"
   },
   {
-    "id": 314,
+    "id": 317,
     "name": "Marine Stakes",
     "nameJP": "マリーンステークス",
     "type": "Open",
@@ -5652,7 +5706,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race298.png"
   },
   {
-    "id": 315,
+    "id": 318,
     "name": "Meitetsu Hai",
     "nameJP": "名鉄杯",
     "type": "Open",
@@ -5670,7 +5724,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race299.png"
   },
   {
-    "id": 316,
+    "id": 319,
+    "name": "Mercury Cup",
+    "nameJP": "マーキュリーカップ",
+    "type": "GIII",
+    "length": "2000",
+    "surface": "dirt",
+    "racetrack": "Morioka",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "July",
+    "half": "2nd",
+    "direction": "left",
+    "season": "summer",
+    "image": "race_images/i_race395.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race395.png"
+  },
+  {
+    "id": 320,
     "name": "Chukyo Kinen",
     "nameJP": "中京記念",
     "type": "GIII",
@@ -5688,7 +5760,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race300.png"
   },
   {
-    "id": 317,
+    "id": 321,
     "name": "Ibis Summer Dash",
     "nameJP": "アイビスサマーダッシュ",
     "type": "GIII",
@@ -5706,7 +5778,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race301.png"
   },
   {
-    "id": 318,
+    "id": 322,
     "name": "Queen Stakes",
     "nameJP": "クイーンステークス",
     "type": "GIII",
@@ -5724,7 +5796,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race302.png"
   },
   {
-    "id": 319,
+    "id": 323,
     "name": "Fukushima Television Open",
     "nameJP": "福島テレビオープン",
     "type": "Open",
@@ -5742,7 +5814,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race303.png"
   },
   {
-    "id": 320,
+    "id": 324,
     "name": "Kokura Kinen",
     "nameJP": "小倉記念",
     "type": "GIII",
@@ -5760,7 +5832,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race304.png"
   },
   {
-    "id": 321,
+    "id": 325,
     "name": "Sekiya Kinen",
     "nameJP": "関屋記念",
     "type": "GIII",
@@ -5778,7 +5850,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race305.png"
   },
   {
-    "id": 322,
+    "id": 326,
     "name": "Elm Stakes",
     "nameJP": "エルムステークス",
     "type": "GIII",
@@ -5796,7 +5868,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race306.png"
   },
   {
-    "id": 323,
+    "id": 327,
     "name": "Sapporo Nikkei Open",
     "nameJP": "札幌日経オープン",
     "type": "Open",
@@ -5814,7 +5886,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race307.png"
   },
   {
-    "id": 324,
+    "id": 328,
     "name": "UHB Sho",
     "nameJP": "UHB賞",
     "type": "Open",
@@ -5832,7 +5904,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race308.png"
   },
   {
-    "id": 325,
+    "id": 329,
     "name": "Aso Stakes",
     "nameJP": "阿蘇ステークス",
     "type": "Open",
@@ -5850,7 +5922,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race309.png"
   },
   {
-    "id": 326,
+    "id": 330,
     "name": "Kan'etsu Stakes",
     "nameJP": "関越ステークス",
     "type": "Open",
@@ -5868,7 +5940,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race310.png"
   },
   {
-    "id": 327,
+    "id": 331,
     "name": "Sapporo Kinen",
     "nameJP": "札幌記念",
     "type": "GII",
@@ -5886,7 +5958,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race311.png"
   },
   {
-    "id": 328,
+    "id": 332,
     "name": "Kitakyushu Kinen",
     "nameJP": "北九州記念",
     "type": "GIII",
@@ -5904,7 +5976,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race312.png"
   },
   {
-    "id": 329,
+    "id": 333,
     "name": "Keeneland Cup",
     "nameJP": "キーンランドカップ",
     "type": "GIII",
@@ -5922,7 +5994,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race313.png"
   },
   {
-    "id": 330,
+    "id": 334,
     "name": "Cluster Cup",
     "nameJP": "クラスターカップ",
     "type": "GIII",
@@ -5940,7 +6012,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race396.png"
   },
   {
-    "id": 331,
+    "id": 335,
     "name": "NST Sho",
     "nameJP": "NST賞",
     "type": "Open",
@@ -5958,7 +6030,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race314.png"
   },
   {
-    "id": 332,
+    "id": 336,
     "name": "BSN Sho",
     "nameJP": "BSN賞",
     "type": "Open",
@@ -5976,7 +6048,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race315.png"
   },
   {
-    "id": 333,
+    "id": 337,
     "name": "Kokura Nikkei Open",
     "nameJP": "小倉日経オープン",
     "type": "Open",
@@ -5994,7 +6066,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race316.png"
   },
   {
-    "id": 334,
+    "id": 338,
     "name": "Toki Stakes",
     "nameJP": "朱鷺ステークス",
     "type": "Open",
@@ -6012,7 +6084,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race317.png"
   },
   {
-    "id": 335,
+    "id": 339,
     "name": "Centaur Stakes",
     "nameJP": "セントウルステークス",
     "type": "GII",
@@ -6030,7 +6102,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race318.png"
   },
   {
-    "id": 336,
+    "id": 340,
     "name": "Niigata Kinen",
     "nameJP": "新潟記念",
     "type": "GIII",
@@ -6048,7 +6120,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race319.png"
   },
   {
-    "id": 337,
+    "id": 341,
     "name": "Keisei Hai Autumn Handicap",
     "nameJP": "京成杯オータムハンデキャップ",
     "type": "GIII",
@@ -6066,7 +6138,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race320.png"
   },
   {
-    "id": 338,
+    "id": 342,
     "name": "Tancho Stakes",
     "nameJP": "丹頂ステークス",
     "type": "Open",
@@ -6084,7 +6156,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race321.png"
   },
   {
-    "id": 339,
+    "id": 343,
     "name": "Enif Stakes",
     "nameJP": "エニフステークス",
     "type": "Open",
@@ -6102,7 +6174,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race322.png"
   },
   {
-    "id": 340,
+    "id": 344,
     "name": "Radio Nippon Sho",
     "nameJP": "ラジオ日本賞",
     "type": "Open",
@@ -6120,7 +6192,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race323.png"
   },
   {
-    "id": 341,
+    "id": 345,
+    "name": "Sazanka Television Cup",
+    "nameJP": "さざんかテレビ杯",
+    "type": "GII",
+    "length": "1800",
+    "surface": "dirt",
+    "racetrack": "Funabashi",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "September",
+    "half": "2nd",
+    "direction": "left",
+    "season": "autumn",
+    "image": "race_images/i_race389.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race389.png"
+  },
+  {
+    "id": 346,
     "name": "All Comers",
     "nameJP": "オールカマー",
     "type": "GII",
@@ -6138,7 +6228,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race324.png"
   },
   {
-    "id": 342,
+    "id": 347,
     "name": "Sirius Stakes",
     "nameJP": "シリウスステークス",
     "type": "GIII",
@@ -6156,7 +6246,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race325.png"
   },
   {
-    "id": 343,
+    "id": 348,
     "name": "Port Island Stakes",
     "nameJP": "ポートアイランドステークス",
     "type": "Open",
@@ -6174,7 +6264,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race326.png"
   },
   {
-    "id": 344,
+    "id": 349,
     "name": "Nagatsuki Stakes",
     "nameJP": "ながつきステークス",
     "type": "Open",
@@ -6192,7 +6282,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race327.png"
   },
   {
-    "id": 345,
+    "id": 350,
     "name": "Sprinters Stakes",
     "nameJP": "スプリンターズS",
     "type": "GI",
@@ -6210,7 +6300,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race328.png"
   },
   {
-    "id": 346,
+    "id": 351,
     "name": "Mainichi Okan",
     "nameJP": "毎日王冠",
     "type": "GII",
@@ -6228,7 +6318,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race329.png"
   },
   {
-    "id": 347,
+    "id": 352,
     "name": "Kyoto University Shoten",
     "nameJP": "京都大賞典",
     "type": "GII",
@@ -6246,7 +6336,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race330.png"
   },
   {
-    "id": 348,
+    "id": 353,
     "name": "Fuchu Umamusume Stakes",
     "nameJP": "府中ウマ娘ステークス",
     "type": "GII",
@@ -6264,7 +6354,43 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race331.png"
   },
   {
-    "id": 349,
+    "id": 354,
+    "name": "Ladies' Prelude",
+    "nameJP": "レディスプレリュード",
+    "type": "GII",
+    "length": "1800",
+    "surface": "dirt",
+    "racetrack": "Ooi",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "October",
+    "half": "1st",
+    "direction": "right",
+    "season": "autumn",
+    "image": "race_images/i_race384.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race384.png"
+  },
+  {
+    "id": 355,
+    "name": "Tokyo Hai",
+    "nameJP": "東京盃",
+    "type": "GII",
+    "length": "1200m",
+    "surface": "dirt",
+    "racetrack": "Ooi",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "October",
+    "half": "1st",
+    "direction": "right",
+    "season": "autumn",
+    "image": "race_images/i_race385.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race385.png"
+  },
+  {
+    "id": 356,
     "name": "Opal Stakes",
     "nameJP": "オパールステークス",
     "type": "Open",
@@ -6282,7 +6408,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race332.png"
   },
   {
-    "id": 350,
+    "id": 357,
     "name": "Green Channel Cup",
     "nameJP": "グリーンチャンネルカップ",
     "type": "Open",
@@ -6300,7 +6426,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race333.png"
   },
   {
-    "id": 351,
+    "id": 358,
     "name": "October Stakes",
     "nameJP": "オクトーバーステークス",
     "type": "Open",
@@ -6318,7 +6444,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race334.png"
   },
   {
-    "id": 352,
+    "id": 359,
     "name": "Shinetsu Stakes",
     "nameJP": "信越ステークス",
     "type": "Open",
@@ -6336,7 +6462,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race335.png"
   },
   {
-    "id": 353,
+    "id": 360,
     "name": "Uzumasa Stakes",
     "nameJP": "太秦ステークス",
     "type": "Open",
@@ -6354,7 +6480,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race336.png"
   },
   {
-    "id": 354,
+    "id": 361,
+    "name": "Mile Championship Nanbu Hai",
+    "nameJP": "マイルチャンピオンシップ南部杯",
+    "type": "GI",
+    "length": "1600",
+    "surface": "dirt",
+    "racetrack": "Morioka",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "October",
+    "half": "1st",
+    "direction": "left",
+    "season": "autumn",
+    "image": "race_images/i_race383.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race383.png"
+  },
+  {
+    "id": 362,
     "name": "Swan Stakes",
     "nameJP": "スワンステークス",
     "type": "GII",
@@ -6372,7 +6516,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race337.png"
   },
   {
-    "id": 355,
+    "id": 363,
     "name": "Fuji Stakes",
     "nameJP": "富士ステークス",
     "type": "GII",
@@ -6390,7 +6534,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race338.png"
   },
   {
-    "id": 356,
+    "id": 364,
     "name": "Muromachi Stakes",
     "nameJP": "室町ステークス",
     "type": "Open",
@@ -6408,7 +6552,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race339.png"
   },
   {
-    "id": 357,
+    "id": 365,
     "name": "Brazil Cup",
     "nameJP": "ブラジルカップ",
     "type": "Open",
@@ -6426,7 +6570,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race340.png"
   },
   {
-    "id": 358,
+    "id": 366,
     "name": "Cassiopeia Stakes",
     "nameJP": "カシオペアステークス",
     "type": "Open",
@@ -6444,7 +6588,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race341.png"
   },
   {
-    "id": 359,
+    "id": 367,
     "name": "Lumiere Autumn Dash",
     "nameJP": "ルミエールオータムダッシュ",
     "type": "Open",
@@ -6462,7 +6606,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race342.png"
   },
   {
-    "id": 360,
+    "id": 368,
     "name": "Tenno Sho (Autumn)",
     "nameJP": "天皇賞（秋）",
     "type": "GI",
@@ -6480,7 +6624,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race343.png"
   },
   {
-    "id": 361,
+    "id": 369,
     "name": "Argentina Republic Cup",
     "nameJP": "アルゼンチン共和国杯",
     "type": "GII",
@@ -6498,7 +6642,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race344.png"
   },
   {
-    "id": 362,
+    "id": 370,
     "name": "Miyako Stakes",
     "nameJP": "みやこステークス",
     "type": "GIII",
@@ -6516,7 +6660,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race345.png"
   },
   {
-    "id": 363,
+    "id": 371,
     "name": "Musashino Stakes",
     "nameJP": "武蔵野ステークス",
     "type": "GIII",
@@ -6534,7 +6678,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race346.png"
   },
   {
-    "id": 364,
+    "id": 372,
     "name": "Fukushima Kinen",
     "nameJP": "福島記念",
     "type": "GIII",
@@ -6552,7 +6696,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race347.png"
   },
   {
-    "id": 365,
+    "id": 373,
     "name": "Oro Cup",
     "nameJP": "オーロカップ",
     "type": "Open",
@@ -6570,7 +6714,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race348.png"
   },
   {
-    "id": 366,
+    "id": 374,
     "name": "Queen Elizabeth II Cup",
     "nameJP": "エリザベス女王杯",
     "type": "GI",
@@ -6588,7 +6732,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race349.png"
   },
   {
-    "id": 367,
+    "id": 375,
     "name": "JBC Ladies Classic",
     "nameJP": "JBCレディスクラシック",
     "type": "GI",
@@ -6606,7 +6750,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race350.png"
   },
   {
-    "id": 368,
+    "id": 376,
     "name": "JBC Sprint",
     "nameJP": "JBCスプリント",
     "type": "GI",
@@ -6624,7 +6768,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race351.png"
   },
   {
-    "id": 369,
+    "id": 377,
     "name": "JBC Classic",
     "nameJP": "JBCクラシック",
     "type": "GI",
@@ -6642,7 +6786,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race352.png"
   },
   {
-    "id": 370,
+    "id": 378,
     "name": "Keihan Cup",
     "nameJP": "京阪杯",
     "type": "GIII",
@@ -6660,7 +6804,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race353.png"
   },
   {
-    "id": 371,
+    "id": 379,
     "name": "Andromeda Stakes",
     "nameJP": "アンドロメダステークス",
     "type": "Open",
@@ -6678,7 +6822,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race354.png"
   },
   {
-    "id": 372,
+    "id": 380,
     "name": "Shimotsuki Stakes",
     "nameJP": "霜月ステークス",
     "type": "Open",
@@ -6696,7 +6840,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race355.png"
   },
   {
-    "id": 373,
+    "id": 381,
     "name": "Fukushima Minyu Cup",
     "nameJP": "福島民友カップ",
     "type": "Open",
@@ -6714,7 +6858,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race356.png"
   },
   {
-    "id": 374,
+    "id": 382,
     "name": "Capital Stakes",
     "nameJP": "キャピタルステークス",
     "type": "Open",
@@ -6732,7 +6876,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race357.png"
   },
   {
-    "id": 375,
+    "id": 383,
     "name": "Autumn Leaf Stakes",
     "nameJP": "オータムリーフステークス",
     "type": "Open",
@@ -6750,7 +6894,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race358.png"
   },
   {
-    "id": 376,
+    "id": 384,
     "name": "Mile Championship",
     "nameJP": "マイルCS",
     "type": "GI",
@@ -6768,7 +6912,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race359.png"
   },
   {
-    "id": 377,
+    "id": 385,
     "name": "Japan Cup",
     "nameJP": "ジャパンC",
     "type": "GI",
@@ -6786,7 +6930,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race360.png"
   },
   {
-    "id": 378,
+    "id": 386,
     "name": "Stayers' Stakes",
     "nameJP": "ステイヤーズステークス",
     "type": "GII",
@@ -6804,7 +6948,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race361.png"
   },
   {
-    "id": 379,
+    "id": 387,
     "name": "Challenge Cup",
     "nameJP": "チャレンジカップ",
     "type": "GIII",
@@ -6822,7 +6966,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race362.png"
   },
   {
-    "id": 380,
+    "id": 388,
     "name": "Chunichi Shimbun Hai",
     "nameJP": "中日新聞杯",
     "type": "GIII",
@@ -6840,7 +6984,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race363.png"
   },
   {
-    "id": 381,
+    "id": 389,
     "name": "Capella Stakes",
     "nameJP": "カペラステークス",
     "type": "GIII",
@@ -6858,7 +7002,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race364.png"
   },
   {
-    "id": 382,
+    "id": 390,
     "name": "Turquoise Stakes",
     "nameJP": "ターコイズステークス",
     "type": "GIII",
@@ -6876,7 +7020,25 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race365.png"
   },
   {
-    "id": 383,
+    "id": 391,
+    "name": "Queen Sho",
+    "nameJP": "クイーン賞",
+    "type": "GIII",
+    "length": "1800m",
+    "surface": "dirt",
+    "racetrack": "Funabashi",
+    "junior": false,
+    "classics": false,
+    "senior": true,
+    "month": "December",
+    "half": "1st",
+    "direction": "left",
+    "season": "winter",
+    "image": "race_images/i_race394.png",
+    "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race394.png"
+  },
+  {
+    "id": 392,
     "name": "Lapis Lazuli Stakes",
     "nameJP": "ラピスラズリステークス",
     "type": "Open",
@@ -6894,7 +7056,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race366.png"
   },
   {
-    "id": 384,
+    "id": 393,
     "name": "Shiwasu Stakes",
     "nameJP": "師走ステークス",
     "type": "Open",
@@ -6912,7 +7074,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race367.png"
   },
   {
-    "id": 385,
+    "id": 394,
     "name": "Rigel Stakes",
     "nameJP": "リゲルステークス",
     "type": "Open",
@@ -6930,7 +7092,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race368.png"
   },
   {
-    "id": 386,
+    "id": 395,
     "name": "Tanzanite Stakes",
     "nameJP": "タンザナイトステークス",
     "type": "Open",
@@ -6948,7 +7110,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race369.png"
   },
   {
-    "id": 387,
+    "id": 396,
     "name": "December Stakes",
     "nameJP": "ディセンバーステークス",
     "type": "Open",
@@ -6966,7 +7128,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race370.png"
   },
   {
-    "id": 388,
+    "id": 397,
     "name": "Champions Cup",
     "nameJP": "チャンピオンズC",
     "type": "GI",
@@ -6984,7 +7146,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race371.png"
   },
   {
-    "id": 389,
+    "id": 398,
     "name": "Hanshin Cup",
     "nameJP": "阪神カップ",
     "type": "GII",
@@ -7002,7 +7164,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race372.png"
   },
   {
-    "id": 390,
+    "id": 399,
     "name": "Galaxy Stakes",
     "nameJP": "ギャラクシーステークス",
     "type": "Open",
@@ -7020,7 +7182,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race373.png"
   },
   {
-    "id": 391,
+    "id": 400,
     "name": "Betelgeuse Stakes",
     "nameJP": "ベテルギウスステークス",
     "type": "Open",
@@ -7038,7 +7200,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race374.png"
   },
   {
-    "id": 392,
+    "id": 401,
     "name": "Arima Kinen",
     "nameJP": "有馬記念",
     "type": "GI",
@@ -7056,7 +7218,7 @@ window.RACES = [
     "imageRemote": "https://img.gamewith.jp/article_tools/uma-musume/gacha/i_race375.png"
   },
   {
-    "id": 393,
+    "id": 402,
     "name": "Tokyo Dai Stakes",
     "nameJP": "東京大賞典",
     "type": "GI",
@@ -7075,7 +7237,7 @@ window.RACES = [
   }
 ];
 window.RACES_META = {
-  "generatedAt": "2025-10-15T13:05:18.239549+00:00",
+  "generatedAt": "2026-03-13T09:21:35.729459+00:00",
   "source": "RaceComplete.csv",
-  "count": 393
+  "count": 402
 };

@@ -505,6 +505,11 @@ h1 {
     flex-wrap: wrap;
 }
 
+.controls-selection-row {
+    margin-top: -12px;
+    padding-top: 0;
+}
+
 .filter-btn {
     padding: 8px 16px;
     border: 2px solid #667eea;
@@ -738,6 +743,90 @@ h1 {
         0 0 4px rgba(0,0,0,0.8);
 }
 
+/* Race Planner Legend */
+.planner-section-title {
+    position: relative;
+}
+
+.planner-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #718096;
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+}
+
+.legend-icon {
+    font-size: 0.85rem;
+}
+
+.legend-badge {
+    width: 18px;
+    height: 18px;
+    font-size: 0.6rem;
+}
+
+.legend-label {
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.legend-sep {
+    color: #cbd5e0;
+    font-weight: 300;
+    user-select: none;
+}
+
+/* Consecutive Race Counter Badges */
+.consecutive-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    line-height: 1;
+    border: 2px solid;
+}
+
+.consecutive-green {
+    background: rgba(56, 161, 105, 0.15);
+    border-color: #38a169;
+    color: #276749;
+}
+
+.consecutive-yellow {
+    background: rgba(236, 201, 75, 0.2);
+    border-color: #d69e2e;
+    color: #975a16;
+}
+
+.consecutive-orange {
+    background: rgba(237, 137, 54, 0.2);
+    border-color: #dd6b20;
+    color: #9c4221;
+}
+
+.consecutive-red {
+    background: rgba(229, 62, 62, 0.2);
+    border-color: #e53e3e;
+    color: #9b2c2c;
+}
+
 /* Summer colors take precedence over year colors */
 .planner-slot.summer {
     background: #fef5e7;
@@ -856,9 +945,9 @@ h1 {
     display: block;
     margin-top: 2px;
 }
-.slot-remove { position: absolute; top: 6px; right: 6px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); color: #2d3748; border-radius: 6px; padding: 2px 6px; cursor: pointer; z-index: 4; }
+.slot-remove { position: absolute; top: 6px; right: 6px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); color: #2d3748; border-radius: 6px; padding: 2px 6px; cursor: pointer; z-index: 10; }
 /* Improve planner overlay legibility for the toggle button */
-.slot-wrapper .loss-toggle-btn { background: rgba(0,0,0,0.55); color: #fff; border-color: rgba(255,255,255,0.7); box-shadow: 0 2px 6px rgba(0,0,0,0.35); -webkit-text-stroke: 0.6px rgba(0,0,0,0.6); padding: 2px 6px; font-size: 0.85rem; border-radius: 6px; }
+.slot-wrapper .loss-toggle-btn { background: rgba(0,0,0,0.55); color: #fff; border-color: rgba(255,255,255,0.7); box-shadow: 0 2px 6px rgba(0,0,0,0.35); -webkit-text-stroke: 0.6px rgba(0,0,0,0.6); padding: 2px 6px; font-size: 0.85rem; border-radius: 6px; z-index: 10; }
 .slot-wrapper .loss-toggle-btn.lost { background: rgba(229,62,62,0.92); border-color: rgba(255,255,255,0.8); }
 
 /* Picker modal */
@@ -2776,6 +2865,51 @@ h1 {
         gap: 10px;
     }
 
+    /* Consecutive badges mobile */
+    .consecutive-badge {
+        width: 16px;
+        height: 16px;
+        font-size: 0.5rem;
+        border-width: 1.5px;
+    }
+
+    /* Legend mobile */
+    .planner-legend {
+        gap: 6px;
+        font-size: 0.6rem;
+    }
+
+    .legend-badge {
+        width: 14px;
+        height: 14px;
+        font-size: 0.5rem;
+    }
+
+    /* Overview modal mobile */
+    .overview-year-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+        padding: 4px;
+    }
+
+    .overview-slot-head {
+        font-size: 0.45rem;
+        padding: 1px 2px;
+    }
+
+    .overview-race-img {
+        width: 24px;
+        height: 18px;
+    }
+
+    .overview-race-name {
+        font-size: 0.48rem;
+    }
+
+    .overview-race-name-jp {
+        font-size: 0.42rem;
+    }
+
     /* Footer mobile */
     .app-footer {
         margin-top: 20px;
@@ -2787,6 +2921,177 @@ h1 {
         flex-direction: column;
         gap: 4px;
     }
+}
+
+/* ============================================
+   OVERVIEW MODAL
+   ============================================ */
+.overview-btn {
+    border-color: #6366f1 !important;
+    color: #6366f1 !important;
+    background: white !important;
+}
+
+.overview-btn:hover {
+    background: #6366f1 !important;
+    color: white !important;
+}
+
+.overview-panel {
+    max-width: 1200px;
+    width: 95vw;
+    max-height: 90vh;
+}
+
+.overview-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    max-height: calc(90vh - 80px);
+    padding: 16px;
+}
+
+.overview-year {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.overview-year-title {
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.overview-year-title.year-junior {
+    background: #B8E6D5;
+    color: #1a4032;
+}
+
+.overview-year-title.year-classics {
+    background: #FFD4E5;
+    color: #4a1f31;
+}
+
+.overview-year-title.year-senior {
+    background: #D4E5FF;
+    color: #1a2f4a;
+}
+
+.overview-year-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 6px;
+    background: #f7fafc;
+}
+
+.overview-slot {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+    min-height: 56px;
+}
+
+.overview-slot.summer {
+    background: #fef5e7;
+    border-color: #f6ad55;
+}
+
+.overview-slot-head {
+    font-size: 0.55rem;
+    font-weight: 700;
+    padding: 2px 4px;
+    background: #edf2f7;
+    color: #4a5568;
+    border-bottom: 1px solid #e2e8f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.overview-slot.summer .overview-slot-head {
+    background: #fed7aa;
+    color: #9c4221;
+    border-bottom-color: #fbbf24;
+}
+
+.overview-slot.year-junior .overview-slot-head { background: #E8F5F0; color: #2d5f4d; }
+.overview-slot.year-classics .overview-slot-head { background: #FFF0F5; color: #6b2d45; }
+.overview-slot.year-senior .overview-slot-head { background: #EEF3FF; color: #2d4a6b; }
+.overview-slot.summer .overview-slot-head { background: #fed7aa; color: #9c4221; }
+
+.overview-slot-body {
+    padding: 3px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+}
+
+.overview-race {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.overview-race.overview-won {
+    background: rgba(56, 161, 105, 0.1);
+    border-radius: 4px;
+}
+
+.overview-race.overview-lost {
+    background: rgba(229, 62, 62, 0.08);
+    border-radius: 4px;
+}
+
+.overview-race-img {
+    width: 32px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f0;
+}
+
+.overview-race-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.overview-race-name {
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.overview-race-name-jp {
+    font-size: 0.5rem;
+    color: #718096;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.overview-status {
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+.overview-empty {
+    width: 100%;
+    text-align: center;
+    color: #cbd5e0;
+    font-size: 0.7rem;
 }
 
 /* Tablet adjustments (641px - 900px) */

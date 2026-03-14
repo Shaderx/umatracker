@@ -16,15 +16,19 @@ import { syncProgressHeightToPlanner } from './progress-renderer.js';
  */
 export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerFn, removeRaceFromPlannerFn, toggleWinFromPlannerFn) {
     const container = document.getElementById('planner-grid');
-    if (!container) return; // older HTML may not have planner UI
+    if (!container) return;
     
     const yearCells = state.plannerData[plannerYear];
     const t = state.translations;
-    const monthLabel = (m) => `${t.months[m] || m}`; // JP
-    const halfLabel = (h) => `${t.halves[h] || h}`;   // JP
+    const monthLabel = (m) => `${t.months[m] || m}`;
+    const halfLabel = (h) => `${t.halves[h] || h}`;
     const enShort = { January:'Jan', February:'Feb', March:'Mar', April:'Apr', May:'May', June:'Jun', July:'Jul', August:'Aug', September:'Sep', October:'Oct', November:'Nov', December:'Dec' };
 
+    // Pre-compute consecutive race counts for this year
+    const consecutiveCounts = computeConsecutiveCounts(plannerYear);
+
     const slots = [];
+    let slotIndex = 0;
     state.monthOrder.forEach(month => {
         state.halfOrder.forEach(half => {
             const key = cellKey(month, half);
@@ -34,7 +38,6 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             const isSlotTrackedValue = isSlotTracked(month, half, plannerYear, state, loadHiddenFactors(), state.raceById);
             let slotBody = '';
             
-            // Check if ANY available races in this slot match the current filters
             const hasMatchingRaces = state.currentFilters.size > 0 && state.races.some(r => {
                 return r.month === month && r.half === half && !!r[plannerYear] && raceMatchesFiltersFn(r);
             });
@@ -42,7 +45,6 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             if (selectedId) {
                 let r = state.raceById ? state.raceById.get(selectedId) : null;
                 if (!r) {
-                    // Backward compatibility: previously stored race name
                     r = state.races.find(rr => rr.name === selectedId) || null;
                 }
                 const hasImage = r && r.image;
@@ -66,16 +68,54 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             }
             const isSummer = (month === 'July' || month === 'August');
             const isEmptySlot = !selectedId && !hasAnyForSlot;
+
+            // Consecutive counter badge
+            const count = consecutiveCounts[slotIndex];
+            let counterHtml = '';
+            if (count > 0) {
+                const colorClass = count <= 2 ? 'consecutive-green' : count === 3 ? 'consecutive-yellow' : count === 4 ? 'consecutive-orange' : 'consecutive-red';
+                counterHtml = `<span class="consecutive-badge ${colorClass}">${count}</span>`;
+            }
+
             slots.push(`
                 <div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTrackedValue ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''} year-${plannerYear}\">
-                    <div class=\"planner-slot-head\"><span>${enShort[month] || month} ${half} / ${monthLabel(month)} ${halfLabel(half)}</span></div>
+                    <div class=\"planner-slot-head\"><span>${enShort[month] || month} ${half} / ${monthLabel(month)} ${halfLabel(half)}</span>${counterHtml}</div>
                     <div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"window.openPickerFromPlanner('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
                 </div>
             `);
+            slotIndex++;
         });
     });
     container.innerHTML = slots.join('');
     syncProgressHeightToPlanner();
+}
+
+/**
+ * Compute consecutive race counts for a given planner year.
+ * Returns an array of 24 values (one per slot). 0 = empty, 1+ = position in streak.
+ */
+export function computeConsecutiveCounts(plannerYear) {
+    const yearCells = state.plannerData[plannerYear] || {};
+    const counts = [];
+    let streak = 0;
+    const streakStartIndices = [];
+
+    state.monthOrder.forEach(month => {
+        state.halfOrder.forEach(half => {
+            const key = cellKey(month, half);
+            const raw = yearCells[key];
+            const filled = typeof raw === 'string' && raw;
+            if (filled) {
+                streak++;
+                counts.push(streak);
+            } else {
+                streak = 0;
+                counts.push(0);
+            }
+        });
+    });
+
+    return counts;
 }
 
 /**

@@ -37,12 +37,23 @@
         <div class="main-content">
             <!-- Planner Section -->
             <div class="races-section" id="planner-section">
-                <h2 class="section-title">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span></h2>
+                <h2 class="section-title planner-section-title">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span>
+                    <div class="planner-legend">
+                        <span class="legend-item"><span class="legend-icon">🏆</span> Won / 勝利</span>
+                        <span class="legend-item"><span class="legend-icon">👎</span> Lost / 敗北</span>
+                        <span class="legend-sep">|</span>
+                        <span class="legend-item ">Winrate reduction by consecutive races</span>
+                        <span class="legend-item"><span class="consecutive-badge consecutive-green legend-badge">3</span> <span class="legend-label">-10%</span></span>
+                        <span class="legend-item"><span class="consecutive-badge consecutive-orange legend-badge">4</span> <span class="legend-label">-20%</span></span>
+                        <span class="legend-item"><span class="consecutive-badge consecutive-red legend-badge">5+</span> <span class="legend-label">-30%+</span></span>
+                    </div>
+                </h2>
                 <div class="year-tabs">
                     <button class="year-tab active" id="tab-junior" data-year="junior">ジュニア級<br><span style="font-size: 0.8em; font-weight:600;">Junior</span></button>
                     <button class="year-tab" id="tab-classics" data-year="classics">クラシック級<br><span style="font-size: 0.8em; font-weight:600;">Classic</span></button>
                     <button class="year-tab" id="tab-senior" data-year="senior">シニア級<br><span style="font-size: 0.8em; font-weight:600;">Senior</span></button>
                     <div style="margin-left:auto; display:flex; gap:8px;">
+                        <button class="filter-btn overview-btn" id="overview-btn">📋 Overview<br><span style="font-size: 0.8em; font-weight:600;">一覧表示</span></button>
                         <button class="filter-btn" id="clear-planner-year-btn">このページをリセット<br><span style="font-size: 0.8em; font-weight:600;">Reset this page</span></button>
                     </div>
                 </div>
@@ -107,8 +118,10 @@
                 <button class="filter-btn" data-filter="SSS" data-value="SSS">Summer Sprint<br><span style="font-size: 0.7em;">サマースプリント</span></button>
                 <button class="filter-btn" data-filter="SMS" data-value="SMS">Summer Mile<br><span style="font-size: 0.7em;">サマーマイル</span></button>
                 <button class="filter-btn" data-filter="S2000" data-value="S2000">Summer 2000<br><span style="font-size: 0.7em;">サマー2000</span></button>
-                <button class="filter-btn" data-filter="selected" data-value="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
                 <button class="filter-btn" id="tracked-filter-btn" data-filter="tracked" data-value="tracked" style="display: none;">🔍 Tracked<br><span style="font-size: 0.7em;">追跡中</span></button>
+            </div>
+            <div class="controls controls-selection-row">
+                <button class="filter-btn" data-filter="selected" data-value="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
                 <button class="filter-btn clear-all-btn" id="clear-all-btn" style="border-color: #e53e3e; background: white; color: #e53e3e;">Clear All Selection<br><span style="font-size: 0.7em;">全選択解除</span></button>
             </div>
             <div class="races-grid" id="races-grid"></div>

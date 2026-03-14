@@ -248,6 +248,21 @@ export function raceMatchesFilters(race, currentFilters) {
             case 'junior': if (!race.junior) return false; break;
             case 'classic': if (!race.classics) return false; break;
             case 'senior': if (!race.senior) return false; break;
+            case 'SSS': {
+                const set = new Set(state.summerSeries?.sprint || []);
+                if (!set.has(race.name)) return false;
+                break;
+            }
+            case 'SMS': {
+                const set = new Set(state.summerSeries?.mile || []);
+                if (!set.has(race.name)) return false;
+                break;
+            }
+            case 'S2000': {
+                const set = new Set(state.summerSeries?.s2000 || []);
+                if (!set.has(race.name)) return false;
+                break;
+            }
             case 'selected': if (!state.selectedRaces.has(String(race.id))) return false; break;
             case 'tracked': {
                 const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
