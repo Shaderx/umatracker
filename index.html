@@ -37,17 +37,35 @@
         <div class="main-content">
             <!-- Planner Section -->
             <div class="races-section" id="planner-section">
-                <h2 class="section-title planner-section-title">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span>
+                <div class="section-title planner-section-title">
+                    <div class="planner-title-left">
+                        <h2 style="font-size:1.5rem; margin:0; border:none; padding:0;">Race Planner<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースプランナー（ゲーム風UI）</span></h2>
+                    </div>
                     <div class="planner-legend">
                         <span class="legend-item"><span class="legend-icon">🏆</span> Won / 勝利</span>
                         <span class="legend-item"><span class="legend-icon">👎</span> Lost / 敗北</span>
                         <span class="legend-sep">|</span>
-                        <span class="legend-item ">Winrate reduction by consecutive races</span>
-                        <span class="legend-item"><span class="consecutive-badge consecutive-green legend-badge">3</span> <span class="legend-label">-10%</span></span>
-                        <span class="legend-item"><span class="consecutive-badge consecutive-orange legend-badge">4</span> <span class="legend-label">-20%</span></span>
-                        <span class="legend-item"><span class="consecutive-badge consecutive-red legend-badge">5+</span> <span class="legend-label">-30%+</span></span>
+                        <div class="legend-penalty-group" id="legend-penalty-group">
+                            <span class="legend-item"><span class="consecutive-badge consecutive-yellow legend-badge">3</span><span class="legend-label">🔽</span></span>
+                            <span class="legend-item"><span class="consecutive-badge consecutive-orange legend-badge">4</span><span class="legend-label">⏬</span></span>
+                            <span class="legend-item"><span class="consecutive-badge consecutive-red legend-badge">5+</span><span class="legend-label">💀</span></span>
+                            <span class="legend-help" title="Win Rate Info">❓</span>
+                            <div class="legend-tooltip" id="legend-tooltip">
+                                <div class="legend-tooltip-title">UMA Plan only / Inheritance only Umas</div>
+                                <div class="legend-tooltip-title">[ウマプラン]のみ | 因子継承専用ウマ娘て</div>
+                                <ul class="legend-tooltip-list">
+                                    <li>Win rate is based on aptitude. A-rank distance + ground = <strong>80%</strong> base.<br>勝率は適性に基づきます。距離・バ場適性Aで基本勝率<strong>80%</strong>。</li>
+                                    <li>B or lower aptitude reduces win rate (exact rates undisclosed by Cygames).<br>B以下の適性では勝率が低下します（具体的な数値はCygames非公開）。</li>
+                                    <li>Having a trophy for the race adds <strong>+30%</strong> win rate.<br>そのレースのトロフィーを持っていると勝率が<strong>+30%</strong>上昇。</li>
+                                    <li>With A aptitude + trophy = <strong>110%</strong> effective win rate.<br>適性A＋トロフィーで実質勝率<strong>110%</strong>。</li>
+                                    <li>Trophies cannot be earned in this mode. Do at least one normal run first.<br>このモードではトロフィーを獲得できません。事前に通常育成で獲得してください。</li>
+                                    <li><span class="consecutive-badge consecutive-yellow" style="width:14px;height:14px;font-size:0.5rem;display:inline-flex;">3</span> 3+ consecutive races reduce win rate.<br>3連戦以上で勝率が低下します。</li>
+                                    <li>The more consecutive turns raced, the greater the reduction.<br>連戦が長いほど、勝率の低下が大きくなります。</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </h2>
+                </div>
                 <div class="year-tabs">
                     <button class="year-tab active" id="tab-junior" data-year="junior">ジュニア級<br><span style="font-size: 0.8em; font-weight:600;">Junior</span></button>
                     <button class="year-tab" id="tab-classics" data-year="classics">クラシック級<br><span style="font-size: 0.8em; font-weight:600;">Classic</span></button>
@@ -98,7 +116,13 @@
     <!-- Race Database Section -->
     <div style="max-width: 1400px; margin: 18px auto 0 auto;">
         <div class="races-section" id="calendar-section" style="padding: 18px;">
-            <h2 class="section-title">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
+                <h2 class="section-title" style="margin-bottom: 0;">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
+                <div class="db-toggle" id="db-toggle">
+                    <button class="db-toggle-btn active" data-db="jp" id="db-toggle-jp" title="Japanese version (402 races)">🇯🇵 JP<br><span style="font-size: 0.7em;">日本版</span></button>
+                    <button class="db-toggle-btn" data-db="en" id="db-toggle-en" title="Global version (376 races)">🌐 EN<br><span style="font-size: 0.7em;">グローバル版</span></button>
+                </div>
+            </div>
             <div class="controls">
                 <button class="filter-btn active" data-filter="all" data-value="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
                 <button class="filter-btn" data-filter="GI" data-value="GI">G1</button>
@@ -323,6 +347,7 @@
     
     <!-- Race data -->
     <script src="races.js"></script>
+    <script src="races-en.js"></script>
     
     <!-- Changelog data -->
     <script src="changelog.js"></script>

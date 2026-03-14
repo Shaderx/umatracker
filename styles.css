@@ -510,6 +510,44 @@ h1 {
     padding-top: 0;
 }
 
+/* Database Toggle (JP/EN) */
+.db-toggle {
+    display: flex;
+    gap: 4px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.db-toggle-btn {
+    padding: 8px 18px;
+    border: 2px solid transparent;
+    background: transparent;
+    color: #667eea;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.db-toggle-btn:hover {
+    background: rgba(102, 126, 234, 0.15);
+}
+
+.db-toggle-btn.active {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.db-toggle-btn.active[data-db="en"] {
+    background: #38a169;
+    box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+}
+
 .filter-btn {
     padding: 8px 16px;
     border: 2px solid #667eea;
@@ -745,18 +783,26 @@ h1 {
 
 /* Race Planner Legend */
 .planner-section-title {
-    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.planner-title-left {
+    flex-shrink: 0;
 }
 
 .planner-legend {
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 6px;
+    gap: 8px;
+    flex-wrap: nowrap;
     font-size: 0.72rem;
     font-weight: 500;
     color: #718096;
+    margin-bottom: 4px;
 }
 
 .legend-item {
@@ -785,6 +831,91 @@ h1 {
     color: #cbd5e0;
     font-weight: 300;
     user-select: none;
+}
+
+.legend-penalty-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+
+.legend-help {
+    cursor: help;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    user-select: none;
+}
+
+.legend-help:hover {
+    opacity: 1;
+}
+
+.legend-tooltip {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 420px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    padding: 14px 16px;
+    z-index: 100;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #2d3748;
+    pointer-events: none;
+}
+
+.legend-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 16px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-left: 1px solid #e2e8f0;
+    border-top: 1px solid #e2e8f0;
+    transform: rotate(45deg);
+}
+
+.legend-penalty-group:hover .legend-tooltip {
+    display: block;
+    pointer-events: auto;
+}
+
+.legend-tooltip-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #4a5568;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.legend-tooltip-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.legend-tooltip-list li {
+    padding: 4px 0;
+    border-bottom: 1px solid #f7fafc;
+    color: #4a5568;
+}
+
+.legend-tooltip-list li:last-child {
+    border-bottom: none;
+}
+
+.legend-tooltip-list li strong {
+    color: #38a169;
+    font-weight: 700;
 }
 
 /* Consecutive Race Counter Badges */
@@ -2654,6 +2785,16 @@ h1 {
         font-size: 0.48rem;
     }
 
+    .db-toggle {
+        padding: 3px;
+        gap: 3px;
+    }
+
+    .db-toggle-btn {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+
     /* Storage toolbar mobile */
     .storage-toolbar {
         gap: 4px;
@@ -2874,15 +3015,27 @@ h1 {
     }
 
     /* Legend mobile */
+    .planner-section-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .planner-legend {
-        gap: 6px;
-        font-size: 0.6rem;
+        gap: 5px;
+        font-size: 0.55rem;
+        flex-wrap: wrap;
     }
 
     .legend-badge {
         width: 14px;
         height: 14px;
         font-size: 0.5rem;
+    }
+
+    .legend-tooltip {
+        width: 300px;
+        right: -10px;
+        font-size: 0.68rem;
     }
 
     /* Overview modal mobile */

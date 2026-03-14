@@ -16,7 +16,9 @@ import {
     westernTracks, 
     summerSeries, 
     translations,
-    initializeRaceData 
+    initializeRaceData,
+    switchDatabase,
+    getCurrentDb
 } from './js/data/race-data.js';
 import { loadHiddenFactors } from './js/data/hidden-factors.js';
 
@@ -74,6 +76,7 @@ import { renderRaces, setupRaceRendererCallbacks } from './js/ui/race-renderer.j
 import { renderPlannerGrid, cellKey, setupPlannerRendererCallbacks } from './js/ui/planner-renderer.js';
 import { initChangelog } from './js/ui/changelog-renderer.js';
 import { openChangelogModal, closeChangelogModal, filterChangelog } from './js/ui/changelog-modal.js';
+import { openOverviewModal, closeOverviewModal, setupOverviewCallbacks } from './js/ui/overview-modal.js';
 
 // ============================================================================
 // Discord Contact Function (preserved from original)
@@ -137,6 +140,9 @@ class UmaMusumeTracker {
         // Bridge progress panel track button → handler
         setupProgressRendererCallbacks((factorId) => this.handleTrackFactor(factorId));
         
+        // Setup overview modal global callbacks
+        setupOverviewCallbacks();
+        
         // Setup event listeners
         this.setupEventListeners();
         
@@ -176,6 +182,12 @@ class UmaMusumeTracker {
             });
         });
         
+        // Overview button
+        const overviewBtn = document.getElementById('overview-btn');
+        if (overviewBtn) {
+            overviewBtn.addEventListener('click', () => openOverviewModal());
+        }
+
         // Clear planner year button
         const clearPlannerBtn = document.getElementById('clear-planner-year-btn');
         if (clearPlannerBtn) {
@@ -206,6 +218,26 @@ class UmaMusumeTracker {
             }
         });
         
+        // Database toggle (JP/EN)
+        document.querySelectorAll('.db-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const db = btn.dataset.db;
+                if (db === getCurrentDb()) return;
+
+                // Clear all selections and planner when switching databases
+                state.selectedRaces.clear();
+                state.wonRaces.clear();
+                state.lostRaces.clear();
+                state.plannerData = createEmptyPlannerData();
+                state.trackedFactorId = null;
+
+                switchDatabase(db);
+                document.querySelectorAll('.db-toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.renderAll();
+            });
+        });
+
         // Window resize handler
         window.addEventListener('resize', () => {
             const isCompact = isMobileOrTablet();

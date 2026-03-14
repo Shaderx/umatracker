@@ -5,6 +5,25 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-03-15",
+    "changes": [
+      {
+        "category": "\u2728 Features",
+        "items": [
+          "Add Global (EN) race database with 376 races parsed from GameTora, with JP/EN toggle in Race Database section",
+          "Download EN race banner images locally for the global version",
+          "Auto-clear all selections and planner data when switching between JP and EN databases"
+        ]
+      },
+      {
+        "category": "\ud83d\udc1b Fixes",
+        "items": [
+          "Fix Overview button not working (module was not wired up in app.js)"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-14",
     "changes": [
       {
