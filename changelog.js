@@ -10,9 +10,10 @@ window.changelogData = [
       {
         "category": "\u2728 Features",
         "items": [
-          "Add Global (EN) race database with 376 races parsed from GameTora, with JP/EN toggle in Race Database section",
+          "Add Global (EN) race database with 376 races, with JP/EN toggle in Race Database section",
           "Download EN race banner images locally for the global version",
-          "Auto-clear all selections and planner data when switching between JP and EN databases"
+          "Auto-clear all selections and planner data when switching between JP and EN databases",
+          "Redesign Overview modal to match in-game layout (3 years side-by-side, 4 cells per row, summer highlights, race banners)"
         ]
       },
       {

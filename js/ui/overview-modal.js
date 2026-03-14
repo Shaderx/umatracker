@@ -1,5 +1,5 @@
 // js/ui/overview-modal.js
-// Compact overview modal showing all 3 years of the race planner
+// Compact overview modal emulating the in-game 3-year race planner view
 
 import { state } from '../core/state.js';
 import { cellKey } from './planner-renderer.js';
@@ -10,71 +10,67 @@ const enShort = {
     September: 'Sep', October: 'Oct', November: 'Nov', December: 'Dec'
 };
 
-const yearLabels = {
-    junior: { en: 'Junior', jp: 'ジュニア級' },
-    classics: { en: 'Classic', jp: 'クラシック級' },
-    senior: { en: 'Senior', jp: 'シニア級' }
+const halfLabel = { '1st': 'Early', '2nd': 'Late' };
+
+const yearConfig = {
+    junior:   { en: 'Junior Year',  jp: 'ジュニア級', startMonth: 6 },
+    classics: { en: 'Classic Year', jp: 'クラシック級', startMonth: 0 },
+    senior:   { en: 'Senior Year',  jp: 'シニア級', startMonth: 0 }
 };
 
-/**
- * Build compact HTML for one planner year
- */
-function buildYearOverview(yearKey) {
+const fullMonthOrder = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function buildCell(yearKey, month, half) {
+    const key = cellKey(month, half);
     const yearCells = state.plannerData[yearKey] || {};
-    const t = state.translations;
-    const label = yearLabels[yearKey];
+    const raw = yearCells[key];
+    const selectedId = (typeof raw === 'string' && raw) ? String(raw) : null;
+    const isSummer = month === 'July' || month === 'August';
+    const period = `${halfLabel[half]} ${enShort[month]}`;
 
-    let slotsHtml = '';
-    state.monthOrder.forEach(month => {
-        state.halfOrder.forEach(half => {
-            const key = cellKey(month, half);
-            const raw = yearCells[key];
-            const selectedId = (typeof raw === 'string' && raw) ? String(raw) : null;
-            const isSummer = month === 'July' || month === 'August';
+    let inner = '';
+    if (selectedId) {
+        const r = state.raceById ? state.raceById.get(selectedId) : null;
+        const imgSrc = r && r.image ? r.image : '';
+        const name = r ? r.name : '';
+        const isWon = state.wonRaces.has(selectedId);
+        const isLost = state.lostRaces.has(selectedId);
+        const cls = isLost ? 'ov-lost' : (isWon ? 'ov-won' : '');
+        const badge = isLost ? '<span class="ov-badge ov-badge-lost">👎</span>'
+                    : (isWon ? '<span class="ov-badge ov-badge-won">🏆</span>' : '');
 
-            let bodyHtml = '';
-            if (selectedId) {
-                const r = state.raceById ? state.raceById.get(selectedId) : null;
-                const imgSrc = r && r.image ? r.image : '';
-                const name = r ? r.name : '';
-                const nameJP = r && r.nameJP ? r.nameJP : '';
-                const isWon = state.wonRaces.has(selectedId);
-                const isLost = state.lostRaces.has(selectedId);
-                const statusIcon = isLost ? '👎' : (isWon ? '🏆' : '');
-                const statusClass = isLost ? 'overview-lost' : (isWon ? 'overview-won' : '');
+        inner = `<div class="ov-inner ${cls}">
+            ${imgSrc ? `<img class="ov-img" src="${imgSrc}" alt="" loading="lazy">` : '<div class="ov-img ov-img-ph"></div>'}
+            <div class="ov-name" title="${name}">${name}</div>
+            ${badge}
+        </div>`;
+    } else {
+        inner = '<div class="ov-inner ov-empty"><span class="ov-plus">+</span></div>';
+    }
 
-                bodyHtml = `
-                    <div class="overview-race ${statusClass}">
-                        ${imgSrc ? `<img class="overview-race-img" src="${imgSrc}" alt="" loading="lazy">` : ''}
-                        <div class="overview-race-info">
-                            <div class="overview-race-name">${name}</div>
-                            <div class="overview-race-name-jp">${nameJP}</div>
-                        </div>
-                        ${statusIcon ? `<span class="overview-status">${statusIcon}</span>` : ''}
-                    </div>
-                `;
-            } else {
-                bodyHtml = `<div class="overview-empty">—</div>`;
-            }
+    return `<div class="ov-cell ${isSummer ? 'ov-summer' : ''} ov-y-${yearKey}">
+        ${inner}
+        <div class="ov-period">${period}</div>
+    </div>`;
+}
 
-            const monthJP = t.months?.[month] || month;
-            const halfJP = t.halves?.[half] || half;
+function buildYearColumn(yearKey) {
+    const cfg = yearConfig[yearKey];
+    const months = fullMonthOrder.slice(cfg.startMonth);
 
-            slotsHtml += `
-                <div class="overview-slot ${isSummer ? 'summer' : ''} year-${yearKey}">
-                    <div class="overview-slot-head">${enShort[month]} ${half} / ${monthJP} ${halfJP}</div>
-                    <div class="overview-slot-body">${bodyHtml}</div>
-                </div>
-            `;
-        });
-    });
+    let cells = '';
+    for (const month of months) {
+        cells += buildCell(yearKey, month, '1st');
+        cells += buildCell(yearKey, month, '2nd');
+    }
 
-    return `
-        <div class="overview-year">
-            <div class="overview-year-title year-${yearKey}">${label.jp} / ${label.en}</div>
-            <div class="overview-year-grid">${slotsHtml}</div>
-        </div>
-    `;
+    return `<div class="ov-col ov-col-${yearKey}">
+        <div class="ov-hdr ov-hdr-${yearKey}">${cfg.en}<br><span class="ov-hdr-jp">${cfg.jp}</span></div>
+        <div class="ov-grid">${cells}</div>
+    </div>`;
 }
 
 export function openOverviewModal() {
@@ -85,19 +81,23 @@ export function openOverviewModal() {
         modal.className = 'storage-modal hidden';
         modal.innerHTML = `
             <div class="storage-backdrop" onclick="window.closeOverviewModal()"></div>
-            <div class="storage-panel overview-panel">
-                <div class="storage-header">
-                    <h3>📋 Race Plan Overview / レース計画一覧</h3>
+            <div class="ov-panel">
+                <div class="ov-title-bar">
+                    <h3>📋 Overview <span class="ov-title-jp">レース計画一覧</span></h3>
                     <button class="close-btn" onclick="window.closeOverviewModal()">×</button>
                 </div>
-                <div class="storage-body overview-body" id="overview-modal-content"></div>
+                <div class="ov-scroll" id="overview-modal-content"></div>
             </div>
         `;
         document.body.appendChild(modal);
     }
 
     const content = document.getElementById('overview-modal-content');
-    content.innerHTML = ['junior', 'classics', 'senior'].map(buildYearOverview).join('');
+    content.innerHTML = `<div class="ov-wrap">
+        ${buildYearColumn('junior')}
+        ${buildYearColumn('classics')}
+        ${buildYearColumn('senior')}
+    </div>`;
     modal.classList.remove('hidden');
 }
 
