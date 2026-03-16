@@ -218,13 +218,24 @@ class UmaMusumeTracker {
             }
         });
         
-        // Database toggle (JP/EN)
+        // Database toggle (JP/Global)
         document.querySelectorAll('.db-toggle-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const db = btn.dataset.db;
                 if (db === getCurrentDb()) return;
 
-                // Clear all selections and planner when switching databases
+                const hasSelections = state.selectedRaces.size > 0
+                    || state.wonRaces.size > 0
+                    || state.lostRaces.size > 0
+                    || Object.values(state.plannerData).some(year =>
+                        Object.values(year).some(v => v != null));
+
+                if (hasSelections) {
+                    if (!confirm('This will clear your existing selections, proceed?\n現在の選択内容がリセットされます。よろしいですか？')) {
+                        return;
+                    }
+                }
+
                 state.selectedRaces.clear();
                 state.wonRaces.clear();
                 state.lostRaces.clear();

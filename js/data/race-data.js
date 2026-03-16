@@ -50,9 +50,10 @@ export const summerSeries = {
         'Centaur Stakes'
     ],
     mile: [
-        'Epsom Cup',
+        'Yonago Stakes',
         'Chukyo Kinen',
-        'Sekiya Kinen'
+        'Sekiya Kinen',
+        'Keisei Hai Autumn Handicap'
     ],
     s2000: [
         'Hakodate Kinen',

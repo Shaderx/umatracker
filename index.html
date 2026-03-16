@@ -84,7 +84,7 @@
             <!-- Progress Section -->
             <div class="progress-section" id="progress-panel">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px;">
-                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
+                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Hidden Factors Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">隠し因子 進捗トラッカー</span></h2>
                     <button class="btn btn-clear-tracking" id="clear-tracking-btn" onclick="tracker.handleTrackFactor(null)" style="display: none;" title="Clear tracking / 追跡解除">
                         ✖ Clear<br><span style="font-size: 0.7em;">追跡解除</span>
                     </button>
@@ -123,7 +123,7 @@
                 <h2 class="section-title" style="margin-bottom: 0;">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
                 <div class="db-toggle" id="db-toggle">
                     <button class="db-toggle-btn active" data-db="jp" id="db-toggle-jp" title="Japanese version (402 races)">🇯🇵 JP<br><span style="font-size: 0.7em;">日本版</span></button>
-                    <button class="db-toggle-btn" data-db="en" id="db-toggle-en" title="Global version (376 races)">🌐 EN<br><span style="font-size: 0.7em;">グローバル版</span></button>
+                    <button class="db-toggle-btn" data-db="en" id="db-toggle-en" title="Global version (376 races)">🌐 Global<br><span style="font-size: 0.7em;">グローバル版</span></button>
                 </div>
             </div>
             <div class="controls">
@@ -351,6 +351,7 @@
     <!-- Race data -->
     <script src="races.js"></script>
     <script src="races-en.js"></script>
+    <script src="hidden-factors-en.js"></script>
     
     <!-- Changelog data -->
     <script src="changelog.js"></script>

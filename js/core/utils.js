@@ -44,11 +44,11 @@ export function contactOnDiscord() {
  * @returns {Set} Set of race IDs
  */
 export function getIdsForNames(races, nameList) {
+    const nameSet = new Set(nameList);
     const result = new Set();
-    nameList.forEach(n => {
-        const r = races.find(race => race.name === n || race.id === n);
-        if (r) {
-            result.add(String(r.id));
+    races.forEach(race => {
+        if (nameSet.has(race.name) || nameSet.has(race.id)) {
+            result.add(String(race.id));
         }
     });
     return result;

@@ -129,19 +129,26 @@ export function checkNewspaperCups() {
  */
 export function checkSummerSeries(seriesKey) {
     const targetNames = (state.summerSeries && state.summerSeries[seriesKey]) ? state.summerSeries[seriesKey] : [];
-    const wonNames = targetNames.filter(n => {
+    const wonIds = [];
+    targetNames.forEach(n => {
         const ids = state.raceIdsByName.get(n);
-        if (!ids) return false;
-        for (const id of ids) if (state.wonRaces.has(String(id))) return true;
-        return false;
+        if (!ids) return;
+        for (const id of ids) {
+            if (state.wonRaces.has(String(id))) wonIds.push(id);
+        }
     });
-    
+
+    const wonLabels = wonIds.map(id => {
+        const race = state.raceById.get(String(id));
+        return race ? race.name : id;
+    });
+
     return {
-        completed: wonNames.length >= 3,
-        current: wonNames.length,
+        completed: wonIds.length >= 3,
+        current: wonIds.length,
         required: 3,
-        progress: Math.min(100, (wonNames.length / 3) * 100),
-        details: `Won: ${wonNames.join(', ')}`
+        progress: Math.min(100, (wonIds.length / 3) * 100),
+        details: `Won: ${wonLabels.join(', ')}`
     };
 }
 

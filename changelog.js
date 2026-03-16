@@ -10,7 +10,15 @@ window.changelogData = [
       {
         "category": "✨ Features",
         "items": [
+          "Add Global (EN) hidden factors for Trackblazer scenario (40 epithets, 27 trackable) parsed from GameTora",
+          "Hidden factors now swap automatically when switching between JP and EN race databases",
           "Add Ko-fi support button alongside Discord button with matching glass-style design"
+        ]
+      },
+      {
+        "category": "🔄 Changes",
+        "items": [
+          "Rename Progress Tracker to Hidden Factors Progress Tracker"
         ]
       },
       {
