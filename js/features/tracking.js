@@ -5,6 +5,8 @@
 
 import { state as globalState } from '../core/state.js';
 import { loadHiddenFactors } from '../data/hidden-factors.js';
+import { loadEpithets } from '../data/epithets-en.js';
+import { getCurrentDb } from '../data/race-data.js';
 
 /**
  * Set the currently tracked hidden factor
@@ -46,9 +48,14 @@ export function clearTrackedFactor(state, updateProgress, renderRaces, renderPla
  * @param {Array} hiddenFactors - Array of hidden factor objects
  * @returns {Set<string>} Set of race IDs, or empty Set if no factor tracked
  */
+function loadActiveItems(itemsOverride) {
+    if (itemsOverride) return itemsOverride;
+    return getCurrentDb() === 'en' ? loadEpithets() : loadHiddenFactors();
+}
+
 export function getTrackedFactorRaceIds(state, hiddenFactors) {
     if (!state.trackedFactorId) return new Set();
-    const factors = hiddenFactors || loadHiddenFactors();
+    const factors = loadActiveItems(hiddenFactors);
     const factor = factors.find(f => f.id === state.trackedFactorId);
     if (!factor || !factor.getRaces) return new Set();
     return factor.getRaces();
@@ -82,7 +89,7 @@ export function isSlotTracked(month, half, yearKey, stateParam = null, hiddenFac
     const raceByIdToUse = raceByIdParam || globalState.raceById;
     
     if (!stateToUse.trackedFactorId) return false;
-    const trackedIds = getTrackedFactorRaceIds(stateToUse, hiddenFactorsParam || loadHiddenFactors());
+    const trackedIds = getTrackedFactorRaceIds(stateToUse, hiddenFactorsParam || loadActiveItems());
     if (trackedIds.size === 0) return false;
 
     // Check if any tracked race matches this slot

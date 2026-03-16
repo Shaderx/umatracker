@@ -1931,6 +1931,28 @@ h1 {
     box-shadow: 0 2px 8px rgba(24, 144, 255, 0.2);
 }
 
+/* Epithet prerequisite tags */
+.epithet-prereqs {
+    margin: 4px 0 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 0.78rem;
+}
+.prereq-tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    background: #fed7d7;
+    color: #9b2c2c;
+    font-weight: 600;
+    font-size: 0.72rem;
+}
+.prereq-tag.prereq-done {
+    background: #c6f6d5;
+    color: #276749;
+}
+
 .factor-header {
     display: flex;
     justify-content: space-between;

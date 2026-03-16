@@ -1,57 +1,41 @@
 // js/ui/progress-renderer.js
-// Renders the hidden factors progress panel with progress bars and statistics
+// Renders the progress panel: JP hidden factors OR EN epithets depending on active DB
 
 import { state } from '../core/state.js';
 import { isMobileOrTablet } from '../core/utils.js';
 import { loadHiddenFactors } from '../data/hidden-factors.js';
+import { loadEpithets, clearEpithetCache } from '../data/epithets-en.js';
+import { getCurrentDb } from '../data/race-data.js';
 
-/**
- * Sort hidden factors by completion status
- * @param {Array} results - Array of factor results
- * @returns {Array} Sorted results
- */
-function sortFactorsByStatus(results) {
+function sortByStatus(results) {
     results.sort((a, b) => {
-        const aCompleted = a.result.completed ? 1 : 0;
-        const bCompleted = b.result.completed ? 1 : 0;
-        const aInProgress = (!a.result.completed && a.result.current > 0) ? 1 : 0;
-        const bInProgress = (!b.result.completed && b.result.current > 0) ? 1 : 0;
-        
-        // Completed factors come first (descending)
-        if (aCompleted !== bCompleted) return bCompleted - aCompleted;
-        
-        // Among non-completed, in-progress come before not started (descending)
-        if (aInProgress !== bInProgress) return bInProgress - aInProgress;
-        
-        // Within the same category, maintain original order (by comparing indices)
-        // This preserves the logical grouping from hiddenFactors array
+        const aC = a.result.completed ? 1 : 0;
+        const bC = b.result.completed ? 1 : 0;
+        const aP = (!a.result.completed && a.result.current > 0) ? 1 : 0;
+        const bP = (!b.result.completed && b.result.current > 0) ? 1 : 0;
+        if (aC !== bC) return bC - aC;
+        if (aP !== bP) return bP - aP;
         return 0;
     });
     return results;
 }
 
-/**
- * Update progress stats in the UI
- * @param {number} completedCount - Number of completed factors
- * @param {number} inProgressCount - Number of in-progress factors
- */
 function updateProgressStats(completedCount, inProgressCount) {
     const totalRacesEl = document.getElementById('total-races');
     const totalWinsEl = document.getElementById('total-wins');
     const totalLossesEl = document.getElementById('total-losses');
     const completedFactorsEl = document.getElementById('completed-factors');
-    
+
     if (totalRacesEl) totalRacesEl.textContent = state.selectedRaces.size;
     if (totalWinsEl) totalWinsEl.textContent = state.wonRaces.size;
     if (totalLossesEl) totalLossesEl.textContent = state.lostRaces.size;
     if (completedFactorsEl) completedFactorsEl.textContent = completedCount;
-    
-    // Update quick stats
+
     const qsRacesEl = document.getElementById('qs-races');
     const qsWinsEl = document.getElementById('qs-wins');
     const qsCompletedEl = document.getElementById('qs-completed');
     const qsProgressEl = document.getElementById('qs-progress');
-    
+
     if (qsRacesEl) qsRacesEl.textContent = state.selectedRaces.size;
     if (qsWinsEl) qsWinsEl.textContent = state.wonRaces.size;
     if (qsCompletedEl) qsCompletedEl.textContent = completedCount;
@@ -59,128 +43,140 @@ function updateProgressStats(completedCount, inProgressCount) {
 }
 
 /**
- * Main function to update and render progress panel
- * @param {boolean} factorsExpanded - Whether factors are expanded on mobile
- * @param {Function} setTrackedFactorCallback - Callback to set tracked factor
- * @param {Function} toggleFactorsExpandedCallback - Callback to toggle expansion
- * @returns {boolean} True if tracking was auto-cleared
+ * Main update + render entry point.
+ * Automatically picks JP hidden factors or EN epithets based on active DB.
  */
 export function updateAndRenderProgress(factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback) {
-    // Load hidden factors and run checks
-    const hiddenFactors = loadHiddenFactors();
-    const results = hiddenFactors.map(factor => ({
-        ...factor,
-        result: factor.check()
+    const isEN = getCurrentDb() === 'en';
+
+    let items;
+    if (isEN) {
+        clearEpithetCache();
+        items = loadEpithets();
+    } else {
+        items = loadHiddenFactors();
+    }
+
+    const results = items.map(item => ({
+        ...item,
+        result: item.check()
     }));
-    
-    // Sort results: completed first, in-progress second, not started last
-    sortFactorsByStatus(results);
-    
-    // Auto-clear tracking if the tracked factor is now completed
+
+    sortByStatus(results);
+
     let trackingAutoCleared = false;
     if (state.trackedFactorId) {
-        const trackedFactor = results.find(r => r.id === state.trackedFactorId);
-        if (trackedFactor && trackedFactor.result.completed) {
+        const tracked = results.find(r => r.id === state.trackedFactorId);
+        if (tracked && tracked.result.completed) {
             state.trackedFactorId = null;
             trackingAutoCleared = true;
         }
     }
-    
-    // Update stats
+
     const completedCount = results.filter(r => r.result.completed).length;
     const inProgressCount = results.filter(r => !r.result.completed && r.result.current > 0).length;
     updateProgressStats(completedCount, inProgressCount);
-    
-    // Render progress panel
-    renderHiddenFactors(
-        results, 
-        state.trackedFactorId, 
-        factorsExpanded, 
+
+    // Update section title based on active DB
+    const titleEl = document.querySelector('#progress-panel .section-title');
+    if (titleEl) {
+        titleEl.innerHTML = isEN
+            ? 'Epithet Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">称号トラッカー (Global)</span>'
+            : 'Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span>';
+    }
+
+    renderFactorList(
+        results,
+        state.trackedFactorId,
+        factorsExpanded,
         setTrackedFactorCallback,
-        toggleFactorsExpandedCallback
+        toggleFactorsExpandedCallback,
+        isEN
     );
-    
+
     return trackingAutoCleared;
 }
 
 /**
- * Renders the hidden factors progress panel
- * @param {Array} results - Array of hidden factor results with {id, nameEN, nameJP, condition, conditionEN, conditionJP, result, trackable}
- * @param {string|null} trackedFactorId - Currently tracked factor ID
- * @param {boolean} factorsExpanded - Whether factors are expanded on mobile
- * @param {Function} setTrackedFactorCallback - Callback to set tracked factor
- * @param {Function} toggleFactorsExpandedCallback - Callback to toggle expansion
+ * Renders the factor / epithet list into #hidden-factors
  */
-export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback) {
+function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback, isEN) {
     const container = document.getElementById('hidden-factors');
     if (!container) return;
-    
+
     const isMobile = window.innerWidth <= 640;
     const isTablet = window.innerWidth > 640 && window.innerWidth <= 900;
     const isCompactView = isMobile || isTablet;
-    
-    // Add/remove expanded class for CSS styling
+
     if (factorsExpanded) {
         container.classList.add('factors-expanded');
     } else {
         container.classList.remove('factors-expanded');
     }
-    
-    container.innerHTML = results.map((factor, index) => {
-        const statusClass = factor.result.completed ? 'completed' : 
+
+    container.innerHTML = results.map(factor => {
+        const statusClass = factor.result.completed ? 'completed' :
                            factor.result.progress > 0 ? 'partial' : '';
-        const progressPercentage = Math.min(100, (factor.result.current / factor.result.required) * 100);
+        const progressPct = Math.min(100, (factor.result.current / factor.result.required) * 100);
         const isTracked = trackedFactorId === factor.id;
-        const showTrackButton = factor.trackable !== false && !factor.result.completed;
-        
-        // On mobile/tablet, show only completed and in-progress factors (hide not-started)
+        const showTrack = factor.trackable !== false && !factor.result.completed;
+
         const isCompleted = factor.result.completed;
         const isInProgress = !factor.result.completed && factor.result.current > 0;
-        const shouldCollapseInitially = isCompactView && !isCompleted && !isInProgress && !factorsExpanded;
-        
+        const shouldCollapse = isCompactView && !isCompleted && !isInProgress && !factorsExpanded;
+
+        const nameMain = isEN ? factor.name : factor.nameEN;
+        const nameSub = isEN ? (factor.reward || '') : (factor.nameJP || '');
+        const condText = isEN ? factor.condition : (factor.conditionEN || factor.condition);
+        const condSub = isEN ? '' : (factor.conditionJP || '');
+
+        const prereqHtml = isEN && factor.prereqs
+            ? `<div class="epithet-prereqs">Requires: ${factor.prereqs.map(p => {
+                const ep = results.find(r => r.id === p);
+                const done = ep && ep.result.completed;
+                return `<span class="prereq-tag ${done ? 'prereq-done' : ''}">${ep ? (ep.name || ep.nameEN) : p} ${done ? '✓' : '✗'}</span>`;
+            }).join(' ')}</div>`
+            : '';
+
         return `
-            <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''} ${shouldCollapseInitially ? 'hidden-factor-collapsed' : ''}">
+            <div class="factor-item ${statusClass} ${isTracked ? 'factor-tracked' : ''} ${shouldCollapse ? 'hidden-factor-collapsed' : ''} ${isEN ? 'epithet-item' : ''}">
                 <div class="factor-header">
                     <div class="factor-name">
-                        <div class="factor-name-en">${factor.nameEN}</div>
-                        <div class="factor-name-jp">${factor.nameJP}</div>
-                        ${factor.result.completed ? '<div class="completion-badge">✅</div>' : ''}
+                        <div class="factor-name-en">${nameMain}</div>
+                        <div class="factor-name-jp">${nameSub}</div>
+                        ${isCompleted ? '<div class="completion-badge">✅</div>' : ''}
                     </div>
-                    ${showTrackButton ? `
-                        <button class="btn btn-track ${isTracked ? 'active' : ''}" 
-                                onclick="window.setTrackedFactorFromRenderer('${factor.id}')" 
-                                title="Track this factor / この因子を追跡">
+                    ${showTrack ? `
+                        <button class="btn btn-track ${isTracked ? 'active' : ''}"
+                                onclick="window.setTrackedFactorFromRenderer('${factor.id}')"
+                                title="Track / 追跡">
                             🔍
                         </button>
                     ` : ''}
                 </div>
                 <div class="factor-condition">
-                    <div class="condition-en">${factor.conditionEN || factor.condition}</div>
-                    ${factor.conditionJP ? `<div class="condition-jp">${factor.conditionJP}</div>` : ''}
+                    <div class="condition-en">${condText}</div>
+                    ${condSub ? `<div class="condition-jp">${condSub}</div>` : ''}
                 </div>
+                ${prereqHtml}
                 <div class="factor-progress">
-                    <div>Progress / 進捗: ${factor.result.current}/${factor.result.required}</div>
+                    <div>Progress: ${factor.result.current}/${factor.result.required}</div>
                     ${factor.result.details ? `<div style="margin-top: 2px; font-size: 0.75rem;">• ${factor.result.details}</div>` : ''}
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${progressPercentage}%"></div>
+                    <div class="progress-fill" style="width: ${progressPct}%"></div>
                 </div>
             </div>
         `;
     }).join('');
-    
-    // Add show more button on mobile/tablet if there are hidden factors
-    // Remove any existing show more button first
+
+    // Show more button for compact view
     const progressPanel = document.getElementById('progress-panel');
     const existingBtn = progressPanel ? progressPanel.querySelector('.show-more-factors') : null;
-    if (existingBtn) {
-        existingBtn.remove();
-    }
-    
+    if (existingBtn) existingBtn.remove();
+
     if (isCompactView && progressPanel) {
-        // Count how many not-started factors are hidden in compact mode
         const notStartedCount = results.filter(f => !f.result.completed && f.result.current === 0).length;
-        
         if (notStartedCount > 0) {
             const showMoreBtn = document.createElement('button');
             showMoreBtn.className = 'show-more-factors' + (factorsExpanded ? ' expanded' : '');
@@ -192,47 +188,31 @@ export function renderHiddenFactors(results, trackedFactorId, factorsExpanded, s
             showMoreBtn.onclick = () => {
                 if (toggleFactorsExpandedCallback) toggleFactorsExpandedCallback();
             };
-            // Append to progress-panel (after hidden-factors), not inside hidden-factors
             progressPanel.appendChild(showMoreBtn);
         }
     }
-    
-    // Show/hide clear tracking button
+
     const clearBtn = document.getElementById('clear-tracking-btn');
-    if (clearBtn) {
-        clearBtn.style.display = trackedFactorId ? 'block' : 'none';
-    }
-    
-    // Show/hide tracked filter button
+    if (clearBtn) clearBtn.style.display = trackedFactorId ? 'block' : 'none';
+
     const trackedFilterBtn = document.getElementById('tracked-filter-btn');
-    if (trackedFilterBtn) {
-        trackedFilterBtn.style.display = trackedFactorId ? 'inline-flex' : 'none';
-    }
+    if (trackedFilterBtn) trackedFilterBtn.style.display = trackedFactorId ? 'inline-flex' : 'none';
 }
 
-/**
- * Syncs the progress panel height to match the planner on desktop
- */
+// Keep old export name for compatibility
+export { renderFactorList as renderHiddenFactors };
+
 export function syncProgressHeightToPlanner() {
     const progressPanel = document.getElementById('progress-panel');
     const plannerSection = document.getElementById('planner-section');
-    
     if (!progressPanel || !plannerSection) return;
-    
-    // Only sync on desktop (> 900px)
     if (!isMobileOrTablet()) {
-        const plannerHeight = plannerSection.offsetHeight;
-        progressPanel.style.minHeight = `${plannerHeight}px`;
+        progressPanel.style.minHeight = `${plannerSection.offsetHeight}px`;
     } else {
-        // Reset on mobile/tablet
         progressPanel.style.minHeight = '';
     }
 }
 
-/**
- * Setup window callbacks for progress renderer
- * This allows onclick handlers in HTML to call back to the tracker
- */
 export function setupProgressRendererCallbacks(setTrackedFactorFn) {
     window.setTrackedFactorFromRenderer = (factorId) => {
         try { setTrackedFactorFn && setTrackedFactorFn(factorId); } catch (e) { console.error(e); }
