@@ -1953,6 +1953,30 @@ h1 {
     color: #276749;
 }
 
+/* Reward tally bar */
+.reward-tally {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    font-size: 0.82rem;
+    color: #4a5568;
+}
+.tally-stats strong { color: #2d3748; }
+.tally-hint {
+    padding: 1px 8px;
+    border-radius: 10px;
+    background: #ebf4ff;
+    color: #2b6cb0;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
 .factor-header {
     display: flex;
     justify-content: space-between;

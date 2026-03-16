@@ -85,22 +85,36 @@ export function updateAndRenderProgress(factorsExpanded, setTrackedFactorCallbac
             : 'Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span>';
     }
 
+    // Compute reward tally for EN epithets
+    const rewardTally = isEN ? computeRewardTally(results) : null;
+
     renderFactorList(
         results,
         state.trackedFactorId,
         factorsExpanded,
         setTrackedFactorCallback,
         toggleFactorsExpandedCallback,
-        isEN
+        isEN,
+        rewardTally
     );
 
     return trackingAutoCleared;
 }
 
-/**
- * Renders the factor / epithet list into #hidden-factors
- */
-function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback, isEN) {
+function computeRewardTally(results) {
+    let statsTotal = 0;
+    const hints = [];
+    for (const f of results) {
+        if (!f.result.completed) continue;
+        const r = f.reward || '';
+        const statsMatch = r.match(/random stats \+(\d+)/);
+        if (statsMatch) statsTotal += parseInt(statsMatch[1]);
+        if (r.includes('hint')) hints.push(r);
+    }
+    return { statsTotal, hints };
+}
+
+function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback, isEN, rewardTally) {
     const container = document.getElementById('hidden-factors');
     if (!container) return;
 
@@ -114,7 +128,18 @@ function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedF
         container.classList.remove('factors-expanded');
     }
 
-    container.innerHTML = results.map(factor => {
+    let tallyHtml = '';
+    if (isEN && rewardTally) {
+        const hintHtml = rewardTally.hints.length
+            ? rewardTally.hints.map(h => `<span class="tally-hint">${h}</span>`).join('')
+            : '';
+        tallyHtml = `<div class="reward-tally">
+            <span class="tally-stats">📊 2 random stats <strong>+${rewardTally.statsTotal}</strong></span>
+            ${hintHtml}
+        </div>`;
+    }
+
+    container.innerHTML = tallyHtml + results.map(factor => {
         const statusClass = factor.result.completed ? 'completed' :
                            factor.result.progress > 0 ? 'partial' : '';
         const progressPct = Math.min(100, (factor.result.current / factor.result.required) * 100);
