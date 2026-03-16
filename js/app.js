@@ -6,8 +6,8 @@
 // ============================================================================
 
 // Import Core Modules
-import { state, createEmptyPlannerData, resetState } from './js/core/state.js';
-import { isMobileOrTablet, showToast } from './js/core/utils.js';
+import { state, createEmptyPlannerData, resetState } from './core/state.js';
+import { isMobileOrTablet, showToast } from './core/utils.js';
 
 // Import Data Modules
 import { 
@@ -19,8 +19,8 @@ import {
     initializeRaceData,
     switchDatabase,
     getCurrentDb
-} from './js/data/race-data.js';
-import { loadHiddenFactors } from './js/data/hidden-factors.js';
+} from './data/race-data.js';
+import { loadHiddenFactors } from './data/hidden-factors.js';
 
 // Import Feature Modules
 import {
@@ -28,20 +28,20 @@ import {
     getTrackedFactorRaceIds,
     isRaceTracked,
     isSlotTracked
-} from './js/features/tracking.js';
+} from './features/tracking.js';
 import { 
     filterGroups,
     handleFilterClick,
     clearAll as filterClearAll,
     raceMatchesFilters
-} from './js/features/filters.js';
-import { lockBodyScroll, unlockBodyScroll } from './js/features/scroll-lock.js';
+} from './features/filters.js';
+import { lockBodyScroll, unlockBodyScroll } from './features/scroll-lock.js';
 import { 
     buildPlannerTimeline,
     getMaxConsecutiveRunsFromPlanner,
     getMaxConsecutiveWinsFromPlanner,
     hasLossThenWinFromPlanner
-} from './js/features/planner-helpers.js';
+} from './features/planner-helpers.js';
 import { 
     setPlannerYear,
     clearPlannerYear,
@@ -53,8 +53,8 @@ import {
     removeRaceEverywhereFromPlanner,
     toggleParticipationById,
     toggleWinById
-} from './js/features/planner.js';
-import { pickerOpen, pickerClose, pickerNavigate, pickerNavigateAnim, pickerToggleClose } from './js/features/picker-modal.js';
+} from './features/planner.js';
+import { pickerOpen, pickerClose, pickerNavigate, pickerNavigateAnim, pickerToggleClose } from './features/picker-modal.js';
 import { 
     openSaveDialog,
     closeSaveDialog,
@@ -66,17 +66,17 @@ import {
     openNameDialog,
     closeNameDialog,
     confirmSaveName
-} from './js/features/modal-manager.js';
-import { buildShareURL, tryImportFromURL, serializeState, deserializeState } from './js/storage/url-sharing.js';
-import { renderSaveSlotsUI, renderLoadSlotsUI } from './js/storage/storage-manager.js';
+} from './features/modal-manager.js';
+import { buildShareURL, tryImportFromURL, serializeState, deserializeState } from './storage/url-sharing.js';
+import { renderSaveSlotsUI, renderLoadSlotsUI } from './storage/storage-manager.js';
 
 // Import UI Modules
-import { updateAndRenderProgress, setupProgressRendererCallbacks } from './js/ui/progress-renderer.js';
-import { renderRaces, setupRaceRendererCallbacks } from './js/ui/race-renderer.js';
-import { renderPlannerGrid, cellKey, setupPlannerRendererCallbacks } from './js/ui/planner-renderer.js';
-import { initChangelog } from './js/ui/changelog-renderer.js';
-import { openChangelogModal, closeChangelogModal, filterChangelog } from './js/ui/changelog-modal.js';
-import { openOverviewModal, closeOverviewModal, setupOverviewCallbacks } from './js/ui/overview-modal.js';
+import { updateAndRenderProgress, setupProgressRendererCallbacks } from './ui/progress-renderer.js';
+import { renderRaces, setupRaceRendererCallbacks } from './ui/race-renderer.js';
+import { renderPlannerGrid, cellKey, setupPlannerRendererCallbacks } from './ui/planner-renderer.js';
+import { initChangelog } from './ui/changelog-renderer.js';
+import { openChangelogModal, closeChangelogModal, filterChangelog } from './ui/changelog-modal.js';
+import { openOverviewModal, closeOverviewModal, setupOverviewCallbacks } from './ui/overview-modal.js';
 
 // ============================================================================
 // Discord Contact Function (preserved from original)

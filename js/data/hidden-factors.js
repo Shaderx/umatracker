@@ -43,26 +43,12 @@ import {
     getRacesForSeasonalAwakening 
 } from '../data/race-helpers.js';
 import { state } from '../core/state.js';
-import { getCurrentDb } from './race-data.js';
-import { loadHiddenFactorsEN } from './hidden-factors-en.js';
 
 /**
- * Loads hidden factors for the currently active database.
- * Returns EN (Trackblazer) factors when on the EN database,
- * JP factors when on the JP database.
- */
-export function loadHiddenFactors() {
-    if (getCurrentDb() === 'en') {
-        return loadHiddenFactorsEN();
-    }
-    return loadHiddenFactorsJP();
-}
-
-/**
- * Loads and returns all JP hidden factors
+ * Loads and returns all hidden factors
  * @returns {Array} Array of hidden factor objects
  */
-export function loadHiddenFactorsJP() {
+export function loadHiddenFactors() {
     return [
         {
             id: 'consecutive_run',

@@ -206,9 +206,9 @@ function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedF
             const showMoreBtn = document.createElement('button');
             showMoreBtn.className = 'show-more-factors' + (factorsExpanded ? ' expanded' : '');
             showMoreBtn.innerHTML = `
-                <span>${factorsExpanded ? 'Show Less' : `Show More (${notStartedCount} hidden)`}</span>
+                <span>${factorsExpanded ? '表示を減らす' : `さらに表示 (${notStartedCount}件)`}</span>
                 <span class="arrow">▼</span>
-                <br><span style="font-size: 0.8em; opacity: 0.8;">${factorsExpanded ? '表示を減らす' : `さらに表示 (${notStartedCount}件)`}</span>
+                <br><span style="font-size: 0.8em; opacity: 0.8;">${factorsExpanded ? 'Show Less' : `Show More (${notStartedCount} hidden)`}</span>
             `;
             showMoreBtn.onclick = () => {
                 if (toggleFactorsExpandedCallback) toggleFactorsExpandedCallback();

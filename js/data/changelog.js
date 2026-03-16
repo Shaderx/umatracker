@@ -17,7 +17,14 @@ window.changelogData = [
       {
         "category": "💄 Style",
         "items": [
-          "Convert Discord/Ko-fi button container to flex layout with responsive spacing"
+          "Convert Discord/Ko-fi button container to flex layout with responsive spacing",
+          "Swap all buttons to show Japanese text first, English second for consistent bilingual UI"
+        ]
+      },
+      {
+        "category": "♻️ Refactor",
+        "items": [
+          "Move all root-level JS files (app.js, races.js, races-en.js, changelog.js, hidden-factors-en.js) into js/ directory structure"
         ]
       }
     ]

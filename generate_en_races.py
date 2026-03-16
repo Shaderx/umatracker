@@ -175,7 +175,7 @@ def main():
         "count": len(output_races),
     }
 
-    out_path = SCRIPT_DIR / 'races-en.js'
+    out_path = SCRIPT_DIR / 'js' / 'data' / 'races-en.js'
     with open(out_path, 'w', encoding='utf-8') as f:
         f.write('window.RACES_EN = ')
         json.dump(output_races, f, indent=2, ensure_ascii=False)

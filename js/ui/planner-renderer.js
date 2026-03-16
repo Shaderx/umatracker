@@ -64,7 +64,7 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
                     </div>
                 `;
             } else {
-                slotBody = `<button class=\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\" ${hasAnyForSlot ? `onclick=\"window.openPickerFromPlanner('${month}','${half}')\"` : ''}>＋ Add / 追加</button>`;
+                slotBody = `<button class=\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\" ${hasAnyForSlot ? `onclick=\"window.openPickerFromPlanner('${month}','${half}')\"` : ''}>＋ 追加 / Add</button>`;
             }
             const isSummer = (month === 'July' || month === 'August');
             const isEmptySlot = !selectedId && !hasAnyForSlot;
@@ -80,7 +80,7 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             slots.push(`
                 <div class=\"planner-slot ${isEmptySlot ? 'disabled' : ''} ${isSummer ? 'summer' : ''} ${isSlotTrackedValue ? 'slot-tracked' : ''} ${hasMatchingRaces ? 'filter-match' : ''} year-${plannerYear}\">
                     <div class=\"planner-slot-head\"><span>${enShort[month] || month} ${half} / ${monthLabel(month)} ${halfLabel(half)}</span>${counterHtml}</div>
-                    <div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"window.openPickerFromPlanner('${month}','${half}')\\"` : ''}>＋ Add / 追加</button>`}</div>
+                    <div class=\"planner-slot-body\">${slotBody || `<button class=\\"planner-plus ${hasAnyForSlot ? '' : 'disabled'}\\" ${hasAnyForSlot ? `onclick=\\"window.openPickerFromPlanner('${month}','${half}')\\"` : ''}>＋ 追加 / Add</button>`}</div>
                 </div>
             `);
             slotIndex++;

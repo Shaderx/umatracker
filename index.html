@@ -28,10 +28,10 @@
 
     <div class="discord-contact">
         <button class="discord-btn" onclick="contactOnDiscord()" title="Join Discord server for updates, bugs, and features">
-            💬 <span class="discord-text">Join Discord for updates, bug reports & feature requests<br><span style="font-size: 0.8em; opacity: 0.8;">アップデート、バグ報告、機能リクエストはDiscordで</span></span>
+            💬 <span class="discord-text">アップデート、バグ報告、機能リクエストはDiscordで<br><span style="font-size: 0.8em; opacity: 0.8;">Join Discord for updates, bug reports & feature requests</span></span>
         </button>
         <a class="kofi-btn" href="https://ko-fi.com/umatracker" target="_blank" rel="noopener noreferrer" title="Support on Ko-fi">
-            ☕ <span class="kofi-text">Support on Ko-fi<br><span style="font-size: 0.8em; opacity: 0.8;">Ko-fiで応援する</span></span>
+            ☕ <span class="kofi-text">Ko-fiで応援する<br><span style="font-size: 0.8em; opacity: 0.8;">Support on Ko-fi</span></span>
         </a>
     </div>
 
@@ -74,7 +74,7 @@
                     <button class="year-tab" id="tab-classics" data-year="classics">クラシック級<br><span style="font-size: 0.8em; font-weight:600;">Classic</span></button>
                     <button class="year-tab" id="tab-senior" data-year="senior">シニア級<br><span style="font-size: 0.8em; font-weight:600;">Senior</span></button>
                     <div style="margin-left:auto; display:flex; gap:8px;">
-                        <button class="filter-btn overview-btn" id="overview-btn">📋 Overview<br><span style="font-size: 0.8em; font-weight:600;">一覧表示</span></button>
+                        <button class="filter-btn overview-btn" id="overview-btn">📋 一覧表示<br><span style="font-size: 0.8em; font-weight:600;">Overview</span></button>
                         <button class="filter-btn" id="clear-planner-year-btn">このページをリセット<br><span style="font-size: 0.8em; font-weight:600;">Reset this page</span></button>
                     </div>
                 </div>
@@ -84,21 +84,21 @@
             <!-- Progress Section -->
             <div class="progress-section" id="progress-panel">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 10px;">
-                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Hidden Factors Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">隠し因子 進捗トラッカー</span></h2>
+                    <h2 class="section-title" style="margin-bottom: 0; flex: 1;">Progress Tracker<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">進捗トラッカー</span></h2>
                     <button class="btn btn-clear-tracking" id="clear-tracking-btn" onclick="tracker.handleTrackFactor(null)" style="display: none;" title="Clear tracking / 追跡解除">
-                        ✖ Clear<br><span style="font-size: 0.7em;">追跡解除</span>
+                        ✖ 追跡解除<br><span style="font-size: 0.7em;">Clear</span>
                     </button>
                 </div>
                 <!-- Storage Controls Toolbar -->
                 <div class="storage-toolbar">
                     <button class="btn-storage" id="btn-save" onclick="tracker.openSaveDialog()" title="Save / 保存">
-                        💾 <span class="btn-label">Save</span>
+                        💾 <span class="btn-label">保存<br><span style="font-size: 0.75em;">Save</span></span>
                     </button>
                     <button class="btn-storage" id="btn-load" onclick="tracker.openLoadDialog()" title="Load / 読み込み">
-                        📂 <span class="btn-label">Load</span>
+                        📂 <span class="btn-label">読込<br><span style="font-size: 0.75em;">Load</span></span>
                     </button>
                     <button class="btn-storage" id="btn-share" onclick="tracker.openShareDialog()" title="Share / 共有">
-                        🔗 <span class="btn-label">Share</span>
+                        🔗 <span class="btn-label">共有<br><span style="font-size: 0.75em;">Share</span></span>
                     </button>
                 </div>
                 <!-- Quick Stats Summary -->
@@ -122,34 +122,34 @@
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px;">
                 <h2 class="section-title" style="margin-bottom: 0;">Race Database<br><span style="font-size: 0.8em; font-weight: normal; color: #718096;">レースデータベース</span></h2>
                 <div class="db-toggle" id="db-toggle">
-                    <button class="db-toggle-btn active" data-db="jp" id="db-toggle-jp" title="Japanese version (402 races)">🇯🇵 JP<br><span style="font-size: 0.7em;">日本版</span></button>
-                    <button class="db-toggle-btn" data-db="en" id="db-toggle-en" title="Global version (376 races)">🌐 Global<br><span style="font-size: 0.7em;">グローバル版</span></button>
+                    <button class="db-toggle-btn active" data-db="jp" id="db-toggle-jp" title="Japanese version (402 races)">🇯🇵 日本版<br><span style="font-size: 0.7em;">JP</span></button>
+                    <button class="db-toggle-btn" data-db="en" id="db-toggle-en" title="Global version (376 races)">🌐 グローバル版<br><span style="font-size: 0.7em;">Global</span></button>
                 </div>
             </div>
             <div class="controls">
-                <button class="filter-btn active" data-filter="all" data-value="all">All Races<br><span style="font-size: 0.7em;">全レース</span></button>
+                <button class="filter-btn active" data-filter="all" data-value="all">全レース<br><span style="font-size: 0.7em;">All Races</span></button>
                 <button class="filter-btn" data-filter="GI" data-value="GI">G1</button>
                 <button class="filter-btn" data-filter="GII" data-value="GII">G2</button>
                 <button class="filter-btn" data-filter="GIII" data-value="GIII">G3</button>
                 <button class="filter-btn" data-filter="Open" data-value="Open">OP</button>
                 <button class="filter-btn" data-filter="Pre-OP" data-value="Pre-OP">Pre-OP</button>
-                <button class="filter-btn" data-filter="turf" data-value="turf">Turf<br><span style="font-size: 0.7em;">芝</span></button>
-                <button class="filter-btn" data-filter="dirt" data-value="dirt">Dirt<br><span style="font-size: 0.7em;">ダート</span></button>
-                <button class="filter-btn" data-filter="short" data-value="short">Short<br><span style="font-size: 0.7em;">短距離</span></button>
-                <button class="filter-btn" data-filter="mile" data-value="mile">Mile<br><span style="font-size: 0.7em;">マイル</span></button>
-                <button class="filter-btn" data-filter="medium" data-value="medium">Medium<br><span style="font-size: 0.7em;">中距離</span></button>
-                <button class="filter-btn" data-filter="long" data-value="long">Long<br><span style="font-size: 0.7em;">長距離</span></button>
-                <button class="filter-btn" data-filter="junior" data-value="junior">Junior Year<br><span style="font-size: 0.7em;">ジュニア級</span></button>
-                <button class="filter-btn" data-filter="classic" data-value="classic">Classic Year<br><span style="font-size: 0.7em;">クラシック級</span></button>
-                <button class="filter-btn" data-filter="senior" data-value="senior">Senior Year<br><span style="font-size: 0.7em;">シニア級</span></button>
-                <button class="filter-btn" data-filter="SSS" data-value="SSS">Summer Sprint<br><span style="font-size: 0.7em;">サマースプリント</span></button>
-                <button class="filter-btn" data-filter="SMS" data-value="SMS">Summer Mile<br><span style="font-size: 0.7em;">サマーマイル</span></button>
-                <button class="filter-btn" data-filter="S2000" data-value="S2000">Summer 2000<br><span style="font-size: 0.7em;">サマー2000</span></button>
-                <button class="filter-btn" id="tracked-filter-btn" data-filter="tracked" data-value="tracked" style="display: none;">🔍 Tracked<br><span style="font-size: 0.7em;">追跡中</span></button>
+                <button class="filter-btn" data-filter="turf" data-value="turf">芝<br><span style="font-size: 0.7em;">Turf</span></button>
+                <button class="filter-btn" data-filter="dirt" data-value="dirt">ダート<br><span style="font-size: 0.7em;">Dirt</span></button>
+                <button class="filter-btn" data-filter="short" data-value="short">短距離<br><span style="font-size: 0.7em;">Short</span></button>
+                <button class="filter-btn" data-filter="mile" data-value="mile">マイル<br><span style="font-size: 0.7em;">Mile</span></button>
+                <button class="filter-btn" data-filter="medium" data-value="medium">中距離<br><span style="font-size: 0.7em;">Medium</span></button>
+                <button class="filter-btn" data-filter="long" data-value="long">長距離<br><span style="font-size: 0.7em;">Long</span></button>
+                <button class="filter-btn" data-filter="junior" data-value="junior">ジュニア級<br><span style="font-size: 0.7em;">Junior Year</span></button>
+                <button class="filter-btn" data-filter="classic" data-value="classic">クラシック級<br><span style="font-size: 0.7em;">Classic Year</span></button>
+                <button class="filter-btn" data-filter="senior" data-value="senior">シニア級<br><span style="font-size: 0.7em;">Senior Year</span></button>
+                <button class="filter-btn" data-filter="SSS" data-value="SSS">サマースプリント<br><span style="font-size: 0.7em;">Summer Sprint</span></button>
+                <button class="filter-btn" data-filter="SMS" data-value="SMS">サマーマイル<br><span style="font-size: 0.7em;">Summer Mile</span></button>
+                <button class="filter-btn" data-filter="S2000" data-value="S2000">サマー2000<br><span style="font-size: 0.7em;">Summer 2000</span></button>
+                <button class="filter-btn" id="tracked-filter-btn" data-filter="tracked" data-value="tracked" style="display: none;">🔍 追跡中<br><span style="font-size: 0.7em;">Tracked</span></button>
             </div>
             <div class="controls controls-selection-row">
-                <button class="filter-btn" data-filter="selected" data-value="selected">Selected<br><span style="font-size: 0.7em;">選択済み</span></button>
-                <button class="filter-btn clear-all-btn" id="clear-all-btn" style="border-color: #e53e3e; background: white; color: #e53e3e;">Clear All Selection<br><span style="font-size: 0.7em;">全選択解除</span></button>
+                <button class="filter-btn" data-filter="selected" data-value="selected">選択済み<br><span style="font-size: 0.7em;">Selected</span></button>
+                <button class="filter-btn clear-all-btn" id="clear-all-btn" style="border-color: #e53e3e; background: white; color: #e53e3e;">全選択解除<br><span style="font-size: 0.7em;">Clear All Selection</span></button>
             </div>
             <div class="races-grid" id="races-grid"></div>
             <div style="margin-top: 12px; font-size: 0.8rem; color: #718096;"><span id="data-source-indicator"></span></div>
@@ -184,8 +184,8 @@
                     <button class="btn btn-secondary toggle-close-on-selection" id="toggle-close-btn" onclick="tracker.toggleCloseOnSelection()" title="Toggle close on selection">
                         <span class="toggle-icon"></span>
                         <div class="toggle-text">
-                            <div class="toggle-text-en">Auto-close</div>
                             <div class="toggle-text-jp">自動閉じる</div>
+                            <div class="toggle-text-en">Auto-close</div>
                         </div>
                     </button>
                 </div>
@@ -218,8 +218,8 @@
             <!-- Fixed Footer -->
             <div class="picker-actions">
                 <button class="btn btn-primary" onclick="tracker.closePicker()">
-                    <div class="btn-text-en">Done</div>
                     <div class="btn-text-jp">完了</div>
+                    <div class="btn-text-en">Done</div>
                 </button>
             </div>
             
@@ -254,7 +254,7 @@
         <div class="storage-backdrop" onclick="tracker.closeSaveDialog()"></div>
         <div class="storage-panel">
             <div class="storage-header">
-                <h3>💾 Save Progress / 進捗を保存</h3>
+                <h3>💾 進捗を保存 / Save Progress</h3>
                 <button class="close-btn" onclick="tracker.closeSaveDialog()">×</button>
             </div>
             <div class="storage-body">
@@ -268,7 +268,7 @@
         <div class="storage-backdrop" onclick="tracker.closeLoadDialog()"></div>
         <div class="storage-panel">
             <div class="storage-header">
-                <h3>📂 Load Progress / 進捗を読み込み</h3>
+                <h3>📂 進捗を読み込み / Load Progress</h3>
                 <button class="close-btn" onclick="tracker.closeLoadDialog()">×</button>
             </div>
             <div class="storage-body">
@@ -282,16 +282,16 @@
         <div class="storage-backdrop" onclick="tracker.closeShareDialog()"></div>
         <div class="storage-panel">
             <div class="storage-header">
-                <h3>🔗 Share Progress / 進捗を共有</h3>
+                <h3>🔗 進捗を共有 / Share Progress</h3>
                 <button class="close-btn" onclick="tracker.closeShareDialog()">×</button>
             </div>
             <div class="storage-body">
                 <div class="share-content">
-                    <p>Share this URL to let others see your race plan:</p>
                     <p>このURLを共有して、他の人にレース計画を見せましょう：</p>
+                    <p>Share this URL to let others see your race plan:</p>
                     <div class="share-url-container">
                         <input type="text" id="share-url-input" readonly />
-                        <button class="btn-copy" onclick="tracker.copyShareURL()">📋 Copy</button>
+                        <button class="btn-copy" onclick="tracker.copyShareURL()">📋 コピー<br><span style="font-size: 0.75em;">Copy</span></button>
                     </div>
                     <div class="share-stats">
                         <div>Races Run / 出走: <strong id="share-stat-races">0</strong></div>
@@ -308,16 +308,16 @@
         <div class="storage-backdrop" onclick="tracker.closeNameDialog()"></div>
         <div class="storage-panel naming-panel">
             <div class="storage-header">
-                <h3>✏️ Name Your Save / 保存に名前をつける</h3>
+                <h3>✏️ 保存に名前をつける / Name Your Save</h3>
                 <button class="close-btn" onclick="tracker.closeNameDialog()">×</button>
             </div>
             <div class="storage-body">
                 <div class="naming-content">
-                    <label class="naming-label">Save Name / 保存名:</label>
+                    <label class="naming-label">保存名 / Save Name:</label>
                     <input type="text" id="name-input" class="naming-input" maxlength="50" placeholder="My Epic Run..." />
                     <div class="naming-actions">
-                        <button class="btn btn-secondary" onclick="tracker.closeNameDialog()">Cancel / キャンセル</button>
-                        <button class="btn btn-primary" onclick="tracker.confirmSaveName()">Save / 保存</button>
+                        <button class="btn btn-secondary" onclick="tracker.closeNameDialog()">キャンセル / Cancel</button>
+                        <button class="btn btn-primary" onclick="tracker.confirmSaveName()">保存 / Save</button>
                     </div>
                 </div>
             </div>
@@ -329,7 +329,7 @@
         <div class="storage-backdrop" onclick="tracker.closeChangelogModal()"></div>
         <div class="storage-panel changelog-modal-panel">
             <div class="storage-header">
-                <h3>📜 Full Changelog History</h3>
+                <h3>📜 全更新履歴 / Full Changelog History</h3>
                 <button class="close-btn" onclick="tracker.closeChangelogModal()">×</button>
             </div>
             <div class="changelog-filter-bar">
@@ -349,15 +349,14 @@
     <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
     
     <!-- Race data -->
-    <script src="races.js"></script>
-    <script src="races-en.js"></script>
-    <script src="hidden-factors-en.js"></script>
+    <script src="js/data/races.js"></script>
+    <script src="js/data/races-en.js"></script>
     
     <!-- Changelog data -->
-    <script src="changelog.js"></script>
+    <script src="js/data/changelog.js"></script>
     
     <!-- New modular app (ES6 modules) -->
-    <script type="module" src="app.js?v=20251005181500"></script>
+    <script type="module" src="js/app.js?v=20251005181500"></script>
 </body>
 </html>
 

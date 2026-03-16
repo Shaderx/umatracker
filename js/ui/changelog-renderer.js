@@ -31,7 +31,7 @@ export function renderChangelog() {
     // Add fade overlay and "Show More" button if there are more entries
     if (changelogData.length > 1) {
         html += '<div class="changelog-fade-overlay"></div>';
-        html += '<button class="changelog-show-more" onclick="tracker.openChangelogModal()">Show Full History</button>';
+        html += '<button class="changelog-show-more" onclick="tracker.openChangelogModal()">全履歴を表示<br><span style="font-size: 0.8em;">Show Full History</span></button>';
     }
 
     html += '</div>';
