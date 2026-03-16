@@ -5,13 +5,29 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-03-16",
+    "changes": [
+      {
+        "category": "✨ Features",
+        "items": [
+          "Add Ko-fi support button alongside Discord button with matching glass-style design"
+        ]
+      },
+      {
+        "category": "💄 Style",
+        "items": [
+          "Convert Discord/Ko-fi button container to flex layout with responsive spacing"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-15",
     "changes": [
       {
         "category": "\u2728 Features",
         "items": [
           "Add Global (EN) race database with 376 races, with JP/EN toggle in Race Database section",
-          "Download EN race banner images locally for the global version",
           "Auto-clear all selections and planner data when switching between JP and EN databases",
           "Redesign Overview modal to match in-game layout (3 years side-by-side, 4 cells per row, summer highlights, race banners)"
         ]
