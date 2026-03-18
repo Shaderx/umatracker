@@ -1,9 +1,11 @@
 // js/storage/url-sharing.js
 import { state } from '../core/state.js';
 import { showToast } from '../core/utils.js';
+import { getCurrentDb, switchDatabase } from '../data/race-data.js';
 
 export function serializeState() {
     return {
+        db: getCurrentDb(),
         selected: Array.from(state.selectedRaces),
         won: Array.from(state.wonRaces),
         lost: Array.from(state.lostRaces),
@@ -22,6 +24,20 @@ export function deserializeState(obj) {
         if (obj.year) state.plannerYear = obj.year;
         state.trackedFactorId = obj.tracked || null;
     } catch {}
+}
+
+/**
+ * Switch to the database stored in a save payload and update the toggle UI.
+ * Call this BEFORE deserializeState so race data matches the IDs in the save.
+ */
+export function applySavedDb(obj) {
+    const db = obj?.db;
+    if (db && (db === 'jp' || db === 'en') && db !== getCurrentDb()) {
+        switchDatabase(db);
+        document.querySelectorAll('.db-toggle-btn').forEach(b => b.classList.remove('active'));
+        const target = document.querySelector(`.db-toggle-btn[data-db="${db}"]`);
+        if (target) target.classList.add('active');
+    }
 }
 
 export function buildShareURL() {
@@ -50,6 +66,7 @@ export function tryImportFromURL() {
 
         const obj = JSON.parse(json);
         console.log('✅ [URL IMPORT] Successfully parsed shared state');
+        applySavedDb(obj);
         deserializeState(obj);
         return true;
     } catch (e) {

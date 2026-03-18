@@ -102,16 +102,23 @@ export function updateAndRenderProgress(factorsExpanded, setTrackedFactorCallbac
 }
 
 function computeRewardTally(results) {
-    let statsTotal = 0;
+    let stats5 = 0;
+    let stats10 = 0;
+    let stats15 = 0;
     const hints = [];
     for (const f of results) {
         if (!f.result.completed) continue;
         const r = f.reward || '';
         const statsMatch = r.match(/random stats \+(\d+)/);
-        if (statsMatch) statsTotal += parseInt(statsMatch[1]);
+        if (statsMatch) {
+            const val = parseInt(statsMatch[1]);
+            if (val === 5) stats5++;
+            else if (val === 10) stats10++;
+            else if (val === 15) stats15++;
+        }
         if (r.includes('hint')) hints.push(r);
     }
-    return { statsTotal, hints };
+    return { stats5, stats10, stats15, hints };
 }
 
 function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedFactorCallback, toggleFactorsExpandedCallback, isEN, rewardTally) {
@@ -133,8 +140,16 @@ function renderFactorList(results, trackedFactorId, factorsExpanded, setTrackedF
         const hintHtml = rewardTally.hints.length
             ? rewardTally.hints.map(h => `<span class="tally-hint">${h}</span>`).join('')
             : '';
+        // Each reward is "2 random stats +X" - so multiply by 2 for total bonus
+        const totalBonus = (rewardTally.stats5 * 2 * 5) + (rewardTally.stats10 * 2 * 10) + (rewardTally.stats15 * 2 * 15);
+        const parts = [];
+        if (rewardTally.stats5 > 0) parts.push(`${rewardTally.stats5}×+5`);
+        if (rewardTally.stats10 > 0) parts.push(`${rewardTally.stats10}×+10`);
+        if (rewardTally.stats15 > 0) parts.push(`${rewardTally.stats15}×+15`);
+        const breakdownHtml = parts.length ? `<span class="tally-breakdown">(${parts.join(', ')})</span>` : '';
         tallyHtml = `<div class="reward-tally">
-            <span class="tally-stats">📊 2 random stats <strong>+${rewardTally.statsTotal}</strong></span>
+            <span class="tally-stats">📊 Random Stats <strong>+${totalBonus}</strong></span>
+            ${breakdownHtml}
             ${hintHtml}
         </div>`;
     }

@@ -83,13 +83,13 @@ header:hover .app-logo {
 }
 
 .discord-btn {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: rgba(88, 101, 242, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 2px solid rgba(88, 101, 242, 0.5);
-    color: #5865f2;
+    color: rgba(255, 255, 255, 0.95);
     padding: 12px 24px;
-    border-radius: 25px;
+    border-radius: 14px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
@@ -97,20 +97,15 @@ header:hover .app-logo {
     align-items: center;
     gap: 12px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-decoration: none;
 }
 
 .discord-btn:hover {
-    background: #ff9999;
-    color: white;
-    border-color: #ff9999;
+    background: rgba(88, 101, 242, 0.22);
+    border-color: rgba(88, 101, 242, 0.7);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 153, 153, 0.3);
-}
-
-.discord-btn:hover .discord-text strong {
-    color: #000000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 12px rgba(88, 101, 242, 0.25);
 }
 
 .discord-icon {
@@ -123,18 +118,18 @@ header:hover .app-logo {
 }
 
 .discord-text strong {
-    color: #5865f2;
+    color: rgba(255, 255, 255, 1);
     transition: color 0.3s ease;
 }
 
 .kofi-btn {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 94, 91, 0.5);
-    color: #ff5e5b;
+    background: rgba(230, 57, 70, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(230, 57, 70, 0.5);
+    color: rgba(255, 255, 255, 0.95);
     padding: 12px 24px;
-    border-radius: 25px;
+    border-radius: 14px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
@@ -142,16 +137,15 @@ header:hover .app-logo {
     align-items: center;
     gap: 12px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(255, 94, 91, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     text-decoration: none;
 }
 
 .kofi-btn:hover {
-    background: #ff5e5b;
-    color: white;
-    border-color: #ff5e5b;
+    background: rgba(230, 57, 70, 0.22);
+    border-color: rgba(230, 57, 70, 0.7);
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 94, 91, 0.35);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 12px rgba(230, 57, 70, 0.25);
 }
 
 .kofi-text {
@@ -551,38 +545,44 @@ h1 {
 .db-toggle {
     display: flex;
     gap: 4px;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 12px;
+    background: rgba(56, 161, 105, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 2px solid rgba(56, 161, 105, 0.5);
+    border-radius: 14px;
     padding: 4px;
+    align-self: center;
 }
 
 .db-toggle-btn {
-    padding: 8px 18px;
+    padding: 8px 16px;
     border: 2px solid transparent;
     background: transparent;
-    color: #667eea;
+    color: rgba(255, 255, 255, 0.85);
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-align: center;
     line-height: 1.2;
 }
 
 .db-toggle-btn:hover {
-    background: rgba(102, 126, 234, 0.15);
+    background: rgba(56, 161, 105, 0.18);
+    border-color: rgba(56, 161, 105, 0.4);
 }
 
 .db-toggle-btn.active {
-    background: #667eea;
+    background: rgba(56, 161, 105, 0.7);
     color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(56, 161, 105, 0.25);
+    border-color: rgba(56, 161, 105, 0.6);
 }
 
 .db-toggle-btn.active[data-db="en"] {
-    background: #38a169;
-    box-shadow: 0 2px 8px rgba(56, 161, 105, 0.3);
+    background: rgba(56, 161, 105, 0.75);
+    box-shadow: 0 2px 8px rgba(56, 161, 105, 0.35);
 }
 
 .filter-btn {

@@ -3943,7 +3943,7 @@ window.RACES = [
   },
   {
     "id": 220,
-    "name": "Kyoto Kinen",
+    "name": "Kyoto Kimpai",
     "nameJP": "京都金杯",
     "type": "GIII",
     "length": "1600",
@@ -3961,7 +3961,7 @@ window.RACES = [
   },
   {
     "id": 221,
-    "name": "Nakayama Kinen",
+    "name": "Nakayama Kimpai",
     "nameJP": "中山金杯",
     "type": "GIII",
     "length": "2000",
@@ -7237,7 +7237,7 @@ window.RACES = [
   }
 ];
 window.RACES_META = {
-  "generatedAt": "2026-03-13T09:21:35.729459+00:00",
+  "generatedAt": "2026-03-18T11:44:01.636408+00:00",
   "source": "RaceComplete.csv",
   "count": 402
 };

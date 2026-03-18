@@ -7,6 +7,7 @@ import { lockBodyScroll, unlockBodyScroll } from './scroll-lock.js';
 import { buildShareURL, serializeState } from '../storage/url-sharing.js';
 import { renderSaveSlotsUI, renderLoadSlotsUI } from '../storage/storage-manager.js';
 import { loadHiddenFactors } from '../data/hidden-factors.js';
+import { getCurrentDb } from '../data/race-data.js';
 
 /**
  * Open save dialog
@@ -147,7 +148,7 @@ export function confirmSaveName(slot, onComplete) {
         return;
     }
     
-    const key = `umatracker_slot_${slot}`;
+    const key = `umatracker_slot_${getCurrentDb()}_${slot}`;
     const payload = serializeState();
     if (name) payload.name = name;
     localStorage.setItem(key, JSON.stringify(payload));

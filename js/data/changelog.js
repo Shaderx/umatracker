@@ -5,6 +5,47 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-03-18",
+    "changes": [
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Fix EN epithet tracking (magnifying glass) not highlighting races in planner and race database - was always using JP data instead of active DB",
+          "Fix consecutive race counter not carrying streak across year boundaries (Junior→Classics→Senior)",
+          "Fix Globe-Trotter epithet missing Japan Cup; now counts per year (win both years = 2)",
+          "Fix summer filters (SSS/SMS/S2000) not toggling off when clicked again",
+          "Fix 'Clear All Selection' button causing all planner slots to highlight orange",
+          "Fix 'All Races' button text flipping to English-first after clicking (now stays JP-first)"
+        ]
+      },
+      {
+        "category": "✨ Features",
+        "items": [
+          "Make Legendary epithet trackable with context-aware race highlighting (picks Stunning or Lady path based on progress)",
+          "Database-locked save system: JP and Global saves are now separate (6 slots each)",
+          "URL-shared saves now auto-switch to the correct database (JP/Global) on import",
+          "Legacy saves automatically migrated to JP-prefixed slots on first load"
+        ]
+      },
+      {
+        "category": "💄 Style",
+        "items": [
+          "Move JP/Global database toggle from Race Database section to header for better visibility",
+          "Redesign Discord and Ko-fi buttons with glass-style transparency",
+          "Redesign DB toggle with green glass-style to match header aesthetic",
+          "Improved reward tally breakdown showing individual +5/+10/+15 counts and total bonus"
+        ]
+      },
+      {
+        "category": "📦 Other",
+        "items": [
+          "Fix race names: Kyoto Kinen → Kyoto Kimpai, Nakayama Kinen → Nakayama Kimpai",
+          "Remove unused Python generator scripts (generate_en_factors.py, generate_en_races.py)"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-16",
     "changes": [
       {

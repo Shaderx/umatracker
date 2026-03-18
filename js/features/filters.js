@@ -5,7 +5,6 @@
 
 import { state } from '../core/state.js';
 import { getTrackedFactorRaceIds } from './tracking.js';
-import { loadHiddenFactors } from '../data/hidden-factors.js';
 
 /**
  * Filter configuration - defines which filters belong to which groups
@@ -29,6 +28,7 @@ export const filterGroups = {
 export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerGrid) {
     const target = e.currentTarget || e.target;
     const filter = target?.dataset?.value;
+    if (!filter) return;
 
     // Special handling for 'all' - clear all filters
     if (filter === 'all') {
@@ -39,7 +39,7 @@ export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerG
         });
         target.classList.add('active');
         // Change text back to "All Races" when clicked
-        target.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
+        target.innerHTML = '全レース<br><span style="font-size: 0.7em;">All Races</span>';
         renderRaces();
         renderPlannerGrid();
         return;
@@ -50,7 +50,7 @@ export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerG
     if (allBtn) {
         allBtn.classList.remove('active');
         // Change text to "Clear Filters" when other filters are active
-        allBtn.innerHTML = 'Clear Filters<br><span style="font-size: 0.7em;">フィルター解除</span>';
+        allBtn.innerHTML = 'フィルター解除<br><span style="font-size: 0.7em;">Clear Filters</span>';
     }
 
     // Find which group this filter belongs to
@@ -85,7 +85,7 @@ export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerG
         if (allBtn) {
             allBtn.classList.add('active');
             // Ensure text shows "All Races" when no filters are active
-            allBtn.innerHTML = 'All Races<br><span style="font-size: 0.7em;">全レース</span>';
+            allBtn.innerHTML = '全レース<br><span style="font-size: 0.7em;">All Races</span>';
         }
     }
 
@@ -100,7 +100,9 @@ export function handleFilterClick(e, currentFilters, renderRaces, renderPlannerG
  * @param {Object} filterGroups - Filter group configuration
  */
 function handleSummerFilter(filter, currentFilters, filterGroups) {
-    // Clear all filters except summer ones
+    const wasActive = currentFilters.has(filter);
+
+    // Clear all filters and CSS
     currentFilters.clear();
     document.querySelectorAll('.filter-btn[data-filter]').forEach(b => {
         if (!filterGroups.summer.includes(b.dataset.filter) && b.dataset.filter !== 'all') {
@@ -109,22 +111,11 @@ function handleSummerFilter(filter, currentFilters, filterGroups) {
         b.classList.remove('summer-active');
     });
 
-    // Toggle this summer filter
-    if (currentFilters.has(filter)) {
-        currentFilters.delete(filter);
-        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active', 'summer-active');
-    } else {
-        // Clear other summer filters (exclusive within summer group)
-        filterGroups.summer.forEach(f => {
-            currentFilters.delete(f);
-            const btn = document.querySelector(`.filter-btn[data-value="${f}"]`);
-            if (btn) {
-                btn.classList.remove('active');
-                btn.classList.remove('summer-active');
-            }
-        });
+    if (!wasActive) {
         currentFilters.add(filter);
         document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.add('active', 'summer-active');
+    } else {
+        document.querySelector(`.filter-btn[data-value="${filter}"]`).classList.remove('active', 'summer-active');
     }
 }
 
@@ -265,7 +256,7 @@ export function raceMatchesFilters(race, currentFilters) {
             }
             case 'selected': if (!state.selectedRaces.has(String(race.id))) return false; break;
             case 'tracked': {
-                const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
+                const trackedIds = getTrackedFactorRaceIds(state, null);
                 if (!trackedIds.has(String(race.id))) return false;
                 break;
             }

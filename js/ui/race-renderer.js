@@ -3,7 +3,6 @@
 
 import { state } from '../core/state.js';
 import { getTrackedFactorRaceIds } from '../features/tracking.js';
-import { loadHiddenFactors } from '../data/hidden-factors.js';
 import { syncProgressHeightToPlanner } from './progress-renderer.js';
 
 /**
@@ -124,7 +123,7 @@ export function getFilteredRaces() {
                 }
                 case 'selected': return state.selectedRaces.has(String(race.id));
                 case 'tracked': {
-                    const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
+                    const trackedIds = getTrackedFactorRaceIds(state, null);
                     return trackedIds.has(String(race.id));
                 }
                 case 'turf': return race.surface === 'turf';

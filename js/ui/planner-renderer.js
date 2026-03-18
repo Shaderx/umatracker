@@ -3,7 +3,6 @@
 
 import { state } from '../core/state.js';
 import { isSlotTracked, getTrackedFactorRaceIds } from '../features/tracking.js';
-import { loadHiddenFactors } from '../data/hidden-factors.js';
 import { syncProgressHeightToPlanner } from './progress-renderer.js';
 
 /**
@@ -35,7 +34,7 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
             const rawValue = yearCells[key];
             const hasAnyForSlot = state.races.some(r => r.month === month && r.half === half && !!r[plannerYear]);
             const selectedId = (typeof rawValue === 'string' && rawValue) ? String(rawValue) : null;
-            const isSlotTrackedValue = isSlotTracked(month, half, plannerYear, state, loadHiddenFactors(), state.raceById);
+            const isSlotTrackedValue = isSlotTracked(month, half, plannerYear, state, null, state.raceById);
             let slotBody = '';
             
             const hasMatchingRaces = state.currentFilters.size > 0 && state.races.some(r => {
@@ -91,14 +90,36 @@ export function renderPlannerGrid(plannerYear, raceMatchesFiltersFn, openPickerF
 }
 
 /**
+ * Get the trailing streak of consecutive filled slots at the end of a year.
+ */
+function getTrailingStreakFromYear(yearKey) {
+    const yearCells = state.plannerData[yearKey] || {};
+    const slots = [];
+    state.monthOrder.forEach(month => {
+        state.halfOrder.forEach(half => {
+            const raw = yearCells[cellKey(month, half)];
+            slots.push(typeof raw === 'string' && !!raw);
+        });
+    });
+    let streak = 0;
+    for (let i = slots.length - 1; i >= 0 && slots[i]; i--) {
+        streak++;
+    }
+    return streak;
+}
+
+/**
  * Compute consecutive race counts for a given planner year.
  * Returns an array of 24 values (one per slot). 0 = empty, 1+ = position in streak.
+ * Carries the streak across from the previous year (junior→classics→senior).
  */
 export function computeConsecutiveCounts(plannerYear) {
     const yearCells = state.plannerData[plannerYear] || {};
     const counts = [];
-    let streak = 0;
-    const streakStartIndices = [];
+
+    const yearOrder = ['junior', 'classics', 'senior'];
+    const yearIndex = yearOrder.indexOf(plannerYear);
+    let streak = yearIndex > 0 ? getTrailingStreakFromYear(yearOrder[yearIndex - 1]) : 0;
 
     state.monthOrder.forEach(month => {
         state.halfOrder.forEach(half => {

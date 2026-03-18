@@ -20,7 +20,7 @@ import {
     switchDatabase,
     getCurrentDb
 } from './data/race-data.js';
-import { loadHiddenFactors } from './data/hidden-factors.js';
+
 
 // Import Feature Modules
 import {
@@ -67,8 +67,8 @@ import {
     closeNameDialog,
     confirmSaveName
 } from './features/modal-manager.js';
-import { buildShareURL, tryImportFromURL, serializeState, deserializeState } from './storage/url-sharing.js';
-import { renderSaveSlotsUI, renderLoadSlotsUI } from './storage/storage-manager.js';
+import { buildShareURL, tryImportFromURL, serializeState, deserializeState, applySavedDb } from './storage/url-sharing.js';
+import { renderSaveSlotsUI, renderLoadSlotsUI, migrateLegacySaves } from './storage/storage-manager.js';
 
 // Import UI Modules
 import { updateAndRenderProgress, setupProgressRendererCallbacks } from './ui/progress-renderer.js';
@@ -133,8 +133,11 @@ class UmaMusumeTracker {
     async initialize() {
         // Load race data
         await initializeRaceData();
+
+        // Migrate old DB-agnostic saves to JP-prefixed keys
+        migrateLegacySaves();
         
-        // Import from URL share if present
+        // Import from URL share if present (handles DB switching internally)
         tryImportFromURL?.();
         
         // Bridge progress panel track button → handler
@@ -271,12 +274,11 @@ class UmaMusumeTracker {
     }
     
     renderRaces() {
-        const hiddenFactors = loadHiddenFactors();
         renderRaces(
             state.selectedRaces,
             state.wonRaces,
             state.lostRaces,
-            (raceId) => isRaceTracked(String(raceId), state, hiddenFactors),
+            (raceId) => isRaceTracked(String(raceId), state, null),
             (raceId) => isPlannedAnywhere(String(raceId)),
             (raceId) => this.handleToggleParticipation(raceId),
             (raceId) => this.handleToggleWin(raceId)
@@ -419,11 +421,12 @@ class UmaMusumeTracker {
     
     openLoadDialog() {
         openLoadDialog((slot) => {
-            const key = `umatracker_slot_${slot}`;
+            const key = `umatracker_slot_${getCurrentDb()}_${slot}`;
             const data = localStorage.getItem(key);
             if (!data) return;
             try {
                 const obj = JSON.parse(data);
+                applySavedDb(obj);
                 deserializeState(obj);
                 this.renderPlannerGrid();
                 this.renderRaces();

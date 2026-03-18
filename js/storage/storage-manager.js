@@ -1,11 +1,39 @@
 // js/storage/storage-manager.js
 import { serializeState } from './url-sharing.js';
+import { getCurrentDb } from '../data/race-data.js';
+
+function slotKey(n) {
+    return `umatracker_slot_${getCurrentDb()}_${n}`;
+}
+
+/**
+ * Migrate old DB-agnostic saves (umatracker_slot_1..6) to JP-prefixed keys.
+ * Runs once; safe to call multiple times.
+ */
+export function migrateLegacySaves() {
+    for (let n = 1; n <= 6; n++) {
+        const oldKey = `umatracker_slot_${n}`;
+        const data = localStorage.getItem(oldKey);
+        if (!data) continue;
+        const jpKey = `umatracker_slot_jp_${n}`;
+        if (!localStorage.getItem(jpKey)) {
+            try {
+                const obj = JSON.parse(data);
+                obj.db = 'jp';
+                localStorage.setItem(jpKey, JSON.stringify(obj));
+            } catch {
+                localStorage.setItem(jpKey, data);
+            }
+        }
+        localStorage.removeItem(oldKey);
+    }
+}
 
 export function renderSaveSlotsUI(grid, onRename, onSaved) {
     if (!grid) return;
     const slots = Array.from({ length: 6 }, (_, i) => i + 1);
     grid.innerHTML = slots.map(n => {
-        const key = `umatracker_slot_${n}`;
+        const key = slotKey(n);
         const data = localStorage.getItem(key);
         let name = '';
         if (data) { try { const obj = JSON.parse(data); name = obj.name || ''; } catch {} }
@@ -20,7 +48,7 @@ export function renderSaveSlotsUI(grid, onRename, onSaved) {
         const rename = e.target.closest('.btn-rename-slot');
         if (!card && !del && !rename) return;
         const slot = Number((card || del || rename).dataset.slot);
-        const key = `umatracker_slot_${slot}`;
+        const key = slotKey(slot);
         if (del) {
             localStorage.removeItem(key);
             renderSaveSlotsUI(grid, onRename, onSaved);
@@ -42,7 +70,7 @@ export function renderLoadSlotsUI(grid, onLoaded) {
     if (!grid) return;
     const slots = Array.from({ length: 6 }, (_, i) => i + 1);
     grid.innerHTML = slots.map(n => {
-        const key = `umatracker_slot_${n}`;
+        const key = slotKey(n);
         const data = localStorage.getItem(key);
         let name = '';
         if (data) { try { const obj = JSON.parse(data); name = obj.name || ''; } catch {} }
@@ -58,5 +86,3 @@ export function renderLoadSlotsUI(grid, onLoaded) {
         onLoaded?.(slot);
     };
 }
-
-

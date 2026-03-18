@@ -277,11 +277,16 @@ const EPITHETS = [
     {
         id: 'globe_trotter',
         name: 'Globe-Trotter',
-        condition: "Win 3 races that include a country's name in their title",
+        condition: "Win 3 races that include a country's name in their title (Japan Cup counts per year)",
         reward: '2 random stats +5',
         trackable: true,
-        check: () => result(countWonFromSet(COUNTRY_NAMES), 3, 'Saudi Arabia Royal Cup, New Zealand Trophy, American JCC'),
-        getRaces: () => getRacesByNames(COUNTRY_NAMES)
+        check: () => {
+            const countryWins = countWonFromSet(COUNTRY_NAMES);
+            const japanCupWins = wonRaces().filter(r => r.name.includes('Japan Cup')).length;
+            return result(countryWins + japanCupWins, 3,
+                `Country races: ${countryWins}/3 | Japan Cup: ${japanCupWins}/2`);
+        },
+        getRaces: () => getRacesByNames([...COUNTRY_NAMES, 'Japan Cup'])
     },
     {
         id: 'umatastic',
@@ -546,7 +551,7 @@ const EPITHETS = [
         condition: 'Get Stunning or Lady epithet; Get Spring Champion and Fall Champion epithets',
         reward: 'Homestretch Haste hint +1',
         prereqs: ['stunning', 'lady', 'spring_champion', 'fall_champion'],
-        trackable: false,
+        trackable: true,
         check: () => {
             const stunOrLady = getEpithetResult('stunning').completed || getEpithetResult('lady').completed;
             const spring = getEpithetResult('spring_champion').completed;
@@ -555,6 +560,26 @@ const EPITHETS = [
             return result(current, 3,
                 `Stunning/Lady: ${stunOrLady ? '✓' : '✗'} | Spring: ${spring ? '✓' : '✗'} | Fall: ${fall ? '✓' : '✗'}`
             );
+        },
+        getRaces: () => {
+            const springFall = ['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen',
+                                'Tenno Sho (Autumn)', 'Japan Cup', 'Arima Kinen'];
+            const stunningRaces = ['Satsuki Sho', 'Tokyo Yushun', 'Kikuka Sho'];
+            const ladyRaces = ['Oka Sho', 'Japanese Oaks', 'Shuka Sho'];
+
+            const stunDone = getEpithetResult('stunning').completed;
+            const ladyDone = getEpithetResult('lady').completed;
+
+            if (stunDone && !ladyDone) return getRacesByNames([...springFall, ...stunningRaces]);
+            if (ladyDone && !stunDone) return getRacesByNames([...springFall, ...ladyRaces]);
+
+            const stunProgress = countWonFromSet(stunningRaces);
+            const ladyProgress = countWonFromSet(ladyRaces);
+
+            if (stunProgress > ladyProgress) return getRacesByNames([...springFall, ...stunningRaces]);
+            if (ladyProgress > stunProgress) return getRacesByNames([...springFall, ...ladyRaces]);
+
+            return getRacesByNames([...springFall, ...stunningRaces, ...ladyRaces]);
         }
     }
 ];

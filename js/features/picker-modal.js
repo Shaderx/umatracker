@@ -6,7 +6,6 @@ import { cellKey } from '../ui/planner-renderer.js';
 import { planRaceIntoPlanner } from './planner.js';
 import { lockBodyScroll, unlockBodyScroll } from './scroll-lock.js';
 import { getTrackedFactorRaceIds } from './tracking.js';
-import { loadHiddenFactors } from '../data/hidden-factors.js';
 import { raceMatchesFilters } from './filters.js';
 
 export function pickerOpen(t, month, half) {
@@ -244,7 +243,7 @@ export function renderPickerCard(t, position, slot) {
     const tmap = state.translations;
 
     const available = state.races.filter(r => r.month === month && r.half === half && r[year || state.plannerYear]);
-    const trackedIds = getTrackedFactorRaceIds(state, loadHiddenFactors());
+    const trackedIds = getTrackedFactorRaceIds(state, null);
     const yearToUse = year || state.plannerYear;
     const cellValue = state.plannerData[yearToUse][cellKey(month, half)];
     listEl.innerHTML = available.map(r => {
