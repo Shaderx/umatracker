@@ -125,7 +125,29 @@ function getRacesBySurfaceCategories(surface, categories) {
     );
 }
 
-const COUNTRY_NAMES = ['Saudi Arabia', 'New Zealand', 'American'];
+const GLOBE_TROTTER_RACES = [
+    'Saudi Arabia Royal Cup', 'New Zealand Trophy', 'Japan Cup',
+    'Japan Dirt Derby', 'Copa Republica Argentina', 'Brazil Cup'
+];
+
+function checkAllWonInSameYear(raceNames) {
+    let bestCount = 0;
+    let bestYear = null;
+    for (const yearKey of ['classics', 'senior']) {
+        const cells = state.plannerData[yearKey] || {};
+        let count = 0;
+        for (const name of raceNames) {
+            const found = Object.values(cells).some(rId => {
+                if (!rId) return false;
+                const r = state.raceById?.get(String(rId));
+                return r && r.name.includes(name) && state.wonRaces.has(String(rId));
+            });
+            if (found) count++;
+        }
+        if (count > bestCount) { bestCount = count; bestYear = yearKey; }
+    }
+    return { completed: bestCount >= raceNames.length, bestCount, bestYear };
+}
 
 // ── Simple result builder ────────────────────────────────────────────
 
@@ -277,16 +299,11 @@ const EPITHETS = [
     {
         id: 'globe_trotter',
         name: 'Globe-Trotter',
-        condition: "Win 3 races that include a country's name in their title (Japan Cup counts per year)",
+        condition: 'Win 3 of: Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup',
         reward: '2 random stats +5',
         trackable: true,
-        check: () => {
-            const countryWins = countWonFromSet(COUNTRY_NAMES);
-            const japanCupWins = wonRaces().filter(r => r.name.includes('Japan Cup')).length;
-            return result(countryWins + japanCupWins, 3,
-                `Country races: ${countryWins}/3 | Japan Cup: ${japanCupWins}/2`);
-        },
-        getRaces: () => getRacesByNames([...COUNTRY_NAMES, 'Japan Cup'])
+        check: () => result(countWonFromSet(GLOBE_TROTTER_RACES), 3),
+        getRaces: () => getRacesByNames(GLOBE_TROTTER_RACES)
     },
     {
         id: 'umatastic',
@@ -406,19 +423,27 @@ const EPITHETS = [
     {
         id: 'spring_champion',
         name: 'Spring Champion',
-        condition: 'Win Osaka Hai, Tenno Sho (Spring), and Takarazuka Kinen',
+        condition: 'Win Osaka Hai, Tenno Sho (Spring), and Takarazuka Kinen. Must complete all in the same year (Classic or Senior).',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen']), 3),
+        check: () => {
+            const names = ['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'];
+            const r = checkAllWonInSameYear(names);
+            return result(r.bestCount, 3, `Best year: ${r.bestYear || '—'} (${r.bestCount}/3)`);
+        },
         getRaces: () => getRacesByNames(['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'])
     },
     {
         id: 'fall_champion',
         name: 'Fall Champion',
-        condition: 'Win Tenno Sho (Autumn), Japan Cup, and Arima Kinen',
+        condition: 'Win Tenno Sho (Autumn), Japan Cup, and Arima Kinen. Must complete all in the same year (Classic or Senior).',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Tenno Sho (Autumn)', 'Japan Cup', 'Arima Kinen']), 3),
+        check: () => {
+            const names = ['Tenno Sho (Autumn)', 'Japan Cup', 'Arima Kinen'];
+            const r = checkAllWonInSameYear(names);
+            return result(r.bestCount, 3, `Best year: ${r.bestYear || '—'} (${r.bestCount}/3)`);
+        },
         getRaces: () => getRacesByNames(['Tenno Sho (Autumn)', 'Japan Cup', 'Arima Kinen'])
     },
     {

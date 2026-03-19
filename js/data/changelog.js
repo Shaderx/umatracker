@@ -5,6 +5,25 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-03-19",
+    "changes": [
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Fall Champion and Spring Champion (Global epithets): all three races must be won in the same year (Classic or Senior); mixed-year wins no longer count",
+          "Globe-Trotter: only six named international races count; win any three (Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup)"
+        ]
+      },
+      {
+        "category": "💄 Style",
+        "items": [
+          "Race picker modal: flex layout for swipe/pagination bar so list content is not cut off by the bottom nav",
+          "Race picker: redesigned as tappable banner cards (16:9 image, gradient name overlay, grade pill, detail pills); 2-column grid on desktop, 1 column on mobile"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-18",
     "changes": [
       {
@@ -12,7 +31,6 @@ window.changelogData = [
         "items": [
           "Fix EN epithet tracking (magnifying glass) not highlighting races in planner and race database - was always using JP data instead of active DB",
           "Fix consecutive race counter not carrying streak across year boundaries (Junior→Classics→Senior)",
-          "Fix Globe-Trotter epithet missing Japan Cup; now counts per year (win both years = 2)",
           "Fix summer filters (SSS/SMS/S2000) not toggling off when clicked again",
           "Fix 'Clear All Selection' button causing all planner slots to highlight orange",
           "Fix 'All Races' button text flipping to English-first after clicking (now stays JP-first)"

@@ -1219,12 +1219,10 @@ h1 {
 }
 .picker-body { 
     padding: 12px 16px; 
-    padding-bottom: 72px; /* Space for pagination dots on desktop */
     overflow-y: auto;
     overflow-x: hidden;
     flex: 1;
     min-height: 0;
-    height: 100%; /* Fill the card height */
 }
 .picker-actions { 
     padding: 10px 16px; 
@@ -1261,71 +1259,168 @@ h1 {
 }
 .btn-primary { background: #38a169; color: #fff; border-color: #38a169; }
 .btn-secondary { background: #edf2f7; color: #2d3748; border-color: #cbd5e0; }
-.picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 10px; }
-.picker-item { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; display: flex; flex-direction: row; align-items: stretch; background: #fff; cursor: pointer; padding: 8px; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
-.picker-item:hover { background: #f7fafc; }
-.picker-item.selected { outline: 3px solid #38a169; }
-.picker-item.picker-item-tracked { background: #e6f7ff; border-color: #1890ff; }
-.picker-item.picker-item-tracked h4::before { content: "📍 "; }
-.picker-item.picker-item-filtered { background: #f0f9ff; border-color: #0ea5e9; position: relative; }
-.picker-item.picker-item-filtered::after {
-    content: "📅";
-    position: absolute;
-    bottom: 8px;
-    left: 8px;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2px 4px;
-    border-radius: 4px;
-    border: 1px solid #0ea5e9;
+/* Picker item grid */
+.picker-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
-.picker-item img { max-width: 50%; height: 100%; flex-shrink: 0; object-fit: cover; border-radius: 6px; background:#edf2f7; border:1px solid #e2e8f0; align-self: stretch; }
-.picker-item h4 { font-size: 0.8rem; font-weight: bold; color: #2d3748; margin-bottom: 2px; }
-.picker-item .sub { font-size: 0.65rem; font-weight: 600; color: #4a5568; }
 
-/* Match race database styling in modal picker */
-.picker-item-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding-left: 12px;
+/* Banner card picker items */
+.picker-item {
+    position: relative;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    background: #f7fafc;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.picker-item-header {
-    margin-bottom: 6px;
+
+.picker-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
-.picker-item-info {
-    flex: 1;
+
+.picker-item:active {
+    transform: scale(0.98);
 }
-.picker-item .race-name {
-    flex: 1;
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+
+/* Banner image */
+.picker-item-banner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
 }
-.picker-item .race-details {
+
+.picker-item-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Grade pill - top right of banner */
+.picker-item-grade {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 2px 8px;
+    border-radius: 6px;
     font-size: 0.65rem;
-    color: #718096;
-    margin-bottom: 2px;
-    text-align: right;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: #fff;
+    backdrop-filter: blur(4px);
+    z-index: 2;
 }
 
-/* Swipe Indicator */
-.picker-swipe-indicator {
-    display: flex; /* Show on all devices */
+/* Name overlay on banner */
+.picker-item-overlay {
     position: absolute;
-    bottom: 60px; /* Position above the picker-actions (60px min-height) */
+    bottom: 0;
     left: 0;
     right: 0;
-    padding: 10px 16px;
+    padding: 20px 8px 6px;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
+    z-index: 1;
+}
+
+.picker-item-name-en {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.picker-item-name-jp {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.2;
+}
+
+/* Detail pills row */
+.picker-item-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 6px 8px;
+}
+
+.picker-pill {
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    background: #edf2f7;
+    color: #4a5568;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+
+/* States */
+.picker-item.selected {
+    border-color: #38a169;
+    box-shadow: 0 0 0 2px rgba(56, 161, 105, 0.3), 0 4px 12px rgba(56, 161, 105, 0.15);
+}
+
+.picker-item.selected::before {
+    content: "✓";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 22px;
+    height: 22px;
+    background: #38a169;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    z-index: 3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.picker-item.picker-item-tracked {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.picker-item.picker-item-tracked::after {
+    content: "📍";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 0.85rem;
+    z-index: 3;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+.picker-item.picker-item-filtered {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
+}
+
+/* Swipe Indicator - flex flow instead of absolute */
+.picker-swipe-indicator {
+    display: flex;
+    flex-shrink: 0;
+    padding: 8px 16px;
     border-top: 1px solid #e2e8f0;
     background: rgba(247, 250, 252, 0.98);
     backdrop-filter: blur(10px);
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    z-index: 10;
-    min-height: 60px; /* Reduced for desktop */
+    gap: 6px;
 }
 
 .swipe-hint {
@@ -3002,13 +3097,9 @@ h1 {
     /* Modals mobile */
     .picker-panel {
         width: 95vw;
-        max-height: calc(85vh - 80px); /* Account for bottom nav buttons */
-        height: calc(85vh - 80px); /* Set explicit height to constrain carousel */
-    }
-    
-    /* Add padding to picker body to account for fixed swipe indicator */
-    .picker-card-current .picker-body {
-        padding-bottom: 100px; /* Space for swipe indicator + pagination */
+        max-height: 85vh;
+        height: 85vh;
+        margin-bottom: 80px;
     }
 
     .picker-list {
@@ -3016,57 +3107,13 @@ h1 {
         gap: 8px;
     }
 
-    .picker-item {
-        padding: 6px;
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-    }
-    
-    .picker-item img {
-        flex: 0 0 45%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 6px;
-        background:#edf2f7;
-        border:1px solid #e2e8f0;
-        align-self: stretch;
-    }
-    
-    .picker-item-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding-left: 12px;
-    }
-
-    .picker-item-header {
-        margin-bottom: 4px;
-    }
-    
-    .picker-item-info {
-        flex: 1;
-    }
-
-    .picker-item .race-name {
-        margin-bottom: 0;
-    }
-
-    .picker-item .race-details {
-        font-size: 0.6rem;
-        text-align: right;
-    }
+    .picker-item-name-en { font-size: 0.75rem; }
+    .picker-item-name-jp { font-size: 0.6rem; }
+    .picker-pill { font-size: 0.55rem; }
 
     /* Hide side navigation arrows on mobile */
     .picker-nav {
         display: none !important;
-    }
-
-    /* Show swipe indicator on mobile */
-    .picker-swipe-indicator {
-        display: flex !important;
-        min-height: 80px; /* Taller on mobile */
-        bottom: 0; /* Back to bottom on mobile since nav is outside panel */
     }
 
     /* Show swipe hint on mobile */
@@ -3483,25 +3530,14 @@ h1 {
 
     /* Picker panel adjustment for tablet */
     .picker-panel {
-        max-height: calc(80vh - 80px); /* Account for bottom nav buttons */
-        height: calc(80vh - 80px); /* Set explicit height to constrain carousel */
-    }
-    
-    /* Add padding to picker body to account for fixed swipe indicator */
-    .picker-card-current .picker-body {
-        padding-bottom: 100px; /* Space for swipe indicator + pagination */
+        max-height: 80vh;
+        height: 80vh;
+        margin-bottom: 80px;
     }
 
     /* Hide side navigation arrows on tablet */
     .picker-nav {
         display: none !important;
-    }
-
-    /* Show swipe indicator on tablet */
-    .picker-swipe-indicator {
-        display: flex !important;
-        min-height: 80px; /* Taller on tablet */
-        bottom: 0; /* Back to bottom on tablet since nav is outside panel */
     }
 
     /* Show swipe hint on tablet */

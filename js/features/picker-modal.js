@@ -249,40 +249,25 @@ export function renderPickerCard(t, position, slot) {
     listEl.innerHTML = available.map(r => {
         const selected = String(cellValue) === String(r.id);
         const tracked = trackedIds.has(String(r.id));
-        // Only highlight filtered races when filters are actually active (not "All Races")
         const filtered = state.currentFilters.size > 0 && raceMatchesFilters(r, state.currentFilters);
         const imageUrl = r.image || '';
+        const safeName = (r.name || '').replace(/"/g, '&quot;');
+        const surfaceLabel = `${tmap.surfaces[r.surface] || r.surface}`;
+        const dirLabel = r.direction ? ` ${tmap.directions[r.direction] || r.direction}` : '';
         return `
             <div class="picker-item ${selected ? 'selected' : ''} ${tracked ? 'picker-item-tracked' : ''} ${filtered ? 'picker-item-filtered' : ''}" data-race-id="${r.id}">
-                ${imageUrl ? `<img src="${imageUrl}" alt="${(r.name || '').replace(/"/g, '&quot;')}">` : ''}
-                <div class="picker-item-content">
-                    <div class="picker-item-header">
-                        <div class="race-name">
-                            <div class="race-name-en">${r.name}</div>
-                            <div class="race-name-jp">${r.nameJP}</div>
-                            <span class="race-grade grade-${r.type}">${r.type}</span>
-                        </div>
+                <div class="picker-item-banner">
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy">` : ''}
+                    <span class="picker-item-grade grade-${r.type}">${r.type}</span>
+                    <div class="picker-item-overlay">
+                        <div class="picker-item-name-en">${r.name}</div>
+                        <div class="picker-item-name-jp">${r.nameJP || ''}</div>
                     </div>
-                    <div class="picker-item-info">
-                        <div class="race-details">
-                            ${tmap.months[r.month] || r.month} ${tmap.halves[r.half] || r.half} / ${r.month} ${r.half}
-                        </div>
-                        <div class="race-details">
-                            ${r.racetrack}/${tmap.tracks[r.racetrack] || r.racetrack}
-                        </div>
-                        <div class="race-details">
-                            ${r.length} • ${r.surface}/${tmap.surfaces[r.surface] || r.surface}
-                            ${r.direction ? `• ${tmap.directions[r.direction]} / ${r.direction}` : ''}
-                            ${(() => {
-                                const years = [];
-                                if (r.junior) years.push('Junior');
-                                if (r.classics) years.push('Classic');
-                                if (r.senior) years.push('Senior');
-                                return years.length ? ` • ${years.join(' • ')}` : '';
-                            })()}
-                        </div>
-                        ${r.series ? `<div class="race-details">${r.series}</div>` : ''}
-                    </div>
+                </div>
+                <div class="picker-item-pills">
+                    <span class="picker-pill">${r.racetrack}</span>
+                    <span class="picker-pill">${r.length}m ${surfaceLabel}</span>
+                    ${dirLabel ? `<span class="picker-pill">${dirLabel}</span>` : ''}
                 </div>
             </div>
         `;
