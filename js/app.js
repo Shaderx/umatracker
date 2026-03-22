@@ -63,6 +63,9 @@ import {
     openShareDialog,
     closeShareDialog,
     copyShareURL,
+    toggleShareLanguage,
+    shareToTwitter,
+    copyDiscordMessage,
     openNameDialog,
     closeNameDialog,
     confirmSaveName
@@ -440,6 +443,9 @@ class UmaMusumeTracker {
     openShareDialog() { openShareDialog(); }
     closeShareDialog() { closeShareDialog(); }
     copyShareURL() { copyShareURL(); }
+    toggleShareLanguage() { toggleShareLanguage(); }
+    shareToTwitter() { shareToTwitter(); }
+    copyDiscordMessage() { copyDiscordMessage(); }
 
     // Naming dialog flow
     openNameDialog(slot) {

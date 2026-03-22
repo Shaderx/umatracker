@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZMGDSGP99"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-TZMGDSGP99');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏇 Uma Musume Hidden Factors Tracker</title>
@@ -215,22 +225,13 @@
                 </div>
             </div>
             
-            <!-- Fixed Footer -->
-            <div class="picker-actions">
-                <button class="btn btn-primary" onclick="tracker.closePicker()">
+            <!-- Pagination + Done -->
+            <div class="picker-swipe-indicator">
+                <div class="picker-pagination" id="picker-pagination"></div>
+                <button class="btn btn-primary picker-done-btn" onclick="tracker.closePicker()">
                     <div class="btn-text-jp">完了</div>
                     <div class="btn-text-en">Done</div>
                 </button>
-            </div>
-            
-            <!-- Swipe Indicator -->
-            <div class="picker-swipe-indicator">
-                <div class="swipe-hint">
-                    <span class="swipe-icon">←</span>
-                    <span class="swipe-text">Swipe</span>
-                    <span class="swipe-icon">→</span>
-                </div>
-                <div class="picker-pagination" id="picker-pagination"></div>
             </div>
         </div>
         <!-- Mobile Navigation Arrows -->
@@ -280,18 +281,36 @@
     <!-- Share Dialog Modal -->
     <div id="share-modal" class="storage-modal hidden">
         <div class="storage-backdrop" onclick="tracker.closeShareDialog()"></div>
-        <div class="storage-panel">
+        <div class="storage-panel share-panel">
             <div class="storage-header">
                 <h3>🔗 進捗を共有 / Share Progress</h3>
                 <button class="close-btn" onclick="tracker.closeShareDialog()">×</button>
             </div>
             <div class="storage-body">
                 <div class="share-content">
-                    <p>このURLを共有して、他の人にレース計画を見せましょう：</p>
-                    <p>Share this URL to let others see your race plan:</p>
                     <div class="share-url-container">
                         <input type="text" id="share-url-input" readonly />
-                        <button class="btn-copy" onclick="tracker.copyShareURL()">📋 コピー<br><span style="font-size: 0.75em;">Copy</span></button>
+                    </div>
+                    <div class="share-lang-toggle">
+                        <span class="share-lang-label">Message Language:</span>
+                        <div class="share-lang-switch" id="share-lang-switch" onclick="tracker.toggleShareLanguage()">
+                            <span class="share-lang-option share-lang-en active" id="share-lang-en">EN</span>
+                            <span class="share-lang-option share-lang-jp" id="share-lang-jp">JP</span>
+                        </div>
+                    </div>
+                    <div class="share-actions">
+                        <button class="share-action-btn share-btn-copy" onclick="tracker.copyShareURL()">
+                            <span class="share-action-icon">📋</span>
+                            <span class="share-action-text">リンクをコピー<br><span style="font-size:0.8em;">Copy Link</span></span>
+                        </button>
+                        <button class="share-action-btn share-btn-twitter" onclick="tracker.shareToTwitter()">
+                            <span class="share-action-icon">𝕏</span>
+                            <span class="share-action-text">Twitterで共有<br><span style="font-size:0.8em;">Share to Twitter</span></span>
+                        </button>
+                        <button class="share-action-btn share-btn-discord" onclick="tracker.copyDiscordMessage()">
+                            <span class="share-action-icon">💬</span>
+                            <span class="share-action-text">Discord用コピー<br><span style="font-size:0.8em;">Copy Discord Message</span></span>
+                        </button>
                     </div>
                     <div class="share-stats">
                         <div>Races Run / 出走: <strong id="share-stat-races">0</strong></div>

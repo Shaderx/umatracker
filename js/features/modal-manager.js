@@ -98,13 +98,72 @@ export function closeShareDialog() {
 export function copyShareURL() {
     const input = document.getElementById('share-url-input');
     if (!input) return;
-    input.select();
-    input.setSelectionRange(0, 99999);
-    try {
-        document.execCommand('copy');
-        showToast('Share URL copied to clipboard');
-    } catch {
-        showToast('Failed to copy URL', 'error');
+    const url = input.value;
+    if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(url)
+            .then(() => showToast('Share URL copied to clipboard'))
+            .catch(() => {
+                input.select();
+                input.setSelectionRange(0, 99999);
+                try { document.execCommand('copy'); showToast('Share URL copied to clipboard'); }
+                catch { showToast('Failed to copy URL', 'error'); }
+            });
+    } else {
+        input.select();
+        input.setSelectionRange(0, 99999);
+        try { document.execCommand('copy'); showToast('Share URL copied to clipboard'); }
+        catch { showToast('Failed to copy URL', 'error'); }
+    }
+}
+
+let shareLanguage = 'en';
+
+export function toggleShareLanguage() {
+    shareLanguage = shareLanguage === 'en' ? 'jp' : 'en';
+    const enEl = document.getElementById('share-lang-en');
+    const jpEl = document.getElementById('share-lang-jp');
+    if (enEl) enEl.classList.toggle('active', shareLanguage === 'en');
+    if (jpEl) jpEl.classList.toggle('active', shareLanguage === 'jp');
+}
+
+export function shareToTwitter() {
+    const input = document.getElementById('share-url-input');
+    if (!input) return;
+    const url = encodeURIComponent(input.value);
+    let text;
+    if (shareLanguage === 'jp') {
+        text = encodeURIComponent('🏇 育成・因子周回ローテーション #ウマ娘');
+    } else {
+        text = encodeURIComponent('Check out my training race rotation plan! #Umamusume');
+    }
+    const intentURL = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+    window.open(intentURL, '_blank');
+}
+
+export function copyDiscordMessage() {
+    const input = document.getElementById('share-url-input');
+    if (!input) return;
+    const url = input.value;
+    let message;
+    if (shareLanguage === 'jp') {
+        message = `🏇 育成・因子周回ローテーション\n作成したレース計画は[こちら](${url})！`;
+    } else {
+        message = `Check out my training race rotation plan [here](${url})`;
+    }
+    if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(message)
+            .then(() => showToast('Discord message copied to clipboard'))
+            .catch(() => showToast('Failed to copy message', 'error'));
+    } else {
+        const ta = document.createElement('textarea');
+        ta.value = message;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast('Discord message copied to clipboard'); }
+        catch { showToast('Failed to copy message', 'error'); }
+        document.body.removeChild(ta);
     }
 }
 

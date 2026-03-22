@@ -5,6 +5,29 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-03-22",
+    "changes": [
+      {
+        "category": "✨ Features",
+        "items": [
+          "Share Menu: expanded share dialog with Copy Link, Share to Twitter (X), and Copy Discord Message buttons",
+          "Share Menu: EN/JP language toggle switches message templates for Twitter hashtags (#Umamusume / #ウマ娘) and Discord markdown",
+          "Discord sharing uses masked link syntax [text](url) so the long state URL is hidden when pasted"
+        ]
+      },
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Spring Champion: can now be obtained with cross-year races (Classic + Senior); added note that all 3 races should be in Senior year when aiming for Legendary",
+          "Globe-Trotter: added American JCC to the race list (now 7 races: American JCC, Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup)",
+          "Globe-Trotter and all set-based conditions: each won race now counts as +1 even if it is a repeated race across years",
+          "Goddess: fixed logic requiring all 4 races (Hanshin Juvenile Fillies, Victoria Mile, QEII Cup Classic, QEII Cup Senior) plus Lady epithet; previously could be fulfilled with only 3 races",
+          "Legendary: updated condition text with Senior year advisory for Spring Champion races"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-19",
     "changes": [
       {

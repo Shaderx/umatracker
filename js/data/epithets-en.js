@@ -39,7 +39,7 @@ function isWon(nameSubstring) {
 }
 
 function countWonFromSet(nameSubstrings) {
-    return nameSubstrings.filter(n => isWon(n)).length;
+    return wonRaces().filter(r => nameSubstrings.some(n => r.name.includes(n))).length;
 }
 
 function isCoreDistance(race) {
@@ -126,7 +126,7 @@ function getRacesBySurfaceCategories(surface, categories) {
 }
 
 const GLOBE_TROTTER_RACES = [
-    'Saudi Arabia Royal Cup', 'New Zealand Trophy', 'Japan Cup',
+    'American JCC', 'Saudi Arabia Royal Cup', 'New Zealand Trophy', 'Japan Cup',
     'Japan Dirt Derby', 'Copa Republica Argentina', 'Brazil Cup'
 ];
 
@@ -299,7 +299,7 @@ const EPITHETS = [
     {
         id: 'globe_trotter',
         name: 'Globe-Trotter',
-        condition: 'Win 3 of: Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup',
+        condition: 'Win 3 of: American JCC, Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup',
         reward: '2 random stats +5',
         trackable: true,
         check: () => result(countWonFromSet(GLOBE_TROTTER_RACES), 3),
@@ -423,13 +423,12 @@ const EPITHETS = [
     {
         id: 'spring_champion',
         name: 'Spring Champion',
-        condition: 'Win Osaka Hai, Tenno Sho (Spring), and Takarazuka Kinen. Must complete all in the same year (Classic or Senior).',
+        condition: 'Win Osaka Hai, Tenno Sho (Spring), and Takarazuka Kinen (can be across different years). Note: For Legendary, run all 3 in Senior year.',
         reward: '2 random stats +10',
         trackable: true,
         check: () => {
             const names = ['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'];
-            const r = checkAllWonInSameYear(names);
-            return result(r.bestCount, 3, `Best year: ${r.bestYear || '—'} (${r.bestCount}/3)`);
+            return result(countWonFromSet(names), 3);
         },
         getRaces: () => getRacesByNames(['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'])
     },
@@ -507,7 +506,7 @@ const EPITHETS = [
     {
         id: 'goddess',
         name: 'Goddess',
-        condition: 'Get the Lady epithet; Win Victoria Mile, Hanshin Juvenile Fillies, and QEII Cup twice',
+        condition: 'Get the Lady epithet; Win Hanshin Juvenile Fillies, Victoria Mile, and QEII Cup in both Classic and Senior year',
         reward: '2 random stats +15',
         prereqs: ['lady'],
         trackable: true,
@@ -515,7 +514,7 @@ const EPITHETS = [
             const ladyDone = getEpithetResult('lady').completed;
             const raceWins = countWonFromSet(['Victoria Mile', 'Hanshin Juvenile Fillies', 'Queen Elizabeth II Cup']);
             const current = (ladyDone ? 1 : 0) + raceWins;
-            return result(current, 4, `Lady: ${ladyDone ? '✓' : '✗'} | Races: ${raceWins}/3`);
+            return result(current, 5, `Lady: ${ladyDone ? '✓' : '✗'} | Races: ${raceWins}/4`);
         },
         getRaces: () => getRacesByNames(['Oka Sho', 'Japanese Oaks', 'Shuka Sho', 'Victoria Mile', 'Hanshin Juvenile Fillies', 'Queen Elizabeth II Cup'])
     },
@@ -573,7 +572,7 @@ const EPITHETS = [
     {
         id: 'legendary',
         name: 'Legendary',
-        condition: 'Get Stunning or Lady epithet; Get Spring Champion and Fall Champion epithets',
+        condition: 'Get Stunning or Lady epithet; Get Spring Champion and Fall Champion epithets. Note: Spring Champion races (Osaka Hai, Tenno Sho Spring, Takarazuka Kinen) should all be in Senior year.',
         reward: 'Homestretch Haste hint +1',
         prereqs: ['stunning', 'lady', 'spring_champion', 'fall_champion'],
         trackable: true,

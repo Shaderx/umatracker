@@ -7,6 +7,7 @@ import { planRaceIntoPlanner } from './planner.js';
 import { lockBodyScroll, unlockBodyScroll } from './scroll-lock.js';
 import { getTrackedFactorRaceIds } from './tracking.js';
 import { raceMatchesFilters } from './filters.js';
+import { getCurrentDb } from '../data/race-data.js';
 
 export function pickerOpen(t, month, half) {
     t.currentPickerSlot = { year: state.plannerYear, month, half };
@@ -252,8 +253,12 @@ export function renderPickerCard(t, position, slot) {
         const filtered = state.currentFilters.size > 0 && raceMatchesFilters(r, state.currentFilters);
         const imageUrl = r.image || '';
         const safeName = (r.name || '').replace(/"/g, '&quot;');
-        const surfaceLabel = `${tmap.surfaces[r.surface] || r.surface}`;
-        const dirLabel = r.direction ? ` ${tmap.directions[r.direction] || r.direction}` : '';
+        const isEn = getCurrentDb() === 'en';
+        const trackLabel = isEn ? r.racetrack : (tmap.tracks[r.racetrack] || r.racetrack);
+        const surfaceLabel = isEn ? (r.surface.charAt(0).toUpperCase() + r.surface.slice(1)) : (tmap.surfaces[r.surface] || r.surface);
+        const dirLabel = r.direction
+            ? (isEn ? (r.direction.charAt(0).toUpperCase() + r.direction.slice(1)) : (tmap.directions[r.direction] || r.direction))
+            : '';
         return `
             <div class="picker-item ${selected ? 'selected' : ''} ${tracked ? 'picker-item-tracked' : ''} ${filtered ? 'picker-item-filtered' : ''}" data-race-id="${r.id}">
                 <div class="picker-item-banner">
@@ -265,7 +270,7 @@ export function renderPickerCard(t, position, slot) {
                     </div>
                 </div>
                 <div class="picker-item-pills">
-                    <span class="picker-pill">${r.racetrack}</span>
+                    <span class="picker-pill">${trackLabel}</span>
                     <span class="picker-pill">${r.length}m ${surfaceLabel}</span>
                     ${dirLabel ? `<span class="picker-pill">${dirLabel}</span>` : ''}
                 </div>
