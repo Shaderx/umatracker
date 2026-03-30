@@ -42,6 +42,11 @@ function countWonFromSet(nameSubstrings) {
     return wonRaces().filter(r => nameSubstrings.some(n => r.name.includes(n))).length;
 }
 
+function countDistinctWonFromSet(nameSubstrings) {
+    const won = wonRaces();
+    return nameSubstrings.filter(n => won.some(r => r.name.includes(n))).length;
+}
+
 function isCoreDistance(race) {
     const len = parseInt(race.length);
     return len > 0 && len % 400 === 0;
@@ -328,10 +333,10 @@ const EPITHETS = [
     {
         id: 'kokura_constable',
         name: 'Kokura Constable',
-        condition: 'Win 3 graded races held in Kokura',
+        condition: 'Win 2 graded races held in Kokura',
         reward: '2 random stats +5',
         trackable: true,
-        check: () => result(countWonAtTracks(['Kokura'], true), 3),
+        check: () => result(countWonAtTracks(['Kokura'], true), 2),
         getRaces: () => getRacesAtTracks(['Kokura'], true)
     },
     {
@@ -408,7 +413,7 @@ const EPITHETS = [
         condition: 'Win Takamatsunomiya Kinen and Sprinters Stakes',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Takamatsunomiya Kinen', 'Sprinters Stakes']), 2),
+        check: () => result(countDistinctWonFromSet(['Takamatsunomiya Kinen', 'Sprinters Stakes']), 2),
         getRaces: () => getRacesByNames(['Takamatsunomiya Kinen', 'Sprinters Stakes'])
     },
     {
