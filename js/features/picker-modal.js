@@ -254,15 +254,29 @@ export function renderPickerCard(t, position, slot) {
         const imageUrl = r.image || '';
         const safeName = (r.name || '').replace(/"/g, '&quot;');
         const isEn = getCurrentDb() === 'en';
-        const trackLabel = isEn ? r.racetrack : (tmap.tracks[r.racetrack] || r.racetrack);
-        const surfaceLabel = isEn ? (r.surface.charAt(0).toUpperCase() + r.surface.slice(1)) : (tmap.surfaces[r.surface] || r.surface);
-        const dirLabel = r.direction
-            ? (isEn ? (r.direction.charAt(0).toUpperCase() + r.direction.slice(1)) : (tmap.directions[r.direction] || r.direction))
-            : '';
-        const distCat = distanceCategories.short(r) ? 'Short'
+        const enTrack = r.racetrack;
+        const enSurface = r.surface.charAt(0).toUpperCase() + r.surface.slice(1);
+        const enDir = r.direction ? (r.direction.charAt(0).toUpperCase() + r.direction.slice(1)) : '';
+        const distKey = distanceCategories.short(r) ? 'Short'
             : distanceCategories.mile(r) ? 'Mile'
             : distanceCategories.medium(r) ? 'Mid'
             : 'Long';
+
+        const jpTrack = tmap.tracks[enTrack] || enTrack;
+        const jpSurface = tmap.surfaces[r.surface] || enSurface;
+        const jpDir = r.direction ? (tmap.directions[r.direction] || enDir) : '';
+        const jpDist = tmap.distances[distKey] || distKey;
+
+        const enRow = `<div class="picker-pill-row"><span class="picker-pill">${enTrack}</span>
+               <span class="picker-pill">${distKey} ${enSurface}</span>
+               ${enDir ? `<span class="picker-pill">${enDir}</span>` : ''}</div>`;
+        const pillsHtml = isEn
+            ? enRow
+            : `<div class="picker-pill-row"><span class="picker-pill">${jpTrack}</span>
+               <span class="picker-pill">${jpDist} ${jpSurface}</span>
+               ${jpDir ? `<span class="picker-pill">${jpDir}</span>` : ''}</div>
+               ${enRow}`;
+
         return `
             <div class="picker-item ${selected ? 'selected' : ''} ${tracked ? 'picker-item-tracked' : ''} ${filtered ? 'picker-item-filtered' : ''}" data-race-id="${r.id}">
                 <div class="picker-item-banner">
@@ -274,9 +288,7 @@ export function renderPickerCard(t, position, slot) {
                     </div>
                 </div>
                 <div class="picker-item-pills">
-                    <span class="picker-pill">${trackLabel}</span>
-                    <span class="picker-pill">${distCat} ${surfaceLabel}</span>
-                    ${dirLabel ? `<span class="picker-pill">${dirLabel}</span>` : ''}
+                    ${pillsHtml}
                 </div>
             </div>
         `;

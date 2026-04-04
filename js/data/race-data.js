@@ -110,6 +110,12 @@ export const translations = {
         'right': '右回り',
         'left': '左回り'
     },
+    distances: {
+        'Short': '短距離',
+        'Mile': 'マイル',
+        'Mid': '中距離',
+        'Long': '長距離'
+    },
     seasons: {
         'spring': '春',
         'summer': '夏',

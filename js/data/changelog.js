@@ -5,6 +5,52 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-04-04",
+    "changes": [
+      {
+        "category": "✨ Features",
+        "items": [
+          "Overview Export: export the 3-year race overview as a PNG image (1080p) with landscape or portrait orientation toggle",
+          "Overview Export: branding header \"Race overview created from https://uma.pwnation.net/\" prepended to exported images",
+          "Overview Modal: scales to fill larger screens using CSS zoom, maintaining aspect ratio and layout",
+          "Overview Modal: margin radio buttons (5% / 10% / 20% / 40%) to adjust side spacing on desktop"
+        ]
+      },
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "The Year's Plan (一年の計は): secret factor now correctly checks for Nakayama Kimpai / Kyoto Kimpai instead of the old Kinen names",
+          "Overview Modal: Junior year column now aligns dates with Classic / Senior — empty spacer rows push race cells to the bottom so months line up across all three years"
+        ]
+      },
+      {
+        "category": "💄 Style",
+        "items": [
+          "Race Picker: improved text legibility on banner images with text stroke and stronger multi-layer text shadow"
+        ]
+      }
+    ]
+  },
+  {
+    "date": "2026-03-30",
+    "changes": [
+      {
+        "category": "✨ Features",
+        "items": [
+          "Race Picker: distance pill now shows category (Short / Mile / Mid / Long) instead of raw meters, matching the hidden factor distance thresholds",
+          "Race Picker (JP mode): pills are now dual-language — Japanese row on top, English row below — for track, distance + surface, and direction"
+        ]
+      },
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Sprint Go-Getter: fixed incorrect completion when winning the same race (e.g. Sprinters Stakes) multiple times; each required race name now counts at most once",
+          "Kokura Constable: corrected requirement from 3 to 2 graded races"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-03-22",
     "changes": [
       {

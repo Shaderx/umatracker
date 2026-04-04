@@ -154,11 +154,11 @@ export function checkSummerSeries(seriesKey) {
 
 /**
  * Check New Year gold races (一年の計は)
- * Requires win in Nakayama Kinen or Kyoto Kinen (Senior, January 1st half)
+ * Requires win in Nakayama Kimpai or Kyoto Kimpai (Senior, January 1st half)
  * @returns {Object} Check result with completion status
  */
 export function checkNewYearGold() {
-    const targets = new Set(['Nakayama Kinen', 'Kyoto Kinen']);
+    const targets = new Set(['Nakayama Kimpai', 'Kyoto Kimpai']);
     const qualified = [];
     
     state.wonRaces.forEach(id => {

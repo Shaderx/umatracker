@@ -66,7 +66,7 @@ export function getRacesForSummerSeries(summerSeries, seriesKey, races) {
  */
 export function getRacesForNewYearGold(races) {
     const result = new Set();
-    const targets = new Set(['Nakayama Kinen', 'Kyoto Kinen']);
+    const targets = new Set(['Nakayama Kimpai', 'Kyoto Kimpai']);
     races.forEach(race => {
         if (targets.has(race.name) && race.senior && race.month === 'January' && race.half === '1st') {
             result.add(String(race.id));

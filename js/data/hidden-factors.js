@@ -142,7 +142,7 @@ export function loadHiddenFactors() {
             nameJP: '一年の計は',
             nameEN: "The Year's Plan",
             conditionJP: 'シニア級1月前半の中山金杯か京都金杯で勝利する。',
-            conditionEN: 'During the Senior year, win either the Nakayama Kinen or the Kyoto Kinen in January.',
+            conditionEN: 'During the Senior year, win either the Nakayama Kimpai or the Kyoto Kimpai in January.',
             trackable: true,
             check: () => checkNewYearGold(),
             getRaces: () => getRacesForNewYearGold(state.races)
