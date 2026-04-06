@@ -5,6 +5,17 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-04-07",
+    "changes": [
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Global epithets (EN): set-based missions now count each required race name at most once (distinct wins). Winning the same race in Classic and Senior (e.g. Takarazuka Kinen twice) no longer double-counts toward Spring Champion, Shield Bearer, Globe-Trotter, Kicking Up Dust, Breakneck Miler, Sprint Speedster, Stunning, Lady, Phenomenal, or Mile a Minute"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-04-04",
     "changes": [
       {

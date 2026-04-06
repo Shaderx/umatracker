@@ -307,7 +307,7 @@ const EPITHETS = [
         condition: 'Win 3 of: American JCC, Saudi Arabia Royal Cup, New Zealand Trophy, Japan Cup, Japan Dirt Derby, Copa Republica Argentina, Brazil Cup',
         reward: '2 random stats +5',
         trackable: true,
-        check: () => result(countWonFromSet(GLOBE_TROTTER_RACES), 3),
+        check: () => result(countDistinctWonFromSet(GLOBE_TROTTER_RACES), 3),
         getRaces: () => getRacesByNames(GLOBE_TROTTER_RACES)
     },
     {
@@ -383,7 +383,7 @@ const EPITHETS = [
         condition: 'Win Unicorn Stakes, Leopard Stakes, and Japan Dirt Derby',
         reward: '2 random stats +5',
         trackable: true,
-        check: () => result(countWonFromSet(['Unicorn Stakes', 'Leopard Stakes', 'Japan Dirt Derby']), 3),
+        check: () => result(countDistinctWonFromSet(['Unicorn Stakes', 'Leopard Stakes', 'Japan Dirt Derby']), 3),
         getRaces: () => getRacesByNames(['Unicorn Stakes', 'Leopard Stakes', 'Japan Dirt Derby'])
     },
     {
@@ -422,7 +422,7 @@ const EPITHETS = [
         condition: 'Win both Tenno Sho (Spring) and Tenno Sho (Autumn)',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Tenno Sho (Spring)', 'Tenno Sho (Autumn)']), 2),
+        check: () => result(countDistinctWonFromSet(['Tenno Sho (Spring)', 'Tenno Sho (Autumn)']), 2),
         getRaces: () => getRacesByNames(['Tenno Sho (Spring)', 'Tenno Sho (Autumn)'])
     },
     {
@@ -433,7 +433,7 @@ const EPITHETS = [
         trackable: true,
         check: () => {
             const names = ['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'];
-            return result(countWonFromSet(names), 3);
+            return result(countDistinctWonFromSet(names), 3);
         },
         getRaces: () => getRacesByNames(['Osaka Hai', 'Tenno Sho (Spring)', 'Takarazuka Kinen'])
     },
@@ -456,7 +456,7 @@ const EPITHETS = [
         condition: 'Win NHK Mile Cup, Yasuda Kinen, and Mile Championship',
         reward: '2 random stats +15',
         trackable: true,
-        check: () => result(countWonFromSet(['NHK Mile Cup', 'Yasuda Kinen', 'Mile Championship']), 3),
+        check: () => result(countDistinctWonFromSet(['NHK Mile Cup', 'Yasuda Kinen', 'Mile Championship']), 3),
         getRaces: () => getRacesByNames(['NHK Mile Cup', 'Yasuda Kinen', 'Mile Championship'])
     },
     {
@@ -465,7 +465,7 @@ const EPITHETS = [
         condition: 'Win Takamatsunomiya Kinen, Sprinters Stakes, Yasuda Kinen, and Mile Championship',
         reward: '2 random stats +15',
         trackable: true,
-        check: () => result(countWonFromSet(['Takamatsunomiya Kinen', 'Sprinters Stakes', 'Yasuda Kinen', 'Mile Championship']), 4),
+        check: () => result(countDistinctWonFromSet(['Takamatsunomiya Kinen', 'Sprinters Stakes', 'Yasuda Kinen', 'Mile Championship']), 4),
         getRaces: () => getRacesByNames(['Takamatsunomiya Kinen', 'Sprinters Stakes', 'Yasuda Kinen', 'Mile Championship'])
     },
 
@@ -476,7 +476,7 @@ const EPITHETS = [
         condition: 'Win the Classic Triple Crown: Satsuki Sho, Tokyo Yushun, and Kikuka Sho',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Satsuki Sho', 'Tokyo Yushun', 'Kikuka Sho']), 3),
+        check: () => result(countDistinctWonFromSet(['Satsuki Sho', 'Tokyo Yushun', 'Kikuka Sho']), 3),
         getRaces: () => getRacesByNames(['Satsuki Sho', 'Tokyo Yushun', 'Kikuka Sho'])
     },
     {
@@ -485,7 +485,7 @@ const EPITHETS = [
         condition: 'Win the Triple Tiara: Oka Sho, Japanese Oaks, and Shuka Sho',
         reward: '2 random stats +10',
         trackable: true,
-        check: () => result(countWonFromSet(['Oka Sho', 'Japanese Oaks', 'Shuka Sho']), 3),
+        check: () => result(countDistinctWonFromSet(['Oka Sho', 'Japanese Oaks', 'Shuka Sho']), 3),
         getRaces: () => getRacesByNames(['Oka Sho', 'Japanese Oaks', 'Shuka Sho'])
     },
 
@@ -547,7 +547,7 @@ const EPITHETS = [
         trackable: true,
         check: () => {
             const stunDone = getEpithetResult('stunning').completed;
-            const raceWins = countWonFromSet([
+            const raceWins = countDistinctWonFromSet([
                 'Tenno Sho (Spring)', 'Tenno Sho (Autumn)',
                 'Takarazuka Kinen', 'Japan Cup', 'Osaka Hai', 'Arima Kinen'
             ]);
@@ -568,7 +568,7 @@ const EPITHETS = [
         reward: 'Mile Straightaways ○ hint +1',
         trackable: true,
         check: () => {
-            const fixed = countWonFromSet(['NHK Mile Cup', 'Oka Sho', 'Yasuda Kinen', 'Victoria Mile', 'Mile Championship']);
+            const fixed = countDistinctWonFromSet(['NHK Mile Cup', 'Oka Sho', 'Yasuda Kinen', 'Victoria Mile', 'Mile Championship']);
             const either = (isWon('Hanshin Juvenile Fillies') || isWon('Asahi Hai Futurity Stakes')) ? 1 : 0;
             return result(fixed + either, 6, `Fixed 5: ${fixed}/5 | HJF/Asahi: ${either ? '✓' : '✗'}`);
         },
