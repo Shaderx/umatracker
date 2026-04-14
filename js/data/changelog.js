@@ -5,6 +5,18 @@
 // Expose to window for global access
 window.changelogData = [
   {
+    "date": "2026-04-14",
+    "changes": [
+      {
+        "category": "🐛 Fixes",
+        "items": [
+          "Overview Export: fixed corrupted dark background highlight appearing behind race names caused by html2canvas not rendering inset box-shadow and -webkit-box display correctly",
+          "Overview Export: race names now correctly wrap to two lines instead of being truncated to a single line"
+        ]
+      }
+    ]
+  },
+  {
     "date": "2026-04-07",
     "changes": [
       {

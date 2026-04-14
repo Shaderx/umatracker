@@ -167,6 +167,22 @@ async function exportOverviewAsImage() {
 
         document.body.appendChild(container);
 
+        container.querySelectorAll('.ov-name').forEach(el => {
+            el.style.display = 'block';
+            el.style.wordBreak = 'break-word';
+            el.style.webkitLineClamp = 'unset';
+            el.style.webkitBoxOrient = 'unset';
+        });
+
+        container.querySelectorAll('.ov-inner.ov-won').forEach(el => {
+            el.style.boxShadow = 'none';
+            el.style.border = '2px solid rgba(56,161,105,.45)';
+        });
+        container.querySelectorAll('.ov-inner.ov-lost').forEach(el => {
+            el.style.boxShadow = 'none';
+            el.style.border = '2px solid rgba(229,62,62,.35)';
+        });
+
         const images = container.querySelectorAll('img.ov-img');
         if (images.length > 0) {
             await Promise.all(Array.from(images).map(img => {
